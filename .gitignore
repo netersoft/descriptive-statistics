@@ -1,3 +1,6 @@
+# Legacy Android reference app (kept locally for the Flutter rewrite, not part of history)
+.legacy/
+
 # Miscellaneous
 *.class
 *.log

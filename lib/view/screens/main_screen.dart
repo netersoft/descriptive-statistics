@@ -1,94 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
 
-import '../../core/helpers/router/navigation_helper.dart';
 import '../../core/helpers/ui/dialog_helper.dart';
-import '../../core/models/user_model.dart';
-import '../../core/providers/account/profile_provider.dart';
-import '../../core/providers/main_provider.dart';
+import '../../core/providers/main/home_provider.dart';
+import '../../core/providers/settings/settings_provider.dart';
 import '../../core/routes/app_route.dart';
-import '../../core/services/di/locator.dart';
-import '../../core/services/hive/keys.dart';
 import '../../core/services/i18n/translations.g.dart';
-import '../components/image/user_avatar.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_theme.dart';
 import 'main/home_screen.dart';
 
+const _tabCount = 6;
+
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
-  static Widget defaultAppBar(
-    MainState mainProvider,
-  ) => AppBar(
-    elevation: 0.0,
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/images/launcher/logo_reverse.svg',
-          width: 90.0,
-        ),
-      ],
-    ),
-    actions: [
-      IconButton(
-        onPressed: () {
-          locator<NavigationHelper>().push(const SettingsRoute().location);
-        },
-        icon: const Icon(
-          Icons.settings,
-          color: Colors.white,
-        ),
-      ),
-    ],
-    backgroundColor: AppTheme.getAppbarBgColor(),
-    iconTheme: const IconThemeData(color: Colors.white),
-  );
-
-  static Widget searchAppBar() => AppBar(
-    elevation: 0.0,
-    actions: <Widget>[
-      const SizedBox(
-        width: 60,
-      ),
-      Expanded(
-        child: Consumer(
-          builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            ref.watch(mainProvider);
-            final controller = ref.watch(searchTextControllerProvider);
-            return TextField(
-              cursorColor: Colors.white,
-              controller: controller,
-              style: const TextStyle(fontSize: 18, color: Colors.white),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                errorBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintStyle: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white54,
-                ),
-                hintText: context.t.search,
-              ),
-              onChanged: (value) {},
-            );
-          },
-        ),
-      ),
-    ],
-    backgroundColor: AppTheme.getAppbarBgColor(),
-    iconTheme: const IconThemeData(color: Colors.white),
-  );
-
   @override
-  Widget build(BuildContext context) => const KeyboardDismissOnTap(child: CentralContainer());
+  Widget build(BuildContext context) => const CentralContainer();
 }
 
 class CentralContainer extends ConsumerStatefulWidget {
@@ -98,181 +27,148 @@ class CentralContainer extends ConsumerStatefulWidget {
   ConsumerState<CentralContainer> createState() => _CentralContainerState();
 }
 
-class _CentralContainerState extends ConsumerState<CentralContainer> {
+class _CentralContainerState extends ConsumerState<CentralContainer> with SingleTickerProviderStateMixin {
+  late final TabController tabController;
+
   @override
   void initState() {
     super.initState();
 
     AppTheme.setStatusBarColor();
+
+    tabController = TabController(length: _tabCount, vsync: this, initialIndex: ref.read(homeProvider));
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        ref.read(homeProvider.notifier).tabIndex = tabController.index;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  void _goToTab(int index) {
+    tabController.animateTo(index);
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: PreferredSize(
-      preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-      child: ref.read(mainProvider.notifier).selectAppBar(),
+    appBar: AppBar(
+      elevation: 0.0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/images/launcher/logo_reverse.svg',
+            width: 90.0,
+          ),
+        ],
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            const SettingsRoute().push(context);
+          },
+          icon: const Icon(Icons.settings, color: Colors.white),
+        ),
+      ],
+      backgroundColor: AppTheme.getAppbarBgColor(),
+      iconTheme: const IconThemeData(color: Colors.white),
     ),
-    body: const HomeScreen(),
+    body: HomeScreen(tabController: tabController),
     drawer: Drawer(
       backgroundColor: AppTheme.pickColor(
         light: Colors.white,
         dark: AppColors.blackRussian,
       ),
-      child: ValueListenableBuilder(
-        valueListenable: Hive.box(HiveKeys.auth).listenable(),
-        builder: (context, Box box, _) {
-          UserModel? userData = box.get(HiveKeys.authUserData);
-          return ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              if (userData != null)
-                GestureDetector(
-                  onTap: () {
-                    const ProfileRoute().push(context);
-                  },
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: AppTheme.pickColor(
-                        light: AppTheme.primaryColor,
-                        dark: AppColors.raisinBlack,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        UserAvatar(
-                          userData: userData,
-                          backgroundColor: Colors.black87,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          userData.name ?? '',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          userData.email ?? '',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              else
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: AppTheme.pickColor(
-                      light: AppTheme.primaryColor,
-                      dark: AppColors.raisinBlack,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        context.t.welcome,
-                        style: const TextStyle(
-                          fontSize: 21,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          const ProvidersRoute().push(context);
-                        },
-                        icon: const Icon(Icons.login, color: Colors.white, size: 21),
-                        label: Text(context.t.logIn),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          side: const BorderSide(color: Colors.white),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 16,
-                          ),
-                          textStyle: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              if (userData != null)
-                ListTile(
-                  title: Text(context.t.myProfile),
-                  leading: const Icon(Icons.account_circle),
-                  onTap: () {
-                    const ProfileRoute().push(context);
-                  },
-                )
-              else
-                const SizedBox.shrink(),
-              ListTile(
-                title: Text(context.t.settings),
-                leading: const Icon(Icons.settings),
-                onTap: () {
-                  const SettingsRoute().push(context);
-                },
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: AppTheme.pickColor(
+                light: AppTheme.primaryColor,
+                dark: AppColors.raisinBlack,
               ),
-              if (userData != null)
-                ListTile(
-                  title: Text(context.t.logOut),
-                  leading: const Icon(Icons.logout),
-                  onTap: () {
-                    DialogHelper.showContent(
-                      context,
-                      title: Text(
-                        context.t.about,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      content: Text(context.t.sureToLogOut),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text(
-                            context.t.cancel,
-                            style: TextStyle(
-                              color: AppTheme.secondaryColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            context.pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            context.t.yes,
-                            style: TextStyle(
-                              color: AppTheme.pickColor(
-                                light: Colors.black,
-                                dark: Colors.white,
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            ref.read(profileProvider.notifier).logout();
-                            context.pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                )
-              else
-                const SizedBox.shrink(),
-            ],
-          );
-        },
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  context.t.appNameAlt,
+                  style: const TextStyle(fontSize: 21, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.menu_book),
+            title: Text(context.t.documentation),
+            onTap: () => _goToTab(0),
+          ),
+          ListTile(
+            leading: const Icon(Icons.pin),
+            title: Text(context.t.discreteVariables),
+            onTap: () => _goToTab(1),
+          ),
+          ListTile(
+            leading: const Icon(Icons.show_chart),
+            title: Text(context.t.continuousVariables),
+            onTap: () => _goToTab(2),
+          ),
+          ListTile(
+            leading: const Icon(Icons.category),
+            title: Text(context.t.qualitativeVariables),
+            onTap: () => _goToTab(3),
+          ),
+          ListTile(
+            leading: const Icon(Icons.save),
+            title: Text(context.t.safeguards),
+            onTap: () => _goToTab(4),
+          ),
+          ListTile(
+            leading: const Icon(Icons.school),
+            title: Text(context.t.tutorial),
+            onTap: () => _goToTab(5),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(context.t.settings),
+            onTap: () {
+              Navigator.of(context).pop();
+              const SettingsRoute().push(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: Text(context.t.about),
+            onTap: () {
+              Navigator.of(context).pop();
+              DialogHelper.showContent(
+                context,
+                title: Text(
+                  context.t.about,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                ),
+                content: Text(context.t.appDescription, textAlign: TextAlign.justify),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.share),
+            title: Text(context.t.share),
+            onTap: () {
+              Navigator.of(context).pop();
+              ref.read(settingsProvider.notifier).shareApp();
+            },
+          ),
+        ],
       ),
     ),
   );
