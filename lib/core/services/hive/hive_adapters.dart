@@ -1,14 +1,12 @@
 import 'package:hive_ce/hive.dart';
 
 import '../../enums/app_brightness.dart';
-import '../../enums/image_size.dart';
-import '../../models/user_model.dart';
+import '../../models/backup_model.dart';
 
 part 'hive_adapters.g.dart';
 
 @GenerateAdapters([
-  AdapterSpec<UserModel>(),
   AdapterSpec<AppBrightness>(),
-  AdapterSpec<ImageSize>(),
+  AdapterSpec<Backup>(),
 ], firstTypeId: 100)
 class HiveAdapters {}

@@ -6,4 +6,8 @@ part 'home_provider.g.dart';
 class Home extends _$Home {
   @override
   int build() => 0;
+
+  int get tabIndex => state;
+
+  set tabIndex(int index) => state = index;
 }

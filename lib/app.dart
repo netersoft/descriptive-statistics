@@ -3,11 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:phone_form_field/phone_form_field.dart';
 
 import 'core/lifecycle/app_lifecycle_layer.dart';
-import 'core/providers/global_provider.dart';
 import 'core/routes/router.dart';
 import 'core/services/i18n/translations.g.dart';
 import 'view/themes/app_theme.dart';
@@ -52,28 +49,22 @@ class AppRouterView extends ConsumerWidget {
   const AppRouterView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(globalProvider);
-
-    return TranslationProvider(
-      child: Builder(
-        builder: (context) => MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.setup(context),
-          locale: TranslationProvider.of(context).flutterLocale,
-          supportedLocales: AppLocaleUtils.supportedLocales,
-          localizationsDelegates: const [
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            FormBuilderLocalizations.delegate,
-            ...PhoneFieldLocalization.delegates,
-          ],
-          routerConfig: router,
-          onGenerateTitle: (ctx) => t.appNameAlt,
-          builder: EasyLoading.init(),
-        ),
+  Widget build(BuildContext context, WidgetRef ref) => TranslationProvider(
+    child: Builder(
+      builder: (context) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.setup(context),
+        locale: TranslationProvider.of(context).flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
+        localizationsDelegates: const [
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        routerConfig: router,
+        onGenerateTitle: (ctx) => t.appNameAlt,
+        builder: EasyLoading.init(),
       ),
-    );
-  }
+    ),
+  );
 }

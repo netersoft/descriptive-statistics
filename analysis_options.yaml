@@ -30,6 +30,12 @@ analyzer:
     - 'build/**'
     - 'lib/generated/**'
     - 'test/.test_coverage.dart'
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 linter:
   # The lint rules applied to this project can be customized in the
