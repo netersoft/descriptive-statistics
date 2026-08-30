@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_starter/core/enums/app_brightness.dart';
 import 'package:flutter_starter/view/themes/app_colors.dart';
 import 'package:flutter_starter/view/themes/app_theme.dart';
@@ -8,14 +9,27 @@ import 'package:mocktail/mocktail.dart';
 import '../helpers/test_utils.dart';
 
 void main() {
-  // AppTheme.prefs is a `static final` bound to the locator on first access
-  // and never rebound afterwards, so a single mock/registration is reused
-  // for every test in this file -- only the stubbed return value changes.
+  // AppTheme.prefs/primaryColor/secondaryColor/accentColor are `static final`,
+  // bound on first access and never rebound afterwards, so a single
+  // mock/registration is reused for every test in this file -- only the
+  // stubbed brightness value changes. dotenv is seeded here with fixture
+  // values instead of relying on the real .env file, so this test doesn't
+  // depend on the repo's ENV_FILE secret being populated in CI.
   late MockSharedPreferencesService mockPrefs;
 
   setUpAll(() async {
     mockPrefs = MockSharedPreferencesService();
     await setupTestLocator(sharedPreferencesService: mockPrefs);
+
+    dotenv.loadFromString(
+      // Values must be quoted -- an unquoted leading `#` is parsed as a
+      // comment start, same as in .env/.env.example.
+      envString: '''
+APP_PRIMARY_COLOR='#353839'
+APP_SECONDARY_COLOR='#009ee3'
+APP_ACCENT_COLOR='#f5f5f5'
+''',
+    );
   });
 
   tearDownAll(teardownTestLocator);
