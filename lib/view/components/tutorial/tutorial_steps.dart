@@ -12,8 +12,10 @@ class TutorialStep {
   const TutorialStep({required this.text, required this.imageAsset});
 }
 
+const _supportedTutorialLocales = ['fr', 'en', 'de', 'es', 'pt'];
+
 List<TutorialStep> tutorialSteps(String languageCode) {
-  final locale = languageCode == 'en' ? 'en' : 'fr';
+  final locale = _supportedTutorialLocales.contains(languageCode) ? languageCode : 'fr';
   return [
     TutorialStep(
       text: (t) => t.tutoStep1,

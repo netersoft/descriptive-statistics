@@ -136,6 +136,9 @@ flutter:
     - assets/images/
     - assets/images/tutorial/fr/
     - assets/images/tutorial/en/
+    - assets/images/tutorial/de/
+    - assets/images/tutorial/es/
+    - assets/images/tutorial/pt/
     # ANIMATIONS
     - assets/animations/
     # I18N
@@ -143,6 +146,9 @@ flutter:
     # DOCS
     - assets/docs/fr/
     - assets/docs/en/
+    - assets/docs/de/
+    - assets/docs/es/
+    - assets/docs/pt/
 
   fonts:
     - family: proxima_nova
