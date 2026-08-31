@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>App Name</string>
+		<string>Statistique Descriptive</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>App Name</string>
+		<string>Statistique Descriptive</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -72,19 +72,19 @@
 			<string>com.googleusercontent.apps.317129977453-j7p8qeb45m82scgdkl9n89ah50r6e7ld</string>
 		</array>
 		<key>NSAppleMusicUsageDescription</key>
-        <string>This app needs access to your media library to let you select and upload photos. It does not access your music content.</string>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>This app needs access to your photo library so you can select photos to upload or edit.</string>
+		<string>This app needs access to your media library to let you select and upload photos. It does not access your music content.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to your photo library so you can select photos to upload or edit.</string>
 		<key>NSCameraUsageDescription</key>
-        <string>This app needs access to your camera to let you take photos to upload.</string>
-        <key>NSMicrophoneUsageDescription</key>
-        <string>This app needs microphone access to let you record audio while capturing videos.</string>
-        <key>NSLocationAlwaysUsageDescription</key>
-        <string>This app needs your location to provide location-based features, even when the app is not in use.</string>
+		<string>This app needs access to your camera to let you take photos to upload.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>This app needs microphone access to let you record audio while capturing videos.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>This app needs your location to provide location-based features, even when the app is not in use.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>This app needs your location to provide location-based features, even when you're not using the app.</string>
+		<string>This app needs your location to provide location-based features, even when you're not using the app.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-        <string>This app needs your location to show relevant information while you're using the app.</string>
+		<string>This app needs your location to show relevant information while you're using the app.</string>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>remote-notification</string>
