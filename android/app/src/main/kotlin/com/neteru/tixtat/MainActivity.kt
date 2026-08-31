@@ -1,4 +1,4 @@
-package com.example.flutter_project_template
+package com.neteru.tixtat
 
 import io.flutter.embedding.android.FlutterActivity
 

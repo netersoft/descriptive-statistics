@@ -101,7 +101,7 @@ icons_launcher:
 # Splash logo have size 1440x1440
 flutter_native_splash:
   image: assets/images/launcher/splash_logo.png
-  color: '#0000CD'
+  color: '#353839'
   #background_image: assets/background.png
   #branding: assets/dart.png
   image_dark: assets/images/launcher/splash_logo.png
@@ -112,8 +112,8 @@ flutter_native_splash:
   fullscreen: true
   android_12:
     image: assets/images/launcher/splash_logo.png
-    icon_background_color: '#0000CD'
-    color: '#0000CD'
+    icon_background_color: '#353839'
+    color: '#353839'
     image_dark: assets/images/launcher/splash_logo.png
     icon_background_color_dark: '#262626'
     color_dark: '#262626'

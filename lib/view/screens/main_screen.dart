@@ -168,6 +168,14 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
               ref.read(settingsProvider.notifier).shareApp();
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.star_outline),
+            title: Text(context.t.rateApp),
+            onTap: () {
+              Navigator.of(context).pop();
+              ref.read(settingsProvider.notifier).rateApp();
+            },
+          ),
         ],
       ),
     ),
