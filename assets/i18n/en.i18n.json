@@ -94,5 +94,20 @@
   "next": "next",
   "calcVarC": "Calculate a statistical series with continuous quantitative variables",
   "medianClassLabel": "Median Class :[",
-  "modalClassLabel": "Modal Class :["
+  "modalClassLabel": "Modal Class :[",
+  "calcVarN": "Calculate a statistical series with nominal or ordinal qualitative variables",
+  "modalityLabel": "Modality",
+  "effectifLabel": "Frequency",
+  "qltTabTitle1": "M",
+  "qltTabTitle2": "F",
+  "qltTabTitle3": "P(%)",
+  "qltTabTitle4": "CF",
+  "qltTabTitle5": "CP(%)",
+  "tableModalities": "Modalities",
+  "tableEffectifs": "Frequencies",
+  "tableFrequencies": "Proportions",
+  "tableCEffectifs": "Cumulative Frequencies",
+  "tableCFrequencies": "Cumulative Proportions",
+  "effectifTotal": "TOTAL FREQUENCY",
+  "qltMode": "The mode is the modality with the largest number of frequency"
 }

@@ -94,5 +94,20 @@
   "next": "suivant",
   "calcVarC": "Calculer une série statistique à variables quantitatives continues",
   "medianClassLabel": "Classe Mediante :\t[",
-  "modalClassLabel": "Classe Modale :\t["
+  "modalClassLabel": "Classe Modale :\t[",
+  "calcVarN": "Calculer une série statistique à variables qualitatives nominales ou ordinales",
+  "modalityLabel": "Modalité",
+  "effectifLabel": "Effectif",
+  "qltTabTitle1": "M",
+  "qltTabTitle2": "E",
+  "qltTabTitle3": "F(%)",
+  "qltTabTitle4": "EC",
+  "qltTabTitle5": "FC(%)",
+  "tableModalities": "Modalités",
+  "tableEffectifs": "Effectifs",
+  "tableFrequencies": "Frequences",
+  "tableCEffectifs": "Effectifs Cumulés",
+  "tableCFrequencies": "Fréquences Cumulées",
+  "effectifTotal": "EFFECTIF TOTAL",
+  "qltMode": "Le mode est la modalité dont l'effectif est le plus grand"
 }

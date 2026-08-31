@@ -3,5 +3,9 @@
 /// same as the legacy "courbe" checkbox.
 enum StatOption { mean, median, quartiles, mode, variance, covariance, standardDeviation, coefficientOfVariation, charts }
 
+/// The smaller checkbox set the Qualitative Variables screen exposes --
+/// nominal data doesn't have a median/quartiles/variance/etc.
+enum QualitativeStatOption { mean, mode, charts }
+
 /// Why a calculator provider's `calculate` could not produce a result.
 enum CalculationError { insufficientData, emptyField, syntaxError }
