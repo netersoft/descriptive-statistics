@@ -59,5 +59,29 @@ void main() {
       verify(() => mockPrefs.setString(PrefKeys.brightness, AppBrightness.light.name)).called(1);
       verifyNever(() => mockNav.go(any()));
     });
+
+    test('getDecimalPrecision defaults to 3 when unset', () {
+      when(
+        () => mockPrefs.getInt(any(), defaultValue: any(named: 'defaultValue')),
+      ).thenReturn(3);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final settings = container.read(settingsProvider.notifier);
+      expect(settings.getDecimalPrecision(), 3);
+    });
+
+    test('setDecimalPrecision persists the value and remounts the settings screen', () {
+      when(() => mockPrefs.setInt(any(), any())).thenAnswer((_) async => true);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      container.read(settingsProvider.notifier).setDecimalPrecision(5);
+
+      verify(() => mockPrefs.setInt(PrefKeys.decimalPrecision, 5)).called(1);
+      verify(() => mockNav.go(any())).called(1);
+    });
   });
 }

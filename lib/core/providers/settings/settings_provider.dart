@@ -54,6 +54,21 @@ class Settings extends _$Settings {
     }
   }
 
+  int getDecimalPrecision() => prefs.getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
+
+  void setDecimalPrecision(int precision) {
+    prefs.setInt(PrefKeys.decimalPrecision, precision);
+
+    // Remounts SettingsScreen so its trailing label reflects the new value --
+    // unlike brightness/language, this setting has no other visual effect,
+    // so a full Phoenix.rebirth() isn't warranted.
+    try {
+      _navigationHelper.go(const SettingsRoute().location);
+    } catch (e) {
+      _navigationHelper.pushReplacement(const RedirectionRoute().location);
+    }
+  }
+
   String? getAppBrightness() => prefs.getString(
     PrefKeys.brightness,
     defaultValue: AppBrightness.system.name,
