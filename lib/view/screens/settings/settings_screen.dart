@@ -11,6 +11,7 @@ import '../../../core/helpers/ui/dialog_helper.dart';
 import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/i18n/config.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../../core/tools/constants/chart_options.dart';
 import '../../components/misc/floating_modal.dart';
 import '../../themes/app_theme.dart';
 
@@ -39,6 +40,50 @@ class SettingsScreen extends StatelessWidget {
 
 class SettingsListWrapper extends ConsumerWidget {
   const SettingsListWrapper({super.key});
+
+  SettingsTile _chartTypesTile<T extends Enum>({
+    required BuildContext context,
+    required String title,
+    required String summary,
+    required List<T> allTypes,
+    required String Function(BuildContext, T) label,
+    required Set<T> Function() getSelected,
+    required void Function(Set<T>) setSelected,
+  }) => SettingsTile.navigation(
+    leading: const Icon(Icons.bar_chart),
+    trailing: const Icon(Icons.chevron_right),
+    title: Text(title),
+    description: Text(summary),
+    onPressed: (context) => showFloatingModalBottomSheet(
+      context: context,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) => Material(
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (final type in allTypes)
+                  CheckboxListTile(
+                    title: Text(label(sheetContext, type)),
+                    value: getSelected().contains(type),
+                    onChanged: (checked) => setSheetState(() {
+                      final selected = getSelected();
+                      if (checked ?? false) {
+                        selected.add(type);
+                      } else {
+                        selected.remove(type);
+                      }
+                      setSelected(selected);
+                    }),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -185,6 +230,38 @@ class SettingsListWrapper extends ConsumerWidget {
                   ),
                 ),
               },
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: Text(context.t.chartsSectionTitle),
+          tiles: <SettingsTile>[
+            _chartTypesTile<QuantitativeChartType>(
+              context: context,
+              title: context.t.discreteChartTypesTitle,
+              summary: context.t.discreteChartTypesSummary,
+              allTypes: QuantitativeChartType.values,
+              label: quantitativeChartTypeLabel,
+              getSelected: settings.getDiscreteChartTypes,
+              setSelected: settings.setDiscreteChartTypes,
+            ),
+            _chartTypesTile<QuantitativeChartType>(
+              context: context,
+              title: context.t.continuousChartTypesTitle,
+              summary: context.t.continuousChartTypesSummary,
+              allTypes: QuantitativeChartType.values,
+              label: quantitativeChartTypeLabel,
+              getSelected: settings.getContinuousChartTypes,
+              setSelected: settings.setContinuousChartTypes,
+            ),
+            _chartTypesTile<QualitativeChartType>(
+              context: context,
+              title: context.t.qualitativeChartTypesTitle,
+              summary: context.t.qualitativeChartTypesSummary,
+              allTypes: QualitativeChartType.values,
+              label: qualitativeChartTypeLabel,
+              getSelected: settings.getQualitativeChartTypes,
+              setSelected: settings.setQualitativeChartTypes,
             ),
           ],
         ),

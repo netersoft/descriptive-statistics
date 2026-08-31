@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_starter/core/data/backups/backups_repository.dart';
 import 'package:flutter_starter/core/models/backup_model.dart';
 import 'package:flutter_starter/core/services/di/locator.dart';
@@ -23,6 +25,8 @@ void main() {
   late BackupsRepository repository;
 
   setUpAll(() async {
+    await dotenv.load();
+
     tempDir = await Directory.systemTemp.createTemp('backups_test');
     Hive.init(tempDir.path);
 
@@ -83,8 +87,7 @@ void main() {
     // (the ListTile's title/subtitle) also render as RichText internally,
     // so check the resolution content specifically rather than RichText
     // presence. --
-    String renderedText() =>
-        tester.widgetList<RichText>(find.byType(RichText)).map((w) => w.text.toPlainText()).join('\n');
+    String renderedText() => tester.widgetList<RichText>(find.byType(RichText)).map((w) => w.text.toPlainText()).join('\n');
 
     expect(renderedText(), isNot(contains('Explication détaillée ici')));
 
@@ -92,5 +95,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(renderedText(), contains('Explication détaillée ici'));
+    expect(find.byType(BarChart), findsOneWidget);
   });
 }

@@ -23,6 +23,20 @@ abstract class AppTheme {
     dotenv.get('APP_ACCENT_COLOR'),
   );
 
+  /// Fixed color set for multi-series charts (pie slices) -- the legacy
+  /// app let users pick from 6 named MPAndroidChart palettes; this app
+  /// uses one palette drawn from AppColors instead of porting that picker.
+  static const List<Color> chartPalette = [
+    AppColors.skyBlue,
+    AppColors.orange,
+    AppColors.deepGreen,
+    AppColors.darkPink,
+    AppColors.aurore,
+    AppColors.dodgerBlue,
+    AppColors.forestGreen,
+    AppColors.darkOrange,
+  ];
+
   static const String _fontFamily = 'montserrat';
 
   static final SharedPreferencesService prefs = locator<SharedPreferencesService>();

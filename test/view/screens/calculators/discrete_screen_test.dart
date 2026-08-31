@@ -1,6 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/core/services/i18n/translations.g.dart';
+import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
 import 'package:flutter_starter/view/screens/calculators/discrete_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -144,6 +146,42 @@ void main() {
       final explanation = explanationText(tester);
       expect(explanation, isNot(contains('MODE')));
       expect(explanation, contains('MOYENNES'));
+    });
+
+    testWidgets('shows a chart carousel by default and hides it when unchecked', (tester) async {
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      await tester.enterText(textFields.at(0), '1');
+      await tester.enterText(textFields.at(1), '2');
+      await tester.enterText(textFields.at(2), '2');
+      await tester.enterText(textFields.at(3), '4');
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      // "Représentation graphique" is checked by default (select-all), so
+      // the carousel renders with both fallback chart types (no chart-type
+      // preference stubbed on mockPrefs). PageView only builds the current
+      // page, so the bar chart is the only one in the tree until paging.
+      expect(find.byType(ChartCarousel), findsOneWidget);
+      expect(find.byType(BarChart), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.chevron_right).first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(LineChart), findsOneWidget);
+
+      await tester.tap(find.text('Calculs'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(CheckboxListTile, 'Représentation graphique'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ChartCarousel), findsNothing);
     });
   });
 }

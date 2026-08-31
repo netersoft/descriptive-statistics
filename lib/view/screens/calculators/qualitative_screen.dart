@@ -5,9 +5,11 @@ import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/qualitative_provider.dart';
+import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
+import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/collapsible_checklist.dart';
 import '../../components/calculators/deletable_entry_row.dart';
 import '../../components/calculators/qualitative_explanation.dart';
@@ -230,6 +232,16 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> {
                   ],
                 ),
               ),
+              if (state.selectedStats.contains(QualitativeStatOption.charts)) ...[
+                const SizedBox(height: 16),
+                ChartCarousel(
+                  charts: buildQualitativeCharts(
+                    modalities: result.modalities,
+                    effectifs: result.effectifs,
+                    types: ref.read(settingsProvider.notifier).getQualitativeChartTypes(),
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
               QualitativeExplanation(result: result, selectedStats: state.selectedStats),
               const SizedBox(height: 16),

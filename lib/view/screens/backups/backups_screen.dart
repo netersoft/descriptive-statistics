@@ -7,6 +7,7 @@ import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../components/calculators/chart_carousel.dart';
 
 /// Lists saved calculation results (from the Discrete/Continuous/
 /// Qualitative screens' Save action), expandable to show the stored
@@ -48,6 +49,21 @@ class _BackupsScreenState extends State<BackupsScreen> {
     }
   }
 
+  /// Parses the saved xi/ni for a mini bar chart -- returns null when
+  /// either side is missing or the counts don't line up (backups from
+  /// before charts were introduced have no chart data of their own to
+  /// show, so this quietly falls back to just the HTML resolution).
+  (List<String>, List<double>)? _miniChartData(Backup backup) {
+    if (backup.xi.isEmpty || backup.ni.isEmpty) return null;
+
+    final labels = backup.xi.split('_');
+    final values = backup.ni.split('_').map(double.tryParse).toList();
+
+    if (values.length != labels.length || values.any((v) => v == null)) return null;
+
+    return (labels, values.cast<double>());
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: ValueListenableBuilder<Box<Backup>>(
@@ -86,7 +102,15 @@ class _BackupsScreenState extends State<BackupsScreen> {
                       onPressed: () => _confirmDelete(key),
                     ),
                   ),
-                  if (expanded)
+                  if (expanded) ...[
+                    if (_miniChartData(backup) case (final labels, final values))
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                        child: SizedBox(
+                          height: 180,
+                          child: qualitativeBarChart(labels: labels, values: values),
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                       child: Align(
@@ -94,6 +118,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                         child: HtmlWidget(backup.resolutionHtml, buildAsync: false),
                       ),
                     ),
+                  ],
                 ],
               ),
             );

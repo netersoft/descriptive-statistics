@@ -38,8 +38,7 @@ void main() {
     await tempDir.delete(recursive: true);
   });
 
-  Backup sampleBackup(String name) =>
-      Backup(name: name, resolutionHtml: '<b>X = 3</b>', xi: '1_2_3', ni: '2_4_6', date: '01.01.2026 - 10:00');
+  Backup sampleBackup(String name) => Backup(name: name, resolutionHtml: '<b>X = 3</b>', xi: '1_2_3', ni: '2_4_6', date: '01.01.2026 - 10:00');
 
   test('starts empty', () {
     expect(repository.readAll(), isEmpty);
