@@ -5,33 +5,50 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/i18n/translations.g.dart';
-import '../../../core/stats/discrete_stats.dart';
+import '../../../core/stats/continuous_stats.dart';
 import '../../../core/stats/rounding.dart';
 
-/// Renders the step-by-step formula walkthrough for a [DiscreteStatsResult],
-/// gated by which [StatOption]s are selected -- mirrors the legacy
-/// app's HTML "resolution" panel, built the same way (per-checkbox HTML
-/// fragments concatenated together) and rendered with the same formulas.
-class DiscreteExplanation extends StatelessWidget {
-  final DiscreteStatsResult result;
+/// Renders the step-by-step formula walkthrough for a
+/// [ContinuousStatsResult], gated by which [StatOption]s are selected --
+/// mirrors the legacy app's HTML "resolution" panel. Quartiles/deciles/
+/// variance/covariance/standard-deviation/coefficient-of-variation sections
+/// are textually identical to the Discrete screen's (only the underlying
+/// values differ, since they're interpolated here); mode and median show
+/// the class-interpolation formula instead of a plain lookup.
+class ContinuousExplanation extends StatelessWidget {
+  final ContinuousStatsResult result;
+  final List<double> l1;
+  final List<double> l2;
   final Set<StatOption> selectedStats;
 
-  const DiscreteExplanation({required this.result, required this.selectedStats, super.key});
+  const ContinuousExplanation({
+    required this.result,
+    required this.l1,
+    required this.l2,
+    required this.selectedStats,
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats), buildAsync: false);
+  Widget build(BuildContext context) => HtmlWidget(buildContinuousExplanationHtml(result, l1, l2, selectedStats), buildAsync: false);
 }
 
-/// The intermediate sums below (xiniSum, covarianceSum, the two standard
-/// deviations, ...) aren't part of [DiscreteStatsResult] -- it only exposes
-/// final statistics -- but are cheap to recompute here from the already
-/// rounded [DiscreteStatsResult.xi]/[DiscreteStatsResult.ni] purely for
-/// display, reproducing exactly what the engine computed internally.
-String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selected) {
+/// The intermediate sums below aren't part of [ContinuousStatsResult] -- it
+/// only exposes final statistics -- but are cheap to recompute here from the
+/// already rounded [ContinuousStatsResult.xi]/[ContinuousStatsResult.ni]
+/// purely for display, reproducing exactly what the engine computed
+/// internally.
+String buildContinuousExplanationHtml(
+  ContinuousStatsResult r,
+  List<double> l1,
+  List<double> l2,
+  Set<StatOption> selected,
+) {
   final n = r.xi.length;
   final niSum = r.ni.reduce((a, b) => a + b);
   final xiniSum = r.xini.reduce((a, b) => a + b);
   final xi2niSum = r.xi2ni.reduce((a, b) => a + b);
+  final k = List<double>.generate(n, (i) => l2[i] - l1[i]);
 
   final xMean = r.xi.reduce((a, b) => a + b) / n;
   final yMean = niSum / n;
@@ -48,7 +65,13 @@ String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selec
   final xDeviation = math.sqrt(xSquares / (n - 1));
   final yDeviation = math.sqrt(ySquares / (n - 1));
 
-  final buffer = StringBuffer();
+  double niAt(int index) => index >= 0 && index < n ? r.ni[index] : 0;
+  double upBefore(int index) => index > 0 ? r.cumulativeAscending[index - 1] : 0;
+
+  final buffer = StringBuffer('''
+${t.modalClassLabel}${noZero(l1[r.modalClassIndex])} - ${noZero(l2[r.modalClassIndex])}[<br>
+${t.medianClassLabel}${noZero(l1[r.medianClassIndex])} - ${noZero(l2[r.medianClassIndex])}[<br><br>
+''');
 
   if (selected.contains(StatOption.mean)) {
     buffer.write('''
@@ -65,9 +88,12 @@ X = ${noZero(niSum)} / $n<br>
   }
 
   if (selected.contains(StatOption.mode)) {
+    final modeGapBefore = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex - 1);
+    final modeGapAfter = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex + 1);
     buffer.write('''
 <b><font color='blue'><u>${t.modeSectionTitle}</u></font></b><br><br>
-${t.modeExplanationD}<br>
+<b>Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</b><br>
+Mo = ${noZero(l1[r.modalClassIndex])} + ${noZero(k[r.modalClassIndex])} * ((${noZero(modeGapBefore)}) / ((${noZero(modeGapBefore)})+(${noZero(modeGapAfter)})))<br>
 <font color='red'><b><u>Mo = ${noZero(r.mode)}</u></b></font><br><br>
 ''');
   }
@@ -75,7 +101,8 @@ ${t.modeExplanationD}<br>
   if (selected.contains(StatOption.median)) {
     buffer.write('''
 <b><font color='blue'><u>${t.medianSectionTitle}</u></font></b><br><br>
-${t.medianExplanationD} <b>1/2&sum;Ni</b><br>
+<b>Me = L1 + k((1/2 * &sum;Ni - N1) / Ne)</b><br>
+Me = ${noZero(l1[r.medianClassIndex])} + ${noZero(k[r.medianClassIndex])} * (((${noZero(niSum / 2)}) - ${noZero(upBefore(r.medianClassIndex))}) / ${noZero(r.ni[r.medianClassIndex])})<br>
 <font color='red'><b><u>Me = ${noZero(r.median)}</u></b></font><br><br>
 ''');
   }
@@ -148,10 +175,12 @@ CV = (${noZero(r.standardDeviation)} / ${noZero(r.weightedMean)}) * 100<br>
 ''');
   }
 
+  // Unlike the discrete screen, the range is between the class bounds
+  // (max of L2, min of L1), not the class midpoints.
   buffer.write('''
 <b><font color='blue'><u>${t.rangeSectionTitle}</u></font></b><br><br>
 <b>E = XiMax - XiMin</b><br>
-E = ${noZero(r.xi.reduce(math.max))} - ${noZero(r.xi.reduce(math.min))}<br>
+E = ${noZero(l2.reduce(math.max))} - ${noZero(l1.reduce(math.min))}<br>
 <font color='red'><b><u>E = ${noZero(r.range)}</u></b></font><br><br>
 ''');
 
