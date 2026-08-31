@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../core/helpers/ui/dialog_helper.dart';
 import '../../core/providers/main/home_provider.dart';
@@ -62,9 +61,17 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/images/launcher/logo_reverse.svg',
-            width: 90.0,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Image.asset('assets/images/launcher/icon.png', width: 28.0, height: 28.0),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              context.t.appNameAlt,
+              style: const TextStyle(color: Colors.white, fontSize: 18.0),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

@@ -20,7 +20,6 @@ dependencies:
 
   intl: ^0.20.2
   get_it: ^9.2.1
-  lottie: ^3.4.0
   logger: ^2.7.0
   share_plus: ^13.2.0
   collection: ^1.19.1
@@ -139,8 +138,6 @@ flutter:
     - assets/images/tutorial/de/
     - assets/images/tutorial/es/
     - assets/images/tutorial/pt/
-    # ANIMATIONS
-    - assets/animations/
     # I18N
     - assets/i18n/
     # DOCS
