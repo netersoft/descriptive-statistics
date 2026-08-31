@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
+import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/discrete_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
@@ -64,16 +65,16 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
     CalculationError.syntaxError => context.t.syntaxError,
   };
 
-  String _optionLabel(DiscreteStatOption option) => switch (option) {
-    DiscreteStatOption.mean => context.t.meanCheckbox,
-    DiscreteStatOption.median => context.t.medianCheckbox,
-    DiscreteStatOption.quartiles => context.t.quartilesCheckbox,
-    DiscreteStatOption.mode => context.t.modeCheckbox,
-    DiscreteStatOption.variance => context.t.varianceCheckbox,
-    DiscreteStatOption.covariance => context.t.covarianceCheckbox,
-    DiscreteStatOption.standardDeviation => context.t.standardDeviationCheckbox,
-    DiscreteStatOption.coefficientOfVariation => context.t.coefficientOfVariationCheckbox,
-    DiscreteStatOption.charts => context.t.chartsCheckbox,
+  String _optionLabel(StatOption option) => switch (option) {
+    StatOption.mean => context.t.meanCheckbox,
+    StatOption.median => context.t.medianCheckbox,
+    StatOption.quartiles => context.t.quartilesCheckbox,
+    StatOption.mode => context.t.modeCheckbox,
+    StatOption.variance => context.t.varianceCheckbox,
+    StatOption.covariance => context.t.covarianceCheckbox,
+    StatOption.standardDeviation => context.t.standardDeviationCheckbox,
+    StatOption.coefficientOfVariation => context.t.coefficientOfVariationCheckbox,
+    StatOption.charts => context.t.chartsCheckbox,
   };
 
   Future<String?> _promptForName() => showDialog<String>(
@@ -192,7 +193,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
                     value: state.isSelected,
                     onChanged: (value) => notifier.toggleAll(value ?? false),
                   ),
-                  for (final option in DiscreteStatOption.values)
+                  for (final option in StatOption.values)
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(_optionLabel(option)),

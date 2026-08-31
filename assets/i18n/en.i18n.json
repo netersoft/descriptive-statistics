@@ -91,5 +91,8 @@
   "rangeSectionTitle": "RANGE",
   "dataSectionTitle": "DATA",
   "previous": "previous",
-  "next": "next"
+  "next": "next",
+  "calcVarC": "Calculate a statistical series with continuous quantitative variables",
+  "medianClassLabel": "Median Class :[",
+  "modalClassLabel": "Modal Class :["
 }

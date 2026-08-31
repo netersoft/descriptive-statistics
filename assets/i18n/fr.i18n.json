@@ -91,5 +91,8 @@
   "rangeSectionTitle": "ETENDUE",
   "dataSectionTitle": "DONNEES",
   "previous": "précédent",
-  "next": "suivant"
+  "next": "suivant",
+  "calcVarC": "Calculer une série statistique à variables quantitatives continues",
+  "medianClassLabel": "Classe Mediante :\t[",
+  "modalClassLabel": "Classe Modale :\t["
 }
