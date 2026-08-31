@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -284,13 +283,11 @@ class SettingsListWrapper extends ConsumerWidget {
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(
-                        AppTheme.pickByTheme(
-                          light: 'assets/images/launcher/logo.svg',
-                          dark: 'assets/images/launcher/logo_reverse.svg',
-                        ),
-                        width: 160.0,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset('assets/images/launcher/icon.png', width: 96.0, height: 96.0),
                       ),
+                      const SizedBox(height: 12),
                       Text(
                         context.t.appNameAlt,
                         style: const TextStyle(fontSize: 16.0),

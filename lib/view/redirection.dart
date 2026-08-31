@@ -2,7 +2,6 @@ import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 
 import '../core/providers/navigation/redirection_provider.dart';
 import 'themes/app_colors.dart';
@@ -24,15 +23,11 @@ class RedirectionState extends ConsumerState<Redirection> {
     FlutterNativeSplash.remove();
   }
 
-  /// Builds a FlutterSplashScreen widget with a centered Lottie animation.
-  ///
-  /// The splash screen has a blue background color and a duration of 2000 milliseconds.
-  /// When the splash screen ends, it calls the [redirect] method of the [redirectionProvider]
-  /// with the current [BuildContext].
-  ///
-  /// Returns a [Widget] representing the splash screen.
-  /// But if you don't use animation, just return a [Container] widget like this:
-  /// Container(color: isLightTheme() ? Colors.white : AppColors.raisinBlack);
+  /// Builds a FlutterSplashScreen widget showing the app icon for a fixed
+  /// duration before handing off to [redirectionProvider.redirect] -- the
+  /// native splash (see android12splash/launch_background) already covers
+  /// the engine startup gap, so this is purely a short branded beat, not
+  /// a loading indicator.
   @override
   Widget build(BuildContext context) {
     ref.watch(redirectionProvider);
@@ -45,11 +40,9 @@ class RedirectionState extends ConsumerState<Redirection> {
         dark: AppColors.raisinBlack,
       ),
       splashScreenBody: Center(
-        child: Lottie.asset(
-          'assets/animations/logo.json',
-          repeat: false,
-          height: 200,
-          width: 200,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Image.asset('assets/images/launcher/icon.png', width: 160, height: 160),
         ),
       ),
       onInit: () {},
