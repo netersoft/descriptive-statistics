@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+
+			header{
+				background-color: white;
+				box-shadow: 1px 1px 1px silver;
+				padding: 8px;
+			}
+		
+			h1, h2{
+				text-align: center;
+			}
+			
+			h1, h3{
+				color: #00BFFF;
+			}
+			
+			body{
+				padding: 5px;
+				background-color: white;
+				font-size: 1em;
+				padding-bottom: 45px;
+			}
+			
+			.legend li{
+				font-size: 0.9em;
+				color: dimgray;
+			}
+			
+			.formule{
+				font-weight: bold;
+				font-size: 0.9em;
+			}
+			
+			#floating{
+				width: 50px;
+				height: 50px;
+				background-color: gray;
+				border-radius: 50px;
+				position: fixed;
+				bottom: 75px;
+				right: 15px;
+				box-shadow: 1px 1px 1px silver;
+			}
+			
+			#floating img{
+				display:block;
+				margin: 0 auto;
+				margin-top:5px;
+			}
+			
+			p{
+				text-align: justify;
+			}
+			
+			a{
+				text-decoration: none;
+				color: dimgray;
+			}
+			
+			a:hover{
+				color: gray;
+			}
+			
+			a:focus{
+				border: none !important;
+				outline: none !important;
+			}
+			
+			.illustration{
+				text-align: center;
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+			
+			.illustration img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	
+	<body>
+		
+		<header id="header">
+			<h1>Inhaltsverzeichnis</h1>
+			<h4>1- Definitionen der Begriffe</h4>
+			<ol>
+                <li><a href="#a">Beschreibende Statistik</a></li>
+                <li><a href="#b">Die statistische Grundgesamtheit</a></li>
+                <li><a href="#c">Die statistische Einheit</a></li>
+                <li><a href="#d">Der statistische Charakter</a></li>
+                <li><a href="#e">Die statistischen Modalitäten</a></li>
+                <li><a href="#f">Die statistische Variable</a></li>
+				<ul>
+					<li><a href="#f-a">Quantitative Variablen</a></li>
+					<li><a href="#f-b">Qualitative Variablen</a></li>
+				</ul>
+                <li><a href="#g">Die Frequenz</a></li>
+                <li><a href="#h">Die statistische Erhebung</a></li>
+                <li><a href="#i">Der Zählprozess</a></li>
+                <li><a href="#j">Die statistische Tabelle</a></li>
+                <li><a href="#k">Die grafische Darstellung</a></li>
+				<li><a href="#l">Die beschreibenden Parameter</a></li>
+				<ul>
+					<li><a href="#l-a">Die Positionsparameter</a></li>
+						<ul>
+							<li><a href="#l-a-a">Der Mittelwert</a></li>
+							<li><a href="#l-a-b">Der Median</a></li>
+							<li><a href="#l-a-c">Der Modus</a></li>
+							<li><a href="#l-a-d">Quartil</a></li>
+							<li><a href="#l-a-e">Perzentil</a></li>
+						</ul>
+					<li><a href="#l-b">Dispersionsparameter</a></li>
+						<ul>
+							<li><a href="#l-b-a">Bereich</a></li>
+							<li><a href="#l-b-b">Abweichung</a></li>
+							<li><a href="#l-b-c">Die Standardabweichung</a></li>
+							<li><a href="#l-b-d">Interquartilintervall</a></li>
+						</ul>
+				</ul>
+                <li><a href="#m">Die relative Frequenz / Proportion</a></li>
+                <li><a href="#n">Die Kovarianz</a></li>
+                <li><a href="#o">Der Variationskoeffizient</a></li>
+			</ol>
+
+			<h4>2- Formeln</h4>			
+			<ol>
+                <li><a href="#s">Proportion</a></li>
+                <li><a href="#t">Der Mittelwert</a></li>
+                <li><a href="#u">Der Median</a></li>
+                <li><a href="#v">Der Modus</a></li>
+                <li><a href="#w">Die Abweichung</a></li>
+                <li><a href="#x">Die Standardabweichung</a></li>
+                <li><a href="#y">Der Variationskoeffizient</a></li>
+                <li><a href="#z">Gesamtfrequenz</a></li>
+                <li><a href="#aa">Bereich</a></li>
+                <li><a href="#bb">Die gemeinsame Amplitude</a></li>
+			</ol>
+			
+		</header>
+		
+		<div>
+		
+			<h2>
+				<font color='#0000FF'>Definitionen der Begriffe</font>
+			</h2> 
+		
+			<p>
+				1- <b id="a"><font color='red'>Beschreibende Statistik</font></b> 
+					ist der Zweig der Statistik, der bei Bedarf Methoden zur Erhebung, 
+					Verarbeitung, quantitativen und qualitativen Analyse von Daten entwickelt.
+					<br>Ziel der deskriptiven Statistik ist es, die verfügbaren Daten zu beschreiben, 
+					d. h. durch Statistiken zu fassen oder darzustellen, wenn sie zahlreich sind.
+			</p><br>
+
+			<p>
+				2- <b id="b"><font color='red'>Die statistische Grundgesamtheit</font></b> 
+				ist die Gesamtheit von Fakten, Personen, Objekten oder Phänomenen, auf die 
+				sich die statistische Studie bezieht.
+			</p><br>
+
+			<p>	
+				3- <b id="c"><font color='red'>Die statistische Einheit</font></b> 
+				ist ein konstitutives Element der statistischen Grundgesamtheit.
+			</p><br>
+
+			<p>	
+				4- <b id="d"><font color='red'>Der statistische Charakter</font></b> 
+				ist eine unverwechselbare Eigenschaft der statistischen Interesseneinheit. 
+				<br><b>Ex</b>: Alter, Geschlecht, Religion, ...<br>Ein Merkmal soll 
+				quantitativ sein, wenn es messbar ist, und qualitativ, wenn es nicht ist.
+			</p><br>
+
+			<p>	
+				5- <b id="e"><font color='red'>Die statistischen Modalitäten</font></b> 
+				sind die möglichen Werte oder Situationen, die einem statistischen Merkmal 
+				zugeordnet werden können<br><b>Ex:</b> Männlich / Weiblich für Geschlecht
+			</p><br>
+
+			<p>	
+				6- <b id="f"><font color='red'>Die statistische Variable</font></b> 
+				ist ein Attribut, das eine Person, einen Ort, eine Sache oder eine Idee 
+				beschreibt.<br>Variablen können als qualitativ (aka, kategorisch) oder 
+				quantitativ (aka, numerisch) klassifiziert werden Die Erkennung der 
+				verschiedenen Arten von Variablen ist der erste Schritt in der 
+				Datenanalyse, da die Wahl der zu verwendenden statistischen Werkzeuge 
+				und Methoden davon abhängt.
+			</p><br>
+			
+				<p>
+					6-1 <b id="f-a"><font color='blue'>Quantitative Variablen</font></b>
+					sind numerisch und stellen eine messbare Größe dar. Wenn wir zum 
+					Beispiel von der Bevölkerung einer Stadt sprechen, sprechen wir von 
+					der Anzahl der Menschen in der Stadt - ein messbares Attribut der 
+					Stadt, weshalb die Bevölkerung eine quantitative Variable wäre. 
+					Es gibt zwei Arten von quantitativen Variablen: kontinuierliche 
+					und diskrete quantitative Variablen. <br> Wenn eine Variable einen 
+					beliebigen Wert zwischen ihrem Minimalwert und ihrem Maximalwert 
+					annehmen kann, wird sie als <b><font color='green'>kontinuierliche</font></b> 
+					Variable bezeichnet; ansonsten als 
+					<b><font color='green'>diskrete</font></font></b> Variable.
+				</p><br>
+				
+				<p>
+					6-2 <b id="f-b"><font color='blue'>Qualitative Variablen</font></b>
+					Werte annehmen, die Namen oder Bezeichnungen sind. Die Farbe eines Balles 
+					(z.B. rot, grün, blau) oder die Rasse eines Hundes (z.B. Collie, Hirte, 
+					Terrier) wären Beispiele für qualitative oder kategorische Variablen. Wie 
+					bei den quantitativen Variablen werden zwei Arten unterschieden: nominale 
+					und ordinale qualitative Variablen.<br>
+					<b><font color='green'>Nominale</font></b> qualitative Variablen zeichnen sich 
+					durch nicht bestellbare Modalitäten aus, wie z.B. Haarfarbe (weiß, schwarz, rot...) 
+					und Kontrast, 
+					<b><font color='green'>Ordinale</font></b> qualitative Variablen zeichnen sich 
+					durch ordnungsfähige Modalitäten aus, wie z.B. das Bildungsniveau 
+					(Primar-, Sekundar-, Hochschulniveau).
+				</p><br>
+			<div class="illustration">
+				<img src="images/var-de.svg" alt="Var"/>
+			</div>
+			<p>	
+				7- <b id="g"><font color='red'>Die Frequenz</font></b> 
+				ist die Anzahl der statistischen Einheiten mit einer gegebenen Modalität, 
+				es wird Ni notiert und wird immer noch als absolute Frequenz bezeichnet.
+			</p><br>
+
+			<p>	
+				8- <b id="h"><font color='red'>Die statistische Erhebung</font></b> 
+				ist ein Vorgang zur Erfassung von Daten oder Informationen. 
+			</p><br>
+
+			<p>	
+				9- <b id="i"><font color='red'>Der Zählprozess</font></b> 
+				ist der Prozess des Zählens oder Zählens der Daten oder Beobachtungen, 
+				die aus einer statistischen Erhebung gewonnen wurden.
+			</p><br>
+
+			<p>	
+				10- <b id="j"><font color='red'>Die statistische Tabelle</font></b> 
+				ist eine Möglichkeit, statistische Daten durch eine systematische 
+				Anordnung der Zahlen, die ein Massenphänomen oder -prozess beschreiben, 
+				darzustellen. <br>Drei Arten von statistischen Tabellen werden je nach 
+				Struktur des Subjekts unterschieden. In einfachen Tabellen ist das 
+				Thema ein einzelnes Phänomen. In Zwei-Wege-Tabellen zeigt das Subjekt 
+				die Klassifizierung in Bezug auf einen einzigen Faktor. In Mehrwegtabellen 
+				werden Klassifizierungen in Bezug auf zwei oder mehr Faktoren im Fach 
+				verwendet.<br>Statistische Tabellen sollten alle notwendigen Informationen 
+				in kompakter Form enthalten. Die Überschriften in den Tabellen sollten 
+				präzise und kurz sein. Es sind die verwendeten Maßeinheiten sowie Ort und 
+				Zeit, auf die sich die Informationen beziehen, anzugeben.
+			</p><br>
+			<div class="illustration">
+				<img src="images/tab-de.svg" alt="Tab"/>
+			</div>
+			<p>
+				11- <b id="k"><font color='red'>Die grafische Darstellung</font></b> 
+				auch bekannt als grafische Techniken, sind Grafiken im Bereich der Statistik, 
+				die zur Visualisierung von Daten verwendet werden. Durch die grafische Darstellung 
+				der Daten erhalten wir eine sofortige Analyse der Daten. Die wichtigsten grafischen 
+				Darstellungen sind Histogramm, Boxplot, Balkendiagramm, Liniendiagramm und 
+				Kreisdiagramm.
+			</p><br>
+			<div class="illustration">
+				<img src="images/graph.svg" alt="Graph"/>
+			</div>
+			<p>
+				12- <b id="l"><font color='red'>Die beschreibenden Parameter</font></b> 
+				erlauben, die Verteilungen der Variablen, aus denen sich die Stichprobe 
+				zusammensetzt, in wenigen Abbildungen zusammenzufassen. Je nach Typ der 
+				Variablen werden unterschiedliche Parameter verwendet. So werden Frequenzen 
+				und Anteile nach den Modalitäten einer qualitativen Variable und einem 
+				breiteren Spektrum von beschreibenden Parametern berechnet, die für eine 
+				quantitative Variable in zwei Gruppen unterteilt sind: Positionsparameter 
+				und Ausbreitungsparameter.
+			</p>
+
+				<p>
+					12-1 <b id="l-a"><font color='blue'>Die Positionsparameter</font></b> 
+					sind Messungen der zentralen Tendenz, die Werte definieren, um die herum Beobachtungen verteilt sind.
+				</p><br>
+				
+					<p>
+						12-1-a <b id="l-a-a"><font color='green'>Der Mittelwert</font></b> 
+						ist das Verhältnis zwischen der Summe der Werte der statistischen Reihen und der Anzahl der Werte.
+					</p><br>
+			
+					<p>	
+						12-1-b <b id="l-a-b"><font color='green'>Der Median</font></b> 
+						ist der Wert, der es erlaubt, eine numerische Reihe, die in zwei Teile der gleichen Anzahl von 
+						Elementen geordnet ist, zu teilen.
+					</p><br>
+
+					<p>	
+						12-1-c <b id="l-a-c"><font color='green'>Der Modus</font></b> 
+						ist der am häufigsten dargestellte Wert einer Variablen in einer Population.
+					</p><br>
+					
+					<p>
+						12-1-d <b id="l-a-d"><font color='green'>Quartil</font></b> 
+						ist eine Art Quantil. Das erste Quartil (Q1) ist definiert als die mittlere 
+						Zahl zwischen der kleinsten Zahl und dem Median des Datensatzes. Das zweite 
+						Quartil (Q2) ist der Median der Daten. Das dritte Quartil (Q3) ist der 
+						Mittelwert zwischen dem Median und dem höchsten Wert des Datensatzes. 
+					</p><br>
+					
+					<p>
+						12-1-e <b id="l-a-e"><font color='green'>Perzentil</font></b> 
+						oder ein Centile ist ein Maß für die Statistik, das den Wert angibt, unter 
+						den ein bestimmter Prozentsatz der Beobachtungen in einer Gruppe von Beobachtungen 
+						fällt.
+					</p><br>
+			
+				<p>
+					12-2 <b id="l-b"><font color='blue'>Dispersionsparameter</font></b> 
+					die Verteilung der Beobachtungen um die zentralen Werte herum zu bewerten.
+				</p><br>
+			
+					<p>	
+						12-2-a <b id="l-b-a"><font color='green'>Bereich</font></b> 
+						ist die Differenz zwischen dem höchsten Wert der Variable und dem kleinsten Wert.
+					</p><br>
+			
+					<p>	
+						12-2-b <b id="l-b-b"><font color='green'>Abweichung</font></b> 
+						ist die Erwartung der quadratischen Abweichung einer Zufallsvariablen von ihrem Mittelwert.
+					</p><br>
+
+					<p>	
+						12-2-c <b id="l-b-c"><font color='green'>Die Standardabweichung</font></b> 
+						ist der Indikator, der verwendet wird, um die Streuung einer quantitativen statistischen 
+						Reihe zu messen. Sie ist gleich der Quadratwurzel der Varianz.
+					</p><br>
+					
+					<p>
+						12-2-d <b id="l-b-d"><font color='green'>Interquartilintervall</font></b> 
+						ist die Differenz zwischen dem ersten und dritten Quartil. Sie enthält 50% der Daten 
+						(25% auf beiden Seiten des Medians).
+					</p><br>
+					
+			<p>
+				13- <b id="m"><font color='red'>Die relative Frequenz</font></b> 
+				oder Verhältnis ist das Verhältnis zwischen der absoluten Frequenz eines Wertes und der 
+				gesamten absoluten Frequenz.
+			</p><br>
+					
+			<p>	
+				14- <b id="n"><font color='red'>Die Kovarianz</font></b> 
+				ist ein mathematisches Verfahren zur Bewertung der Variationsrichtung zweier Variablen, 
+				um ihre Unabhängigkeit zu qualifizieren.
+			</p><br>
+
+			<p>	
+				15- <b id="o"><font color='red'>Der Variationskoeffizient</font></b>
+				ist der Indikator, der die Homogenität einer statistischen Verteilung misst 
+				<br>- Wenn sie kleiner oder gleich 33% ist, dann ist die Verteilung homogen
+				<br>- Wenn sie größer als 33% ist, ist die Verteilung heterogen.
+			</p>
+			
+		</div>
+		
+		<div>
+			<h2>
+				<font color='blue'>Formeln</font>
+			</h2>
+		
+			<p>
+				<h3 id="s">1- Anteil</h3>
+				<span class="formule">Fi = (Ni / &sum;Ni) * 100</span><br> 
+				
+				<ul class="legend">
+					<li>Ni : Frequenz</li>
+				</ul>
+				
+			</p>
+			
+            <p>
+				<h3 id="t">2- Der Mittelwert</h3>
+				<span class="formule">X = &sum;XiNi / &sum;Ni</span><br> 
+				
+				<ul class="legend">
+					<li>Xi : Statistische Variable</li>
+					<li>Ni : Frequenz</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="u">3- Der Median</h3>
+				- Diskrete variable Verteilung<br>
+					die Variable mit der kumulativen relativen Häufigkeit direkt größer als
+					<span class="formule">1/2&sum;Ni</span><br><br>
+				- Kontinuierliche variable Verteilung<br>
+					<span class="formule">Me = L1 + k((1/2 * &sum;Ni - N1) / Ne)</span>
+				
+				<ul class="legend">
+					<li>L1 : Untere Grenze der Medianklasse </li>
+					<li>k : Amplitude der Medianklasse</li>
+					<li>Ni : Frequenz </li>
+					<li>N1 : Kumulative relative Häufigkeit aus der Klasse vor der Medianklasse</li>
+					<li>Ne : Häufigkeit der Medianklasse</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="v">4- Der Modus</h3>
+				- Diskrete variable Verteilung<br>
+					die Variable mit der höchsten Frequenz<br><br>
+				- Kontinuierliche variable Verteilung<br>
+					<span class="formule">Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</span>
+			
+				<ul class="legend">
+					<li>L1 : Untere Grenze der Modalklasse</li>
+					<li>k : Amplitude der Modalklasse</li>
+					<li>N0 : Häufigkeit der Modalklassen</li>
+					<li>N1 : Häufigkeit der Klasse vor der Modalklasse</li>
+					<li>N2 : Häufigkeit der Klasse nach der modalen Klasse</li>
+				</ul>
+				
+			</p>
+			
+			
+            <p>
+				<h3 id="w">5- Die Abweichung</h3>
+				<span class="formule">Vx² = (&sum;Xi²Ni / &sum;Ni) - X²</span>
+				
+				<ul class="legend">
+					<li>X : Mittelwert </li>
+					<li>Ni : Frequenz </li>
+					<li>Xi : Statistische Variable</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="x">6- Die Standardabweichung</h3>
+				<span class="formule">Vx = &radic;(Vx²)</span>
+			
+				<ul class="legend">
+					<li>Xi : Statistische Variable </li>
+					<li>Vx² : Abweichung</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="y">7- Der Variationskoeffizient</h3>
+				<span class="formule">CV = (Vx / X) * 100</span>
+				
+				<ul class="legend">
+					<li>Vx : Standardabweichung</li>
+					<li>X : Mittelwert</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="z">8- Gesamtfrequenz</h3>
+				<span class="formule">T = &sum;Ni</span>
+				
+				<ul class="legend">
+					<li>Ni : Frequenz</li>
+				</ul>
+				
+			</p> 
+            
+			<p>
+				<h3 id="aa">9- Bereich</h3>
+				<span class="formule">E = Xmax - Xmin</span>
+			</p>
+            
+			<p>
+				<h3 id="bb">10- Die gemeinsame Amplitude</h3>
+				<span class="formule">A = e / N</span>
+				
+				<ul class="legend">
+					<li>e : Bereich</li>
+					<li>N : Anzahl der Klassen</li>
+				</ul>
+				
+			</p> 
+			
+		</div>
+
+	</body>
+</html>
+

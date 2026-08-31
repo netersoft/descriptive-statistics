@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+
+			header{
+				background-color: white;
+				box-shadow: 1px 1px 1px silver;
+				padding: 8px;
+			}
+		
+			h1, h2{
+				text-align: center;
+			}
+			
+			h1, h3{
+				color: #00BFFF;
+			}
+			
+			body{
+				padding: 5px;
+				background-color: white;
+				font-size: 1em;
+				padding-bottom: 45px;
+			}
+			
+			.legend li{
+				font-size: 0.9em;
+				color: dimgray;
+			}
+			
+			.formule{
+				font-weight: bold;
+				font-size: 0.9em;
+			}
+			
+			#floating{
+				width: 50px;
+				height: 50px;
+				background-color: gray;
+				border-radius: 50px;
+				position: fixed;
+				bottom: 75px;
+				right: 15px;
+				box-shadow: 1px 1px 1px silver;
+			}
+			
+			#floating img{
+				display:block;
+				margin: 0 auto;
+				margin-top:5px;
+			}
+			
+			p{
+				text-align: justify;
+			}
+			
+			a{
+				text-decoration: none;
+				color: dimgray;
+			}
+			
+			a:hover{
+				color: gray;
+			}
+			
+			a:focus{
+				border: none !important;
+				outline: none !important;
+			}
+			
+			.illustration{
+				text-align: center;
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+			
+			.illustration img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	
+	<body>
+		
+		<header id="header">
+			<h1>Quadro de conteúdos</h1>
+			<h4>1- Definições dos termos</h4>
+			<ol>
+                <li><a href="#a">Estatística descritiva</a></li>
+                <li><a href="#b">A população estatística</a></li>
+                <li><a href="#c">A unidade estatística</a></li>
+                <li><a href="#d">O carácter estatístico</a></li>
+                <li><a href="#e">As modalidades estatísticas</a></li>
+                <li><a href="#f">A variável estatística</a></li>
+				<ul>
+					<li><a href="#f-a">Variáveis quantitativas</a></li>
+					<li><a href="#f-b"> Variáveis qualitativas</a></li>
+				</ul>
+                <li><a href="#g">A frequência</a></li>
+                <li><a href="#h">O inquérito estatístico</a></li>
+                <li><a href="#i">O processo de contagem</a></li>
+                <li><a href="#j">A tabela estatística</a></li>
+                <li><a href="#k">A representação gráfica</a></li>
+				<li><a href="#l">Os parâmetros descritivos</a></li>
+				<ul>
+					<li><a href="#l-a">Os parâmetros de posição</a></li>
+						<ul>
+							<li><a href="#l-a-a">A média</a></li>
+							<li><a href="#l-a-b">A mediana</a></li>
+							<li><a href="#l-a-c">O modo</a></li>
+							<li><a href="#l-a-d">Quartil</a></li>
+							<li><a href="#l-a-e">Percentil</a></li>
+						</ul>
+					<li><a href="#l-b">Parâmetros de dispersão</a></li>
+						<ul>
+							<li><a href="#l-b-a">Alcance</a></li>
+							<li><a href="#l-b-b">Variação</a></li>
+							<li><a href="#l-b-c">O desvio padrão</a></li>
+							<li><a href="#l-b-d">Intervalo interquartil</a></li>
+						</ul>
+				</ul>
+                <li><a href="#m">A frequência relativa / Proporção</a></li>
+                <li><a href="#n">A covariância</a></li>
+                <li><a href="#o">O coeficiente de variação</a></li>
+			</ol>
+
+			<h4>2- Fórmulas</h4>			
+			<ol>
+                <li><a href="#s">Proporção</a></li>
+                <li><a href="#t">A média</a></li>
+                <li><a href="#u">A mediana</a></li>
+                <li><a href="#v">O modo</a></li>
+                <li><a href="#w">A variância</a></li>
+                <li><a href="#x">O desvio padrão</a></li>
+                <li><a href="#y">O coeficiente de variação</a></li>
+                <li><a href="#z">Frequência total</a></li>
+                <li><a href="#aaa">Alcance</a></li>
+                <li><a href="#bb">A amplitude comum</a></li>
+			</ol>
+			
+		</header>
+		
+		<div>
+		
+			<h2>
+				<font color='#0000FF'>Definições dos termos</font>
+			</h2> 
+		
+			<p>
+				1- <b id="a"><font color='red'>Estatística descritiva</font></b> 
+					é o ramo da estatística que desenvolve, quando necessário, métodos 
+					de coleta, processamento, análise quantitativa e qualitativa de dados.
+					<br>O objetivo da estatística descritiva é descrever, ou seja, resumir 
+					ou representar, através da estatística, os dados disponíveis quando 
+					eles são numerosos.
+			</p><br>
+
+			<p>
+				2- <b id="b"><font color='red'>A população estatística</font></b> 
+				é o conjunto de factos, indivíduos, objectos ou fenómenos a que se refere 
+				o estudo estatístico.
+			</p><br>
+
+			<p>	
+				3- <b id="c"><font color='red'>A unidade estatística</font></b> 
+				é um elemento constituinte da população estatística
+			</p><br>
+
+			<p>	
+				4- <b id="d"><font color='red'>O carácter estatístico</font></b> 
+				é uma propriedade distintiva da unidade estatística de interesse. 
+				<br><b>Ex</b>: Idade, Sexo, Religião, ...<br>Uma característica é 
+				considerada quantitativa quando é mensurável e qualitativa quando não é.
+			</p><br>
+
+			<p>	
+				5- <b id="e"><font color='red'>As modalidades estatísticas</font></b> 
+				são o conjunto de possíveis valores ou situações que podem ser atribuídos 
+				a uma característica estatística<br><b>b>Ex:</b> Masculino / Feminino para sexo
+			</p><br>
+
+			<p>	
+				6- <b id="f"><font color='red'>A variável estatística</font></b> 
+				é um atributo que descreve uma pessoa, lugar, coisa ou idéia.<br>Variáveis 
+				podem ser classificadas como qualitativas (ou seja, categóricas) ou quantitativas 
+				(ou seja, numéricas). O reconhecimento dos diferentes tipos de variáveis é o primeiro 
+				passo na análise de dados porque a escolha das ferramentas e métodos estatísticos a 
+				serem usados depende disso.
+			</p><br>
+			
+				<p>
+					6-1 <b id="f-a"><font color='blue'>Variáveis quantitativas</font></b>
+					são numéricos e representam uma quantidade mensurável. Por exemplo, quando falamos 
+					da população de uma cidade, estamos falando do número de pessoas na cidade - um atributo 
+					mensurável da cidade. Portanto, a população seria uma variável quantitativa. Existem dois 
+					tipos de variáveis quantitativas: variáveis quantitativas contínuas e discretas.<br>
+					Se uma variável pode assumir qualquer valor entre seu valor mínimo e seu valor máximo, 
+					ela é chamada de variável <b><font color='green'>contínua</font></b> caso contrário, 
+					ela é chamada de variável <b><font color='green'>discreta</font></b>.
+				</p><br>
+				
+				<p>
+					6-2 <b id="f-b"><font color='blue'>Variáveis qualitativas</font></b>
+					assumir valores que são nomes ou etiquetas. A cor de uma bola (por exemplo, vermelho, verde, azul) 
+					ou a raça de um cão (por exemplo, collie, pastor, terrier) seriam exemplos de variáveis qualitativas 
+					ou categóricas. Assim como com as variáveis quantitativas, dois tipos são distinguidos: variáveis 
+					qualitativas nominais e ordinais.<br>
+					As variáveis qualitativas <b><font color='green'>nominais</font></b> são caracterizadas por modalidades 
+					que não podem ser ordenadas, como a cor do cabelo (branco, preto, vermelho...) e, ao contrário, as 
+					variáveis qualitativas <b><font color='green'>ordinais</font></b> são caracterizadas por modalidades 
+					que podem ser ordenadas, como o nível de escolaridade (primário, secundário, superior).
+				</p><br>
+			<div class="illustration">
+				<img src="images/var-pt.svg" alt="Var"/>
+			</div>
+			<p>	
+				7- <b id="g"><font color='red'>A frequência</font></b> 
+				é o número de unidades estatísticas com uma determinada modalidade, nota-se Ni e ainda é chamado de 
+				frequência absoluta.
+			</p><br>
+
+			<p>	
+				8- <b id="h"><font color='red'>O inquérito estatístico</font></b> 
+				é uma operação destinada a recolher dados ou informações. 
+			</p><br>
+
+			<p>	
+				9- <b id="i"><font color='red'>O processo de contagem</font></b> 
+				é o processo de contagem ou de contagem dos dados ou observações recolhidos a partir de um 
+				inquérito estatístico.
+			</p><br>
+
+			<p>	
+				10- <b id="j"><font color='red'>A tabela estatística</font></b> 
+				é uma forma de apresentar dados estatísticos através de uma disposição sistemática 
+				dos números que descrevem algum fenômeno de massa ou processo.<br>Três tipos de 
+				tabelas estatísticas são distinguidos de acordo com a estrutura do assunto. Em 
+				tabelas simples, o assunto é um fenômeno único. Em tabelas bidirecionais, o sujeito 
+				apresenta classificação em relação a um único fator. Nas tabelas multidirecionais, 
+				as classificações com relação a dois ou mais fatores são utilizadas no assunto.
+				<br>As tabelas estatísticas devem conter todas as informações necessárias de forma 
+				compacta. Os cabeçalhos das tabelas devem ser precisos e curtos. As unidades de 
+				medida utilizadas devem ser indicadas, assim como o local e a hora a que as 
+				informações se referem.
+			</p><br>
+			<div class="illustration">
+				<img src="images/tab-pt.svg" alt="Tab"/>
+			</div>
+			<p>
+				11- <b id="k"><font color='red'>A representação gráfica</font></b> 
+				também conhecidas como técnicas gráficas, são gráficos no campo da estatística 
+				usados para visualizar dados. Ao apresentar os dados graficamente, obtemos uma 
+				análise imediata dos dados. As principais representações gráficas são histograma, 
+				box plot, gráfico de barras, gráfico de linhas e gráfico de pizza.
+			</p><br>
+			<div class="illustration">
+				<img src="images/graph.svg" alt="Graph"/>
+			</div>
+			<p>
+				12- <b id="l"><font color='red'>Os parâmetros descritivos</font></b> 
+				permitem resumir em poucas figuras as distribuições das variáveis que 
+				compõem a amostra. Dependendo do tipo de variável, serão utilizados 
+				diferentes parâmetros. Assim, frequências e proporções serão calculadas 
+				de acordo com as modalidades de uma variável qualitativa e uma gama mais 
+				ampla de parâmetros descritivos separados em dois grupos para uma variável 
+				quantitativa: parâmetros de posição e parâmetros de dispersão.
+			</p>
+
+				<p>
+					12-1 <b id="l-a"><font color='blue'>Os parâmetros de posição</font></b> 
+					são medidas de tendência central que definem valores em torno dos quais as observações são distribuídas.
+				</p><br>
+				
+					<p>
+						12-1-a <b id="l-a-a"><font color='green'>A média</font></b> 
+						é o rácio entre a soma dos valores da série estatística e o número de valores.
+					</p><br>
+			
+					<p>	
+						12-1-b <b id="l-a-b"><font color='green'>A mediana</font></b> 
+						é o valor que permite dividir uma série numérica ordenada em duas partes de um 
+						mesmo número de elementos
+					</p><br>
+
+					<p>	
+						12-1-c <b id="l-a-c"><font color='green'>O modo</font></b> 
+						é o valor mais representado de qualquer variável numa população
+					</p><br>
+					
+					<p>
+						12-1-d <b id="l-a-d"><font color='green'>Quartil</font></b> 
+						é um tipo de quantil. O primeiro quartil (Q1) é definido como o número 
+						médio entre o menor número e a mediana do conjunto de dados. O segundo 
+						quartil (Q2) é a mediana dos dados. O terceiro quartil (Q3) é o valor 
+						médio entre a mediana e o valor mais alto do conjunto de dados.
+					</p><br>
+					
+					<p>
+						12-1-e <b id="l-a-e"><font color='green'>Percentil</font></b> 
+						ou um cêntil é uma medida utilizada nas estatísticas que indica o valor 
+						abaixo do qual desce uma determinada percentagem de observações num 
+						grupo de observações. 
+					</p><br>
+			
+				<p>
+					12-2 <b id="l-b"><font color='blue'>Parâmetros de dispersão</font></b> 
+					avaliar a distribuição das observações em torno dos valores centrais
+				</p><br>
+			
+					<p>	
+						12-2-a <b id="l-b-a"><font color='green'>Alcance</font></b> 
+						é a diferença entre o maior valor da variável e o menor valor.
+					</p><br>
+			
+					<p>	
+						12-2-b <b id="l-b-b"><font color='green'>Desvio</font></b> 
+						é a expectativa do desvio ao quadrado de uma variável aleatória da sua média.
+					</p><br>
+
+					<p>	
+						12-2-c <b id="l-b-c"><font color='green'>O desvio-padrão</font></b> 
+						é o indicador utilizado para medir a dispersão de uma série estatística quantitativa. 
+						É igual à raiz quadrada da variância.
+					</p><br>
+					
+					<p>
+						12-2-d <b id="l-b-d"><font color='green'>Intervalo interquartil</font></b> 
+						é a diferença entre o primeiro e o terceiro quartil. Contém 50% dos dados 
+						(25% de cada lado da mediana).
+					</p><br>
+					
+			<p>
+				13- <b id="m"><font color='red'>A frequência relativa</font></b> 
+				ou proporção é a razão entre a freqüência absoluta de um valor e a freqüência absoluta total.
+			</p><br>
+					
+			<p>	
+				14- <b id="n"><font color='red'>A covariância</font></b> 
+				é um método matemático para avaliar a direção de variação de duas variáveis para qualificar 
+				sua independência.
+			</p><br>
+
+			<p>	
+				15- <b id="o"><font color='red'>O coeficiente de variação</font></b>
+				é o indicador que mede a homogeneidade de uma distribuição estatística <br>- Se for menor 
+				ou igual a 33% então a distribuição é homogênea<br>- Se for maior que 33% então a distribuição 
+				é heterogênea.
+			</p>
+			
+		</div>
+		
+		<div>
+			<h2>
+				<font color='blue'>Fórmulas</font>
+			</h2>
+		
+			<p>
+				<h3 id="s">1- Proporção</h3>
+				<span class="formule">Fi = (Ni / &sum;Ni) * 100</span><br> 
+				
+				<ul class="legend">
+					<li>Ni : Freqüência</li>
+				</ul>
+				
+			</p>
+			
+            <p>
+				<h3 id="t">2- A média</h3>
+				<span class="formule">X = &sum;XiNi / &sum;Ni</span><br> 
+				
+				<ul class="legend">
+					<li>Xi : Variável estatística</li>
+					<li>Ni : Freqüência</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="u">3- A mediana</h3>
+				- Distribuição discreta de variáveis<br>
+					a variável com a frequência relativa acumulada directamente superior a
+					<span class="formule">1/2&sum;Ni</span><br><br>
+				- Distribuição variável contínua<br>
+					<span class="formule">Me = L1 + k((1/2 * &sum;Ni - N1) / Ne)</span>
+				
+				<ul class="legend">
+					<li>L1 : Limite inferior da classe mediana </li>
+					<li>k : Amplitude da classe mediana</li>
+					<li>Ni : Freqüência </li>
+					<li>N1 : Frequência relativa acumulada da classe anterior à classe mediana</li>
+					<li>Ne : Frequência da classe Mediana</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="v">4- O modo</h3>
+				- Distribuição discreta de variáveis<br>
+					a variável com a maior frequência<br><br>
+				- Distribuição variável contínua<br>
+					<span class="formule">Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</span>
+			
+				<ul class="legend">
+					<li>L1 : Limite inferior da classe modal</li>
+					<li>k : Amplitude da classe Modal</li>
+					<li>N0 : Frequência da classe Modal</li>
+					<li>N1 : Frequência da classe anterior à classe modal</li>
+					<li>N2 : Frequência da classe sucessora da classe modal</li>
+				</ul>
+				
+			</p>
+			
+			
+            <p>
+				<h3 id="w">5- O desvio</h3>
+				<span class="formule">Vx² = (&sum;Xi²Ni / &sum;Ni) - X²</span>
+				
+				<ul class="legend">
+					<li>X : Média </li>
+					<li>Ni : Freqüência </li>
+					<li>Xi : Variável estatística</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="x">6- O desvio-padrão</h3>
+				<span class="formule">Vx = &radic;(Vx²)</span>
+			
+				<ul class="legend">
+					<li>Xi : Variável estatística</li>
+					<li>Vx² : Desvio</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="y">7- O coeficiente de variação</h3>
+				<span class="formule">CV = (Vx / X) * 100</span>
+				
+				<ul class="legend">
+					<li>Vx : Desvio-padrão</li>
+					<li>X : Média</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="z">8- Frequência total</h3>
+				<span class="formule">T = &sum;Ni</span>
+				
+				<ul class="legend">
+					<li>Ni : Freqüência</li>
+				</ul>
+				
+			</p> 
+            
+			<p>
+				<h3 id="aa">9- Alcance</h3>
+				<span class="formule">E = Xmax - Xmin</span>
+			</p>
+            
+			<p>
+				<h3 id="bb">10- A amplitude comum</h3>
+				<span class="formule">A = e / N</span>
+				
+				<ul class="legend">
+					<li>e : Alcance</li>
+					<li>N : Número de classes</li>
+				</ul>
+				
+			</p> 
+			
+		</div>
+
+	</body>
+</html>
+
