@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+
+			header{
+				background-color: white;
+				box-shadow: 1px 1px 1px silver;
+				padding: 8px;
+			}
+		
+			h1, h2{
+				text-align: center;
+			}
+			
+			h1, h3{
+				color: #00BFFF;
+			}
+			
+			body{
+				padding: 5px;
+				background-color: white;
+				font-size: 1em;
+				padding-bottom: 45px;
+			}
+			
+			.legend li{
+				font-size: 0.9em;
+				color: dimgray;
+			}
+			
+			.formule{
+				font-weight: bold;
+				font-size: 0.9em;
+			}
+			
+			#floating{
+				width: 50px;
+				height: 50px;
+				background-color: gray;
+				border-radius: 50px;
+				position: fixed;
+				bottom: 75px;
+				right: 15px;
+				box-shadow: 1px 1px 1px silver;
+			}
+			
+			#floating img{
+				display:block;
+				margin: 0 auto;
+				margin-top:5px;
+			}
+			
+			p{
+				text-align: justify;
+			}
+			
+			a{
+				text-decoration: none;
+				color: dimgray;
+			}
+			
+			a:hover{
+				color: gray;
+			}
+			
+			a:focus{
+				border: none !important;
+				outline: none !important;
+			}
+			
+			.illustration{
+				text-align: center;
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+			
+			.illustration img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	
+	<body>
+		
+		<header id="header">
+			<h1>Sommaire</h1>
+			<h4>1- Definitions</h4>
+			<ol>
+                <li><a href="#a">La statistique descriptive</a></li>
+                <li><a href="#b">La population statistique</a></li>
+                <li><a href="#c">L'unité statistique</a></li>
+                <li><a href="#d">Le caractère statistique</a></li>
+                <li><a href="#e">Les modalités statistiques</a></li>
+                <li><a href="#f">La variable statistique</a></li>
+				<ul>
+					<li><a href="#f-a">Variable quantitative</a></li>
+					<li><a href="#f-b">Variable qualitative</a></li>
+				</ul>
+                <li><a href="#g">L'effectif</a></li>
+                <li><a href="#h">L'enquête statistique</a></li>
+                <li><a href="#i">Le depouillement</a></li>
+                <li><a href="#j">Le tableau statistique</a></li>
+                <li><a href="#k">La représentation graphique</a></li>
+				<li><a href="#l">Les paramètres descriptifs</a></li>
+				<ul>
+					<li><a href="#l-a">Les paramètres de position</a></li>
+						<ul>
+							<li><a href="#l-a-a">La moyenne</a></li>
+							<li><a href="#l-a-b">La médiane</a></li>
+							<li><a href="#l-a-c">Le mode</a></li>
+							<li><a href="#l-a-d">Les quartiles</a></li>
+							<li><a href="#l-a-e">Les percentiles</a></li>
+						</ul>
+					<li><a href="#l-b">Les paramètres de dispersion</a></li>
+						<ul>
+							<li><a href="#l-b-a">L'etendue</a></li>
+							<li><a href="#l-b-b">La variance</a></li>
+							<li><a href="#l-b-c">L'ecart type</a></li>
+							<li><a href="#l-b-d">L'intervalle interquartile</a></li>
+						</ul>
+				</ul>
+                <li><a href="#m">La fréquence</a></li>
+                <li><a href="#n">La covariance</a></li>
+                <li><a href="#o">Le coefficient de variation</a></li>
+			</ol>
+
+			<h4>2- Formules</h4>			
+			<ol>
+                <li><a href="#s">La frequence</a></li>
+                <li><a href="#t">La moyenne</a></li>
+                <li><a href="#u">La mediane</a></li>
+                <li><a href="#v">Le mode</a></li>
+                <li><a href="#w">La variance</a></li>
+                <li><a href="#x">L'ecart type</a></li>
+                <li><a href="#y">Le coefficient de variation</a></li>
+                <li><a href="#z">L'effectif total</a></li>
+                <li><a href="#aa">L'etendue</a></li>
+                <li><a href="#bb">L'amplitude commune</a></li>
+			</ol>
+			
+		</header>
+		
+		<div>
+		
+			<h2>
+				<font color='#0000FF'>Définitions</font>
+			</h2> 
+		
+			<p>
+				1- <b id="a"><font color='red'>La statistique descriptive</font></b> 
+					est la branche des statistiques qui élabore où besoin est, des méthodes
+					de collecte, de traitement, d'analyse quantitative et qualitative des données.
+					<br>L'objectif de la statistique descriptive est de décrire, c'est-à-dire de 
+					résumer ou représenter, par des statistiques, les données disponibles quand 
+					elles sont nombreuses.
+			</p><br>
+
+			<p>
+				2- <b id="b"><font color='red'>La population statistique</font></b> 
+				est l'ensemble des faits, d'individus, d'objets ou de phénomènes
+				sur lesquels l'étude statistique porte.
+			</p><br>
+
+			<p>	
+				3- <b id="c"><font color='red'>Une unité statistique</font></b> 
+				est un élément constitutif de la population statistique
+			</p><br>
+
+			<p>	
+				4- <b id="d"><font color='red'>Un caractère statistique</font></b> 
+				est une propriété distinctive de l'unité statistique à laquelle l'on s'interesse.<br>
+				<b>Ex</b>: Age, Sexe, Religion, ...<br>Un caractère est dit quantitatif lorsqu'il est 
+				mesurable et qualitatif lorsqu'il ne l'est pas.
+			</p><br>
+
+			<p>	
+				5- <b id="e"><font color='red'>Les modalités statistique</font></b> 
+				sont l'ensemble des valeurs ou situations possibles qu'on peut attribuer à 
+				un caractère statistique<br><b>Ex:</b> Masculin/Feminin
+				pour le sexe
+			</p><br>
+
+			<p>	
+				6- <b id="f"><font color='red'>Une variable statistique</font></b> 
+				se définit comme une caractéristique observable ou mesurable pouvant prendre plusieurs 
+				valeurs chez des individus issus d'une population d'intérêt<br>
+				Il existe principalement deux groupes de variables : les variables quantitatives et les 
+				variables qualitatives, qui peuvent être subdivisés en plusieurs sous-groupes. 
+				La reconnaissance des différents types de variables est la première étape d’une analyse 
+				de données car le choix des outils et méthodes statistiques à utiliser en dépend.
+			</p><br>
+				<p>
+					6-1 <b id="f-a"><font color='blue'>Une variable quantitative</font></b>
+					est une variable dont les valeurs sont des nombres qui peuvent être ordonnés et additionnés
+					c’est-à-dire qui ont un sens numériquement parlant. On différencie deux types de variables 
+					quantitatives : les variables quantitatives continues et discrètes.<br>
+					On parle d’une variable quantitative <b><font color='green'>continue</font></b> quand celle-ci 
+					correspond à un interval de valeurs typiquement issues d’une mesure, et de variable quantitative 
+					<b><font color='green'>discrète</font></b> lorsque la variable ne peut prendre qu’un nombre fini 
+					de valeurs isolées, souvent entières.
+				</p><br>
+				
+				<p>
+					6-2 <b id="f-b"><font color='blue'>Une variable qualitative</font></b>
+					est une variable dont les valeurs sont des qualités appelées modalités 
+					(situation professionnelle : actif, étudiant, retraité...). Les modalités peuvent être exprimées 
+					sous forme littérale ou numérique. Comme pour les variables quantitatives, on différencie deux 
+					types : les variables qualitatives nominales et ordinales.<br>
+					Les variables qualitatives <b><font color='green'>nominales</font></b> se caractérisent par des
+					modalités qui ne peuvent pas être ordonnées, comme la couleur des cheveux (blanc, noir, roux…) et
+					par opposition, les variables qualitatives <b><font color='green'>ordinales</font></b> se 
+					caractérisent par des modalités qui peuvent être ordonnées comme, par exemple, le niveau d’étude 
+					(primaire, secondaire, supérieur).
+				</p><br>
+			<div class="illustration">
+				<img src="images/var-fr.svg" alt="Var"/>
+			</div>
+			<p>	
+				7- <b id="g"><font color='red'>L'effectif</font></b> 
+				est le nombre d'unité statistique possedant une modalité donnée.Il est noté Ni et est 
+				encore appelée fréquence absolue.
+			</p><br>
+
+			<p>	
+				8- <b id="h"><font color='red'>Une enquete statistique</font></b> 
+				est une opération destinée à la collecte des données ou informations.<br>On parle de <b>
+				<font color='green'>recensement</font></b> ou d'enquête exhaustive quand elle est 
+				faite sur toutes les unités de la population et de <b><font color='green'>sondage</font></b>
+				quand elle faite sur une portion de la population.
+			</p><br>
+
+			<p>	
+				9- <b id="i"><font color='red'>Le dépouillement</font></b> 
+				est l'opération qui consiste à dénombrer ou à compter les données ou observations
+				recueillies à l'issu d'une enquête statistique.
+			</p><br>
+
+			<p>	
+				10- <b id="j"><font color='red'>Un tableau statistique ou distribution statistique</font></b> 
+				est un tableau dans lequel sont consignés les données ou observations recueillies à 
+				l'issu de l'enquête statistique <br>Le tableau simple permet de faire une description 
+				selon un seul caractère et le tableau à double entrée permet de faire une description 
+				selon deux caractères simultanément<br><b>NB:</b> Pour qu'un tableau ait de la valeur 
+				il lui faut un titre simple, claire et précis permettant de décrire un phénomène concret 
+				en un lieu donné et à une date bien déterminée
+			</p><br>
+			<div class="illustration">
+				<img src="images/tab-fr.svg" alt="Tab"/>
+			</div>
+			<p>
+				11- <b id="k"><font color='red'>La représentation graphique</font></b> 
+				permet d'avoir une appréhension globale des données. Elle
+				se fait par le biais des figûres géométriques: on distingue les graphiques 
+				d'illustrations et les courbes cumulatives.<br>- Le diagramme à secteurs ou 
+				diagramme circulaire, le diagramme à tuyaux d'orgue et le diagramme à barres 
+				seront retenus pour représenter une distribution à caractère qualitatif tandis
+				que<br>- Le diagramme à baton, la boîte à moustaches et l'histogramme sont les 
+				plus utilisés pour illustrer une distribution à caractère quantitatif.
+			</p><br>
+			<div class="illustration">
+				<img src="images/graph.svg" alt="Graph"/>
+			</div>
+			<p>
+				12- <b id="l"><font color='red'>Les paramètres descriptifs</font></b> 
+				permettent de résumer en quelques chiffres les distributions des variables qui constituent
+				l’échantillon. Selon le type de la variable, on utilisera des paramètres différents. Ainsi, 
+				on calculera des effectifs et des fréquences selon les modalités d’une variable qualitative
+				et un plus large éventail de paramètres descriptifs séparés en 2 groupes pour une variable 
+				quantitative: les paramètres de position et les paramètres de dispersion
+			</p>
+
+				<p>
+					12-1 <b id="l-a"><font color='blue'>Les paramètres de position</font></b> 
+					sont des mesures de tendance centrale qui définissent des valeurs autour desquelles se 
+					répartissent les observations.
+				</p><br>
+				
+					<p>
+						12-1-a <b id="l-a-a"><font color='green'>La moyenne</font></b> 
+						est le rapport entre la somme des valeurs de la série statistique et le nombre de 
+						valeurs.
+					</p><br>
+			
+					<p>	
+						12-1-b <b id="l-a-b"><font color='green'>La mediane</font></b> 
+						est la valeur qui permet de partager une serie numérique ordonnée en deux 
+						parties de même nombre d'éléments
+					</p><br>
+
+					<p>	
+						12-1-c <b id="l-a-c"><font color='green'>Le mode</font></b> 
+						est la valeur la plus représentée d'une variable quelconque dans une population
+						pas forcément unique.
+					</p><br>
+					
+					<p>
+						12-1-d <b id="l-a-d"><font color='green'>Les quartiles</font></b> 
+						sont les trois valeurs qui partagent la distribution en quatre groupes 
+						d’effectifs égaux, Le premier quartile sépare 25 % des valeurs les plus faibles et 75 % 
+						des valeurs les plus élevées, le second quartile correspond à la médiane, et le troisième 
+						quartile sépare 75 % des valeurs les plus faibles et 25 % des valeurs les plus élevées.
+					</p><br>
+					
+					<p>
+						12-1-e <b id="l-a-e"><font color='green'>Les percentiles</font></b> 
+						sont les 99 valeurs qui partagent la distribution en 100 groupes d’effectifs égaux. Un percentile 
+						est la valeur sous laquelle un certain pourcentage des observations se trouve.
+					</p><br>
+			
+				<p>
+					12-2 <b id="l-b"><font color='blue'>Les paramètres de dispersion</font></b> 
+					évaluent la répartition des observations autour des valeurs centrales
+				</p><br>
+			
+					<p>	
+						12-2-a <b id="l-b-a"><font color='green'>L'etendue</font></b> 
+						est la difference entre la valeur la plus élevée de la variable et la valeur 
+						la plus petite.
+					</p><br>
+			
+					<p>	
+						12-2-b <b id="l-b-b"><font color='green'>La variance</font></b> 
+						est la mesure de la dispersion des échantillons autour de la moyenne.
+					</p><br>
+
+					<p>	
+						12-2-c <b id="l-b-c"><font color='green'>L' écart type</font></b> 
+						est l'indicateur utilisé pour mesurer la dispersion d'une série statistique
+						quantitative, égal à la racine carrée de la variance
+					</p><br>
+					
+					<p>
+						12-2-d <b id="l-b-d"><font color='green'>L’intervalle interquartile</font></b> 
+						est l’écart entre le premier et le troisième quartile. Il contient 50 % des données (25 % de
+						part et d’autre de la médiane).
+					</p><br>
+					
+			<p>
+				13- <b id="m"><font color='red'>La fréquence</font></b> 
+				est le rapport entre l'effectif d'une valeur et l'effectif total.
+			</p><br>
+					
+			<p>	
+				14- <b id="n"><font color='red'>La covariance</font></b> 
+				est une méthode mathématique d'évaluation du sens de variation de deux 
+				variables permettant de qualifier leur independance
+			</p><br>
+
+			<p>	
+				15- <b id="o"><font color='red'>Le coefficient de variation</font></b>
+				est l'indicateur qui permet de mesurer l'homogénéïté d'une distribution statistique
+				<br>- S'il est inférieur ou égal à 33% alors la distribution est homogène<br>- S'il 
+				est supérieur à 33% alors la distribution est hétérogène.
+			</p>
+			
+		</div>
+		
+		<div>
+			<h2>
+				<font color='blue'>Formules</font>
+			</h2>
+		
+			<p>
+				<h3 id="s">1- La frequence</h3>
+				<span class="formule">Fi = (Ni / &sum;Ni) * 100</span><br> 
+				
+				<ul class="legend">
+					<li>Ni : Effectif</li>
+				</ul>
+				
+			</p>
+			
+            <p>
+				<h3 id="t">2- La moyenne</h3>
+				<span class="formule">X = &sum;XiNi / &sum;Ni</span><br> 
+				
+				<ul class="legend">
+					<li>Xi : Variable statistique</li>
+					<li>Ni : Effectif</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="u">3- La mediane</h3>
+				- Serie à variables discrètes<br>
+					la variable ayant l'effectif cumulé croissant directement 
+					supérieur à <span class="formule">1/2&sum;Ni</span><br><br>
+				- Serie à variables continues<br>
+					<span class="formule">Me = L1 + k((1/2 * &sum;Ni - N1) / Ne)</span>
+				
+				<ul class="legend">
+					<li>L1 : Borne inférieure de la classe médiante </li>
+					<li>k : Amplitude de la classe médiante</li>
+					<li>Ni : Effectif </li>
+					<li>N1 : Effectif cumulé croissant de la classe précédent la classe médiante</li>
+					<li>Ne : Effectif de la classe médiante</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="v">4- Le mode</h3>
+				- Serie à variables discrètes<br>
+					la variable ayant l'effectif le plus élevé<br><br>
+				- Serie à variables continues<br>
+					<span class="formule">Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</span>
+			
+				<ul class="legend">
+					<li>L1 : Borne inférieure de la classe modale</li>
+					<li>k : Amplitude de la classe modale</li>
+					<li>N0 : Effectif de la classe modale</li>
+					<li>N1 : Effectif de la classe précédent la classe modale</li>
+					<li>N2 : Effectif de la classe succédant la classe modale</li>
+				</ul>
+				
+			</p>
+			
+			
+            <p>
+				<h3 id="w">5- La variance</h3>
+				<span class="formule">Vx² = (&sum;Xi²Ni / &sum;Ni) - X²</span>
+				
+				<ul class="legend">
+					<li>X : Moyenne </li>
+					<li>Ni : Effectif </li>
+					<li>Xi : Variable statistique</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="x">6- L' ecart-type</h3>
+				<span class="formule">Vx = &radic;(Vx²)</span>
+			
+				<ul class="legend">
+					<li>Xi : Variable statistique </li>
+					<li>Vx² : Variance</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="y">7- Le coefficient de variation</h3>
+				<span class="formule">CV = (Vx / X) * 100</span>
+				
+				<ul class="legend">
+					<li>Vx : Ecart-type</li>
+					<li>X : Moyenne</li>
+				</ul>
+				
+			</p>
+            
+			<p>
+				<h3 id="z">8- L' effectif total</h3>
+				<span class="formule">T = &sum;Ni</span>
+				
+				<ul class="legend">
+					<li>Ni : Effectif</li>
+				</ul>
+				
+			</p> 
+            
+			<p>
+				<h3 id="aa">9- L' etendue</h3>
+				<span class="formule">E = Xmax - Xmin</span>
+			</p>
+            
+			<p>
+				<h3 id="bb">10- L' amplitude commune</h3>
+				<span class="formule">A = e / N</span>
+				
+				<ul class="legend">
+					<li>e : Etendue</li>
+					<li>N : Nombre de classe</li>
+				</ul>
+				
+			</p> 
+			
+		</div>
+		
+	</body>
+</html>
+
