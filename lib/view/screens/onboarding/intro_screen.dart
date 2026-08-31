@@ -4,6 +4,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../../core/providers/onboarding/intro_provider.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../components/tutorial/tutorial_steps.dart';
 import '../../themes/app_colors.dart';
 import '../../themes/app_theme.dart';
 
@@ -13,43 +14,33 @@ class IntroScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final intro = ref.watch(introProvider);
+    final steps = tutorialSteps(LocaleSettings.currentLocale.languageCode);
 
     final introPages = [
-      PageViewModel(
-        titleWidget: Column(
-          children: [
-            Text(
-              context.t.appName,
-              style: const TextStyle(
-                fontFamily: 'open_sans',
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 42.0,
-              ),
+      for (final (index, step) in steps.indexed)
+        PageViewModel(
+          titleWidget: Text(
+            step.text(context.t),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: 'open_sans',
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              fontSize: 20.0,
             ),
-            const Text(
-              '',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'open_sans',
-                color: Colors.grey,
-                fontSize: 18.0,
-              ),
-            ),
-          ],
-        ),
-        bodyWidget: const SizedBox.shrink(),
-        image: const Column(),
-        decoration: PageDecoration(
-          pageColor: AppTheme.pickColor(
-            light: (intro.currentIndex + 1).isEven ? AppTheme.secondaryColor : AppTheme.primaryColor,
-            dark: AppColors.blackRussian,
           ),
-          imageAlignment: Alignment.topCenter,
-          imageFlex: 3,
+          bodyWidget: const SizedBox.shrink(),
+          image: Image.asset(step.imageAsset, fit: BoxFit.contain),
+          decoration: PageDecoration(
+            pageColor: AppTheme.pickColor(
+              light: (index + 1).isEven ? AppTheme.secondaryColor : AppTheme.primaryColor,
+              dark: AppColors.blackRussian,
+            ),
+            imageAlignment: Alignment.topCenter,
+            imageFlex: 3,
+          ),
+          reverse: true,
         ),
-        reverse: true,
-      ),
     ];
 
     return Scaffold(

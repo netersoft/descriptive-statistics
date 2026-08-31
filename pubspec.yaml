@@ -134,6 +134,8 @@ flutter:
     - assets/images/launcher/icon_reverse.svg
     # IMAGES
     - assets/images/
+    - assets/images/tutorial/fr/
+    - assets/images/tutorial/en/
     # ANIMATIONS
     - assets/animations/
     # I18N

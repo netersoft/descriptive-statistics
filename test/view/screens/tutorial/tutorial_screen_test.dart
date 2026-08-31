@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_starter/core/services/i18n/translations.g.dart';
+import 'package:flutter_starter/view/screens/tutorial/tutorial_screen.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  testWidgets('TutorialScreen renders the how-to-proceed steps', (tester) async {
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: const MaterialApp(home: TutorialScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Comment procéder ?'), findsOneWidget);
+    expect(find.text("1. Insérez les données de l'étude ligne par ligne"), findsOneWidget);
+    expect(find.text('2. Sélectionnez les critères statistiques à étudier'), findsOneWidget);
+    expect(find.text("3. Cliquez sur le bouton 'Calculer'"), findsOneWidget);
+    expect(find.text('4. Sauvegardez votre étude pour y accéder ultérieurement'), findsOneWidget);
+    expect(find.byType(Image), findsNWidgets(4));
+  });
+}
