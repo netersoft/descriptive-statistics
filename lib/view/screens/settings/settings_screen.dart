@@ -94,6 +94,46 @@ class SettingsListWrapper extends ConsumerWidget {
               },
             ),
             SettingsTile.navigation(
+              leading: const Icon(Icons.pin),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('${settings.getDecimalPrecision()}'),
+                  const Icon(Icons.chevron_right),
+                ],
+              ),
+              title: Text(context.t.numberOfDecimals),
+              onPressed: (context) => {
+                showFloatingModalBottomSheet(
+                  context: context,
+                  builder: (context) => Material(
+                    child: SafeArea(
+                      top: false,
+                      child: RadioGroup<int>(
+                        groupValue: settings.getDecimalPrecision(),
+                        onChanged: (value) {
+                          if (value != settings.getDecimalPrecision()) {
+                            settings.setDecimalPrecision(value!);
+                          }
+                          context.pop();
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (var precision = 0; precision <= 6; precision++)
+                              RadioListTile(
+                                title: Text('$precision'),
+                                value: precision,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              },
+            ),
+            SettingsTile.navigation(
               leading: const Icon(Icons.format_paint),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,

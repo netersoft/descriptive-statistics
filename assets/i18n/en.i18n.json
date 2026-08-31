@@ -11,6 +11,7 @@
   "retry": "Try again",
   "loading": "Loading",
   "theme": "Theme",
+  "numberOfDecimals": "Number of decimals",
   "light": "Light",
   "dark": "Dark",
   "system": "System",
