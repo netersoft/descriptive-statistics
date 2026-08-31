@@ -5,9 +5,11 @@ import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/discrete_provider.dart';
+import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
+import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/collapsible_checklist.dart';
 import '../../components/calculators/deletable_entry_row.dart';
 import '../../components/calculators/discrete_explanation.dart';
@@ -239,6 +241,16 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
                   ],
                 ),
               ),
+              if (state.selectedStats.contains(StatOption.charts)) ...[
+                const SizedBox(height: 16),
+                ChartCarousel(
+                  charts: buildQuantitativeCharts(
+                    xi: result.xi,
+                    ni: result.ni,
+                    types: ref.read(settingsProvider.notifier).getDiscreteChartTypes(),
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
               DiscreteExplanation(result: result, selectedStats: state.selectedStats),
               const SizedBox(height: 16),

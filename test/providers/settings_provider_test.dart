@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/core/enums/app_brightness.dart';
 import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
 import 'package:flutter_starter/core/services/shared_preferences/keys.dart';
+import 'package:flutter_starter/core/tools/constants/chart_options.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -82,6 +83,58 @@ void main() {
 
       verify(() => mockPrefs.setInt(PrefKeys.decimalPrecision, 5)).called(1);
       verify(() => mockNav.go(any())).called(1);
+    });
+
+    test('getDiscreteChartTypes defaults to all types when unset', () {
+      when(() => mockPrefs.getListString(any())).thenReturn(null);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final settings = container.read(settingsProvider.notifier);
+      expect(settings.getDiscreteChartTypes(), QuantitativeChartType.values.toSet());
+    });
+
+    test('getContinuousChartTypes returns the stored subset', () {
+      when(() => mockPrefs.getListString(any())).thenReturn(['bar']);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final settings = container.read(settingsProvider.notifier);
+      expect(settings.getContinuousChartTypes(), {QuantitativeChartType.bar});
+    });
+
+    test('setDiscreteChartTypes persists the selected type names', () {
+      when(() => mockPrefs.setStringList(any(), any())).thenAnswer((_) async => true);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      container.read(settingsProvider.notifier).setDiscreteChartTypes({QuantitativeChartType.line});
+
+      verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['line'])).called(1);
+    });
+
+    test('getQualitativeChartTypes defaults to all types when unset', () {
+      when(() => mockPrefs.getListString(any())).thenReturn(null);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final settings = container.read(settingsProvider.notifier);
+      expect(settings.getQualitativeChartTypes(), QualitativeChartType.values.toSet());
+    });
+
+    test('setQualitativeChartTypes persists the selected type names', () {
+      when(() => mockPrefs.setStringList(any(), any())).thenAnswer((_) async => true);
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      container.read(settingsProvider.notifier).setQualitativeChartTypes({QualitativeChartType.pie});
+
+      verify(() => mockPrefs.setStringList(PrefKeys.qualitativeChartTypes, ['pie'])).called(1);
     });
   });
 }

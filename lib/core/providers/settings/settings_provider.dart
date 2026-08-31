@@ -12,6 +12,7 @@ import '../../services/di/locator.dart';
 import '../../services/i18n/translations.g.dart';
 import '../../services/shared_preferences/keys.dart';
 import '../../services/shared_preferences/service.dart';
+import '../../tools/constants/chart_options.dart';
 
 part 'settings_provider.g.dart';
 
@@ -87,6 +88,30 @@ class Settings extends _$Settings {
       }
     }
   }
+
+  Set<QuantitativeChartType> getDiscreteChartTypes() => _getQuantitativeChartTypes(PrefKeys.discreteChartTypes);
+
+  void setDiscreteChartTypes(Set<QuantitativeChartType> types) => _setChartTypes(PrefKeys.discreteChartTypes, types);
+
+  Set<QuantitativeChartType> getContinuousChartTypes() => _getQuantitativeChartTypes(PrefKeys.continuousChartTypes);
+
+  void setContinuousChartTypes(Set<QuantitativeChartType> types) => _setChartTypes(PrefKeys.continuousChartTypes, types);
+
+  Set<QuantitativeChartType> _getQuantitativeChartTypes(String key) {
+    final stored = prefs.getListString(key);
+    if (stored == null) return QuantitativeChartType.values.toSet();
+    return stored.map(QuantitativeChartType.values.byName).toSet();
+  }
+
+  Set<QualitativeChartType> getQualitativeChartTypes() {
+    final stored = prefs.getListString(PrefKeys.qualitativeChartTypes);
+    if (stored == null) return QualitativeChartType.values.toSet();
+    return stored.map(QualitativeChartType.values.byName).toSet();
+  }
+
+  void setQualitativeChartTypes(Set<QualitativeChartType> types) => _setChartTypes(PrefKeys.qualitativeChartTypes, types);
+
+  void _setChartTypes(String key, Set<Enum> types) => prefs.setStringList(key, types.map((t) => t.name).toList());
 }
 
 class SettingsState {

@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/core/services/i18n/translations.g.dart';
@@ -125,6 +126,28 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TextField), findsNothing);
+    });
+
+    testWidgets('shows a bar chart and pie chart by default', (tester) async {
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      await tester.enterText(textFields.at(0), 'A');
+      await tester.enterText(textFields.at(1), '10');
+      await tester.enterText(textFields.at(2), 'B');
+      await tester.enterText(textFields.at(3), '20');
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BarChart), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.chevron_right).first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PieChart), findsOneWidget);
     });
   });
 }

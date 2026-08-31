@@ -19,6 +19,8 @@ void main() {
     when(() => mockPrefs.getInt(any(), defaultValue: any(named: 'defaultValue'))).thenReturn(3);
     when(() => mockPrefs.getString(any(), defaultValue: any(named: 'defaultValue'))).thenReturn('system');
     when(() => mockPrefs.setInt(any(), any())).thenAnswer((_) async => true);
+    when(() => mockPrefs.getListString(any())).thenReturn(null);
+    when(() => mockPrefs.setStringList(any(), any())).thenAnswer((_) async => true);
     await setupTestLocator(sharedPreferencesService: mockPrefs, navigationHelper: mockNav);
   });
 
@@ -49,5 +51,31 @@ void main() {
 
     verify(() => mockPrefs.setInt(PrefKeys.decimalPrecision, 5)).called(1);
     verify(() => mockNav.go(any())).called(1);
+  });
+
+  testWidgets('unchecking a discrete chart type persists the remaining selection', (tester) async {
+    final router = GoRouter(
+      routes: [GoRoute(path: '/', builder: (context, state) => const SettingsScreen())],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        child: TranslationProvider(
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Variables quantitatives discrètes'));
+    await tester.pumpAndSettle();
+
+    // Both chart types are checked by default (no stored preference).
+    expect(find.byType(CheckboxListTile), findsNWidgets(2));
+    await tester.tap(find.widgetWithText(CheckboxListTile, 'Lignes'));
+    await tester.pumpAndSettle();
+
+    verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['bar'])).called(1);
   });
 }

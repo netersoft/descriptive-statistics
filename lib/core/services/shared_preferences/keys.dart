@@ -4,4 +4,8 @@ abstract class PrefKeys {
 
   /// Number of decimal places used when rounding calculator results.
   static const decimalPrecision = 'decimalPrecision';
+
+  static const discreteChartTypes = 'discreteChartTypes';
+  static const continuousChartTypes = 'continuousChartTypes';
+  static const qualitativeChartTypes = 'qualitativeChartTypes';
 }
