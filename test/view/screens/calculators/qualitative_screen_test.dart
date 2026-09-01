@@ -149,5 +149,25 @@ void main() {
 
       expect(find.byType(PieChart), findsOneWidget);
     });
+
+    testWidgets('bulk-imports pasted modality/effectif rows and calculates from them', (tester) async {
+      await pumpScreen(tester);
+
+      await tester.tap(find.text('Importer des données'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField).last, 'A;10\nB;20\nA;15\nC;5');
+      await tester.tap(find.text('Importer'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextField), findsNWidgets(8));
+      expect(find.widgetWithText(TextField, 'A'), findsNWidgets(2));
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Erreur de syntaxe!'), findsNothing);
+      expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
+    });
   });
 }

@@ -129,5 +129,24 @@ void main() {
 
       expect(find.byType(TextField), findsNothing);
     });
+
+    testWidgets('bulk-imports pasted 3-field rows and calculates from them', (tester) async {
+      await pumpScreen(tester);
+
+      await tester.tap(find.text('Importer des données'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField).last, '0;10;5\n10;20;8\n20;30;4\n30;40;3');
+      await tester.tap(find.text('Importer'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextField), findsNWidgets(12));
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Erreur de syntaxe!'), findsNothing);
+      expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
+    });
   });
 }
