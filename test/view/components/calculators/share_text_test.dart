@@ -40,6 +40,22 @@ void main() {
 
       expect(text, contains('Mo = 1, 3'));
     });
+
+    test('shows an undefined-value message instead of NaN when every Ni is identical', () {
+      final flatNi = computeDiscreteStats([1, 2, 3, 4], [5, 5, 5, 5]);
+      final text = buildDiscreteShareText(flatNi, {StatOption.covariance});
+
+      expect(text, isNot(contains('NaN')));
+      expect(text, contains('indéfini'));
+    });
+
+    test('shows an undefined-value message instead of Infinity when the weighted mean is zero', () {
+      final zeroMean = computeDiscreteStats([-2, 0, 2], [1, 1, 1]);
+      final text = buildDiscreteShareText(zeroMean, {StatOption.coefficientOfVariation});
+
+      expect(text, isNot(contains('Infinity')));
+      expect(text, contains('indéfini'));
+    });
   });
 
   group('buildContinuousShareText', () {
@@ -53,6 +69,14 @@ void main() {
       // French (the default test locale) displays decimals with a comma.
       expect(text, contains('X = 17,5'));
       expect(text, isNot(contains('Mo =')));
+    });
+
+    test('shows an undefined-value message instead of NaN when every class has the same Ni', () {
+      final flatNi = computeContinuousStats([0, 10, 20, 30], [10, 20, 30, 40], [5, 5, 5, 5]);
+      final text = buildContinuousShareText(flatNi, [0, 10, 20, 30], [10, 20, 30, 40], {StatOption.covariance});
+
+      expect(text, isNot(contains('NaN')));
+      expect(text, contains('indéfini'));
     });
   });
 

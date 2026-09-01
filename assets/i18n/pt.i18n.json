@@ -96,6 +96,7 @@
   "simpleMeanLabel": "- Média aritmética simples",
   "modeSectionTitle": "MODO",
   "multipleModesNote": "Esta série não tem uma moda única: vários valores estão empatados com a maior frequência.",
+  "undefinedValue": "indefinido",
   "modeExplanationD": "O modo é igual à variável com a maior frequência",
   "medianSectionTitle": "MEDIANA",
   "medianExplanationD": "A mediana é igual à variável com a frequência relativa acumulada diretamente acima de",

@@ -146,6 +146,29 @@ void main() {
       );
     });
 
+    test('flags correlation as undefined when every class has the same Ni', () {
+      // All Ni equal -> zero variance for Ni -> the correlation formula's
+      // denominator is 0, so covariance/(0*x) is 0/0 (NaN), not an exception.
+      final flatNi = computeContinuousStats(
+        [0, 10, 20, 30],
+        [10, 20, 30, 40],
+        [5, 5, 5, 5],
+      );
+
+      expect(flatNi.correlation.isNaN, true);
+      expect(flatNi.isCorrelationDefined, false);
+    });
+
+    test('flags coefficient of variation as undefined when the weighted mean is zero', () {
+      // Midpoints -5 and 5 with equal Ni -> weighted mean is 0, so
+      // (stdDev / 0) * 100 is Infinity, not an exception.
+      final zeroMean = computeContinuousStats([-10, 0], [0, 10], [1, 1]);
+
+      expect(zeroMean.weightedMean, 0);
+      expect(zeroMean.coefficientOfVariation.isFinite, false);
+      expect(zeroMean.isCoefficientOfVariationDefined, false);
+    });
+
     test('throws on mismatched lengths', () {
       expect(
         () => computeContinuousStats([0, 10], [10, 20], [5]),

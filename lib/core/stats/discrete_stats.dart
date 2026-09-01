@@ -51,6 +51,15 @@ class DiscreteStatsResult {
   final double coefficientOfVariation;
   final double range;
 
+  /// False when all Ni are identical, making the standard deviation of Ni
+  /// zero and the correlation formula's denominator zero (0/0 -> NaN).
+  bool get isCorrelationDefined => !correlation.isNaN;
+
+  /// False when the weighted mean is zero, making the coefficient of
+  /// variation's denominator zero (a finite or zero numerator over zero ->
+  /// Infinity or NaN).
+  bool get isCoefficientOfVariationDefined => coefficientOfVariation.isFinite;
+
   bool get isHomogeneous => coefficientOfVariation <= 33;
 
   const DiscreteStatsResult({

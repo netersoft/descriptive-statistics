@@ -135,6 +135,25 @@ void main() {
       expect(bimodal.mode, 1);
     });
 
+    test('flags correlation as undefined when every Ni is identical', () {
+      // All Ni equal -> zero variance for Ni -> the correlation formula's
+      // denominator is 0, so covariance/(0*x) is 0/0 (NaN), not an exception.
+      final flatNi = computeDiscreteStats([1, 2, 3, 4], [5, 5, 5, 5]);
+
+      expect(flatNi.correlation.isNaN, true);
+      expect(flatNi.isCorrelationDefined, false);
+    });
+
+    test('flags coefficient of variation as undefined when the weighted mean is zero', () {
+      // Symmetric around 0 with equal Ni -> weighted mean is 0, so
+      // (stdDev / 0) * 100 is Infinity, not an exception.
+      final zeroMean = computeDiscreteStats([-2, 0, 2], [1, 1, 1]);
+
+      expect(zeroMean.weightedMean, 0);
+      expect(zeroMean.coefficientOfVariation.isFinite, false);
+      expect(zeroMean.isCoefficientOfVariationDefined, false);
+    });
+
     test('picks the class whose cumulative effectif exceeds N/2 on an exact boundary, not an average', () {
       // xi 1..4, ni all 1 (total effectif 4, threshold = 2). The cumulative
       // effectif hits exactly 2 at xi=2 -- matching the app's own course
