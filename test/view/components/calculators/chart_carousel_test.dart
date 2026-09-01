@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_starter/core/services/i18n/translations.g.dart';
 import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,21 +9,27 @@ void main() {
     await dotenv.load();
   });
 
-  testWidgets('renders nothing for an empty chart list', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: ChartCarousel(charts: [])));
+  testWidgets('tells the user no chart type is selected instead of rendering an empty gap', (tester) async {
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: const MaterialApp(home: ChartCarousel(charts: [])),
+      ),
+    );
 
-    expect(find.byType(ChartCarousel), findsOneWidget);
     expect(find.byType(PageView), findsNothing);
+    expect(find.text('Aucun type de graphique sélectionné. Modifiez ce choix dans les Réglages.'), findsOneWidget);
   });
 
   testWidgets('pages between charts with the next/prev arrows', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ChartCarousel(
-          charts: [
-            Text('Chart A'),
-            Text('Chart B'),
-          ],
+      TranslationProvider(
+        child: const MaterialApp(
+          home: ChartCarousel(
+            charts: [
+              Text('Chart A'),
+              Text('Chart B'),
+            ],
+          ),
         ),
       ),
     );

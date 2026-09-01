@@ -64,5 +64,23 @@ void main() {
         ),
       );
     });
+
+    test('throws on a negative value', () {
+      expect(
+        () => computeQualitativeStats(['A', 'B'], [10, -1]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.negativeEffectif),
+        ),
+      );
+    });
+
+    test('throws when every value is zero', () {
+      expect(
+        () => computeQualitativeStats(['A', 'B'], [0, 0]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.zeroTotalEffectif),
+        ),
+      );
+    });
   });
 }

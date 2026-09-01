@@ -112,7 +112,10 @@ void main() {
       await tester.tap(find.text('Calculer'));
       await tester.pump();
 
-      expect(find.text('Erreur de syntaxe!'), findsOneWidget);
+      expect(
+        find.text('Valeurs invalides : les effectifs doivent être positifs, et leur somme ne peut pas être nulle !'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('removing an entry row removes its fields', (tester) async {

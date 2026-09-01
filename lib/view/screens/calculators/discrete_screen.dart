@@ -32,8 +32,13 @@ class _EntryControllers {
   }
 }
 
-class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
+class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticKeepAliveClientMixin {
   final List<_EntryControllers> _entries = [];
+
+  // Without this, the TabBarView disposes this screen (and its in-progress
+  // entry rows) whenever the user switches to another tab and back.
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -65,6 +70,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
     CalculationError.insufficientData => context.t.insufficientData,
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
+    CalculationError.invalidValue => context.t.invalidValueError,
   };
 
   String _optionLabel(StatOption option) => switch (option) {
@@ -138,6 +144,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final state = ref.watch(discreteCalculatorProvider);
     final notifier = ref.read(discreteCalculatorProvider.notifier);
     final result = state.result;

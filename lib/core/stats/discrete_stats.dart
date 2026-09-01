@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math' as math;
 
 import 'rounding.dart';
@@ -71,8 +72,10 @@ class DiscreteStatsResult {
 }
 
 /// Computes descriptive statistics for a discrete variable given its values
-/// [xi] and their effectifs [ni]. Mirrors
-/// `DiscreteVariablesFragment.parsing()` from the legacy Android app.
+/// [xi] and their effectifs [ni]. Rows sharing the same (rounded) Xi are
+/// merged by summing their Ni, and the result is sorted ascending by Xi
+/// regardless of input order. Mirrors `DiscreteVariablesFragment.parsing()`
+/// from the legacy Android app.
 DiscreteStatsResult computeDiscreteStats(
   List<double> xi,
   List<double> ni, {
@@ -85,10 +88,28 @@ DiscreteStatsResult computeDiscreteStats(
     throw const StatsInputException(StatsErrorReason.insufficientData);
   }
 
-  final n = xi.length;
-  final xiR = List<double>.generate(n, (i) => arrondi(xi[i], precision));
-  final niR = List<double>.generate(n, (i) => arrondi(ni[i], precision));
+  final rawXi = List<double>.generate(xi.length, (i) => arrondi(xi[i], precision));
+  final rawNi = List<double>.generate(xi.length, (i) => arrondi(ni[i], precision));
+  if (rawNi.any((value) => value < 0)) {
+    throw const StatsInputException(StatsErrorReason.negativeEffectif);
+  }
 
+  // Merge rows that share the same Xi (summing their Ni) and sort ascending
+  // by Xi -- the cumulative-frequency logic below assumes one row per
+  // distinct value, visited in ascending order, but nothing about the entry
+  // form requires the user to type rows in that order.
+  final aggregated = SplayTreeMap<double, double>();
+  for (var i = 0; i < rawXi.length; i++) {
+    aggregated[rawXi[i]] = (aggregated[rawXi[i]] ?? 0) + rawNi[i];
+  }
+  final xiR = aggregated.keys.toList();
+  final niR = aggregated.values.toList();
+
+  final n = xiR.length;
+  if (n < 2) {
+    // All rows shared the same Xi and collapsed into a single one.
+    throw const StatsInputException(StatsErrorReason.insufficientData);
+  }
   var niSum = 0.0;
   var xiSum = 0.0;
   var xiniSum = 0.0;
@@ -114,6 +135,9 @@ DiscreteStatsResult computeDiscreteStats(
     }
     if (xiR[i] > xiMax) xiMax = xiR[i];
     if (xiR[i] < xiMin) xiMin = xiR[i];
+  }
+  if (niSum == 0) {
+    throw const StatsInputException(StatsErrorReason.zeroTotalEffectif);
   }
 
   final up = List<double>.filled(n, 0);
@@ -171,7 +195,7 @@ DiscreteStatsResult computeDiscreteStats(
   final standardDeviation = arrondi(math.sqrt(variance), precision);
   final standardError = arrondi(standardDeviation / math.sqrt(n), precision);
   final coefficientOfVariation = arrondi((standardDeviation / weightedMean) * 100, precision);
-  final range = xiMax - xiMin;
+  final range = arrondi(xiMax - xiMin, precision);
 
   return DiscreteStatsResult(
     xi: xiR,

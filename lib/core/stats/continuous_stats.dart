@@ -88,7 +88,8 @@ class ContinuousStatsResult {
 
 /// Computes descriptive statistics for a continuous (grouped/class-interval)
 /// variable given class lower bounds [l1], upper bounds [l2], and effectifs
-/// [ni]. Mirrors `ContinuousVariablesFragment.parsing()` from the legacy app.
+/// [ni]. Classes are sorted ascending by [l1] regardless of input order.
+/// Mirrors `ContinuousVariablesFragment.parsing()` from the legacy app.
 ///
 /// Unlike the legacy Java, the modal-class and median-class neighbour
 /// lookups are clamped to 0 at the data's edges instead of crashing when the
@@ -108,13 +109,25 @@ ContinuousStatsResult computeContinuousStats(
   }
 
   final n = l1.length;
-  final k = List<double>.generate(n, (i) => l2[i] - l1[i]);
-  if (k.any((width) => width < 0)) {
-    throw const StatsInputException(StatsErrorReason.negativeClassWidth);
+
+  // Sort classes ascending by L1 -- the cumulative-frequency logic below
+  // assumes classes are visited in ascending order, but nothing about the
+  // entry form requires the user to type rows in that order.
+  final order = List<int>.generate(n, (i) => i)..sort((a, b) => l1[a].compareTo(l1[b]));
+  final cl1 = [for (final i in order) l1[i]];
+  final cl2 = [for (final i in order) l2[i]];
+  final cni = [for (final i in order) ni[i]];
+
+  final k = List<double>.generate(n, (i) => cl2[i] - cl1[i]);
+  if (k.any((width) => width <= 0)) {
+    throw const StatsInputException(StatsErrorReason.invalidClassWidth);
   }
 
-  final niR = List<double>.generate(n, (i) => arrondi(ni[i], precision));
-  final xiR = List<double>.generate(n, (i) => arrondi((l1[i] + l2[i]) / 2, precision));
+  final niR = List<double>.generate(n, (i) => arrondi(cni[i], precision));
+  if (niR.any((value) => value < 0)) {
+    throw const StatsInputException(StatsErrorReason.negativeEffectif);
+  }
+  final xiR = List<double>.generate(n, (i) => arrondi((cl1[i] + cl2[i]) / 2, precision));
 
   var niSum = 0.0;
   var xiSum = 0.0;
@@ -122,8 +135,8 @@ ContinuousStatsResult computeContinuousStats(
   var xi2niSum = 0.0;
   var maxNiIndex = 0;
   var maxNi = 0.0;
-  var xiMax = l2[0];
-  var xiMin = l1[0];
+  var xiMax = cl2[0];
+  var xiMin = cl1[0];
   final xini = List<double>.filled(n, 0);
   final xi2ni = List<double>.filled(n, 0);
 
@@ -139,8 +152,11 @@ ContinuousStatsResult computeContinuousStats(
       maxNi = niR[i];
       maxNiIndex = i;
     }
-    if (l2[i] > xiMax) xiMax = l2[i];
-    if (l1[i] < xiMin) xiMin = l1[i];
+    if (cl2[i] > xiMax) xiMax = cl2[i];
+    if (cl1[i] < xiMin) xiMin = cl1[i];
+  }
+  if (niSum == 0) {
+    throw const StatsInputException(StatsErrorReason.zeroTotalEffectif);
   }
 
   final up = List<double>.filled(n, 0);
@@ -190,20 +206,20 @@ ContinuousStatsResult computeContinuousStats(
   final modeGapBefore = niR[maxNiIndex] - niAt(maxNiIndex - 1);
   final modeGapAfter = niR[maxNiIndex] - niAt(maxNiIndex + 1);
   final mode = arrondi(
-    l1[maxNiIndex] + k[maxNiIndex] * (modeGapBefore / (modeGapBefore + modeGapAfter)),
+    cl1[maxNiIndex] + k[maxNiIndex] * (modeGapBefore / (modeGapBefore + modeGapAfter)),
     precision,
   );
 
   final median = arrondi(
-    l1[medianIndex] + k[medianIndex] * ((niSum / 2 - upBefore(medianIndex)) / niR[medianIndex]),
+    cl1[medianIndex] + k[medianIndex] * ((niSum / 2 - upBefore(medianIndex)) / niR[medianIndex]),
     precision,
   );
   final firstQuartile = arrondi(
-    l1[firstQuartIndex] + k[firstQuartIndex] * ((niSum / 4 - upBefore(firstQuartIndex)) / niR[firstQuartIndex]),
+    cl1[firstQuartIndex] + k[firstQuartIndex] * ((niSum / 4 - upBefore(firstQuartIndex)) / niR[firstQuartIndex]),
     precision,
   );
   final thirdQuartile = arrondi(
-    l1[thirdQuartIndex] + k[thirdQuartIndex] * ((niSum * 3 / 4 - upBefore(thirdQuartIndex)) / niR[thirdQuartIndex]),
+    cl1[thirdQuartIndex] + k[thirdQuartIndex] * ((niSum * 3 / 4 - upBefore(thirdQuartIndex)) / niR[thirdQuartIndex]),
     precision,
   );
   final firstDecile = arrondi(xiR[firstDecileIndex], precision);
@@ -218,7 +234,7 @@ ContinuousStatsResult computeContinuousStats(
   final standardDeviation = arrondi(math.sqrt(variance), precision);
   final standardError = arrondi(standardDeviation / math.sqrt(n), precision);
   final coefficientOfVariation = arrondi((standardDeviation / weightedMean) * 100, precision);
-  final range = xiMax - xiMin;
+  final range = arrondi(xiMax - xiMin, precision);
 
   return ContinuousStatsResult(
     xi: xiR,

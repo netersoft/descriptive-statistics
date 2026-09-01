@@ -15,6 +15,9 @@ class DocumentationScreen extends StatelessWidget {
   Widget build(BuildContext context) => FutureBuilder<String>(
     future: rootBundle.loadString('assets/docs/${LocaleSettings.currentLocale.languageCode}/course.html'),
     builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Center(child: Text(context.t.anErrorOccurred));
+      }
       if (!snapshot.hasData) {
         return const Center(child: CircularProgressIndicator());
       }

@@ -81,6 +81,7 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
             const SettingsRoute().push(context);
           },
           icon: const Icon(Icons.settings, color: Colors.white),
+          tooltip: context.t.settings,
         ),
       ],
       backgroundColor: AppTheme.getAppbarBgColor(),

@@ -78,11 +78,53 @@ void main() {
       expect(edgeResult.mode.isFinite, true);
     });
 
+    test('sorts classes by L1 regardless of input order', () {
+      // Same classes/effectifs as the main fixture above, entered out of
+      // order -- the cumulative-frequency logic requires ascending L1.
+      final outOfOrder = computeContinuousStats(
+        [20, 0, 30, 10],
+        [30, 10, 40, 20],
+        [4, 5, 3, 8],
+        precision: 4,
+      );
+
+      expect(outOfOrder.xi, [5, 15, 25, 35]);
+      expect(outOfOrder.ni, [5, 8, 4, 3]);
+      expect(outOfOrder.median, closeTo(16.25, 1e-9));
+    });
+
     test('throws on a negative class width', () {
       expect(
         () => computeContinuousStats([0, 20], [10, 15], [5, 5]),
         throwsA(
-          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.negativeClassWidth),
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.invalidClassWidth),
+        ),
+      );
+    });
+
+    test('throws on a zero-width class', () {
+      expect(
+        () => computeContinuousStats([0, 10], [10, 10], [5, 5]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.invalidClassWidth),
+        ),
+      );
+    });
+
+    test('throws on a negative effectif', () {
+      expect(
+        () => computeContinuousStats([0, 10], [10, 20], [5, -1]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.negativeEffectif),
+        ),
+      );
+    });
+
+    test('throws when every effectif is zero', () {
+      expect(
+        () => computeContinuousStats([0, 10], [10, 20], [0, 0]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.zeroTotalEffectif),
         ),
       );
     });

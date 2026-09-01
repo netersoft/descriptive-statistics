@@ -8,4 +8,4 @@ enum StatOption { mean, median, quartiles, mode, variance, covariance, standardD
 enum QualitativeStatOption { mean, mode, charts }
 
 /// Why a calculator provider's `calculate` could not produce a result.
-enum CalculationError { insufficientData, emptyField, syntaxError }
+enum CalculationError { insufficientData, emptyField, syntaxError, invalidValue }

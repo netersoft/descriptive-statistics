@@ -57,6 +57,9 @@ QualitativeStatsResult computeQualitativeStats(
   final aggregated = <String, double>{};
 
   for (var i = 0; i < modalities.length; i++) {
+    if (values[i] < 0) {
+      throw const StatsInputException(StatsErrorReason.negativeEffectif);
+    }
     total += values[i];
 
     final modality = modalities[i];
@@ -65,6 +68,9 @@ QualitativeStatsResult computeQualitativeStats(
       aggregated[modality] = 0;
     }
     aggregated[modality] = aggregated[modality]! + values[i];
+  }
+  if (total == 0) {
+    throw const StatsInputException(StatsErrorReason.zeroTotalEffectif);
   }
 
   final effectifs = distinctModalities.map((modality) => arrondi(aggregated[modality]!, precision)).toList();
