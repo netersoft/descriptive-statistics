@@ -78,6 +78,23 @@ void main() {
       expect(edgeResult.mode.isFinite, true);
     });
 
+    test('flags a unique modal class', () {
+      expect(result.isModeUnique, true);
+      expect(result.modalClassIndices, [1]);
+    });
+
+    test('reports every class index tied for the highest effectif when the mode is not unique', () {
+      final bimodal = computeContinuousStats(
+        [0, 10, 20, 30],
+        [10, 20, 30, 40],
+        [5, 8, 8, 3],
+      );
+
+      expect(bimodal.isModeUnique, false);
+      expect(bimodal.modalClassIndices, [1, 2]);
+      expect(bimodal.modalClassIndex, 1);
+    });
+
     test('sorts classes by L1 regardless of input order', () {
       // Same classes/effectifs as the main fixture above, entered out of
       // order -- the cumulative-frequency logic requires ascending L1.

@@ -25,6 +25,14 @@ class DiscreteStatsResult {
   final double simpleMean;
 
   final double mode;
+
+  /// Every Xi tied for the highest effectif, ascending. Length 1 unless the
+  /// distribution has no unique mode (bimodal/multimodal); [mode] is always
+  /// [modes].first.
+  final List<double> modes;
+
+  bool get isModeUnique => modes.length == 1;
+
   final double median;
   final double firstQuartile;
   final double thirdQuartile;
@@ -55,6 +63,7 @@ class DiscreteStatsResult {
     required this.weightedMean,
     required this.simpleMean,
     required this.mode,
+    required this.modes,
     required this.median,
     required this.firstQuartile,
     required this.thirdQuartile,
@@ -114,8 +123,8 @@ DiscreteStatsResult computeDiscreteStats(
   var xiSum = 0.0;
   var xiniSum = 0.0;
   var xi2niSum = 0.0;
-  var maxNiIndex = 0;
   var maxNi = 0.0;
+  final modeIndices = <int>[];
   var xiMax = xiR[0];
   var xiMin = xiR[0];
   final xini = List<double>.filled(n, 0);
@@ -131,7 +140,11 @@ DiscreteStatsResult computeDiscreteStats(
 
     if (niR[i] > maxNi) {
       maxNi = niR[i];
-      maxNiIndex = i;
+      modeIndices
+        ..clear()
+        ..add(i);
+    } else if (niR[i] == maxNi) {
+      modeIndices.add(i);
     }
     if (xiR[i] > xiMax) xiMax = xiR[i];
     if (xiR[i] < xiMin) xiMin = xiR[i];
@@ -180,7 +193,8 @@ DiscreteStatsResult computeDiscreteStats(
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
   final simpleMean = arrondi(niSum / n, precision);
-  final mode = arrondi(xiR[maxNiIndex], precision);
+  final modes = [for (final i in modeIndices) arrondi(xiR[i], precision)];
+  final mode = modes.first;
   final median = arrondi(xiR[medianIndex], precision);
   final firstQuartile = arrondi(xiR[firstQuartIndex], precision);
   final thirdQuartile = arrondi(xiR[thirdQuartIndex], precision);
@@ -207,6 +221,7 @@ DiscreteStatsResult computeDiscreteStats(
     weightedMean: weightedMean,
     simpleMean: simpleMean,
     mode: mode,
+    modes: modes,
     median: median,
     firstQuartile: firstQuartile,
     thirdQuartile: thirdQuartile,

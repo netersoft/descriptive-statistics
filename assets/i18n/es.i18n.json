@@ -90,6 +90,7 @@
   "weightedMeanLabel": "- Media aritmética ponderada",
   "simpleMeanLabel": "- Media aritmética simple",
   "modeSectionTitle": "MODO",
+  "multipleModesNote": "Esta serie no tiene una moda única: varios valores están empatados con la frecuencia más alta.",
   "modeExplanationD": "El modo es igual a la variable con la frecuencia más alta",
   "medianSectionTitle": "MEDIANA",
   "medianExplanationD": "La mediana es igual a la variable con la frecuencia relativa acumulativa directamente por encima",

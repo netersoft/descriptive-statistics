@@ -90,6 +90,7 @@
   "weightedMeanLabel": "- Gewichtetes arithmetisches Mittel",
   "simpleMeanLabel": "- Einfaches arithmetisches Mittel",
   "modeSectionTitle": "MODUS",
+  "multipleModesNote": "Diese Reihe hat keinen eindeutigen Modus: mehrere Werte sind bei der höchsten Häufigkeit gleichauf.",
   "modeExplanationD": "Der Modus ist gleich der Variablen mit der höchsten Frequenz",
   "medianSectionTitle": "MEDIAN",
   "medianExplanationD": "Der Median ist gleich der Variablen mit der kumulativen relativen Häufigkeit direkt darüber",

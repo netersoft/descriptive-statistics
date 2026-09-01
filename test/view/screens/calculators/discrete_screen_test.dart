@@ -103,6 +103,32 @@ void main() {
       expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
     });
 
+    testWidgets('flags a non-unique mode in the explanation instead of silently picking one', (tester) async {
+      await pumpScreen(tester);
+
+      for (var i = 0; i < 3; i++) {
+        await addRow(tester);
+      }
+
+      final textFields = find.byType(TextField);
+      const rows = [
+        ['1', '5'],
+        ['2', '2'],
+        ['3', '5'],
+      ];
+      for (var i = 0; i < rows.length; i++) {
+        await tester.enterText(textFields.at(i * 2), rows[i][0]);
+        await tester.enterText(textFields.at(i * 2 + 1), rows[i][1]);
+      }
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      final explanation = explanationText(tester);
+      expect(explanation, contains('Mo = 1, 3'));
+      expect(explanation, contains('plurimodale'));
+    });
+
     testWidgets('shows an error snackbar with fewer than two rows', (tester) async {
       await pumpScreen(tester);
 
