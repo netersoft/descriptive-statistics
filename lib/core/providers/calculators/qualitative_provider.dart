@@ -5,6 +5,7 @@ import '../../services/shared_preferences/keys.dart';
 import '../../services/shared_preferences/service.dart';
 import '../../stats/qualitative_stats.dart';
 import '../../stats/stats_exceptions.dart';
+import '../../tools/functions/number_parsing.dart';
 import 'calculator_types.dart';
 
 part 'qualitative_provider.g.dart';
@@ -74,7 +75,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
         return CalculationError.emptyField;
       }
 
-      final parsedValue = double.tryParse(valueText[i]);
+      final parsedValue = parseDecimal(valueText[i]);
       if (parsedValue == null) {
         return CalculationError.syntaxError;
       }

@@ -84,6 +84,25 @@ void main() {
       expect(explanation, contains('ETENDUE'));
     });
 
+    testWidgets('accepts comma as the decimal separator, as fr/de/es/pt keyboards produce', (tester) async {
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+
+      final textFields = find.byType(TextField);
+      await tester.enterText(textFields.at(0), '1,5');
+      await tester.enterText(textFields.at(1), '2');
+      await tester.enterText(textFields.at(2), '2,5');
+      await tester.enterText(textFields.at(3), '4');
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Erreur de syntaxe!'), findsNothing);
+      expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
+    });
+
     testWidgets('shows an error snackbar with fewer than two rows', (tester) async {
       await pumpScreen(tester);
 
