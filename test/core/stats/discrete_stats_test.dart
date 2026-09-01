@@ -122,6 +122,19 @@ void main() {
       expect(merged.ni, [5, 7]);
     });
 
+    test('flags a unique mode', () {
+      expect(result.isModeUnique, true);
+      expect(result.modes, [3]);
+    });
+
+    test('reports every Xi tied for the highest effectif when the mode is not unique', () {
+      final bimodal = computeDiscreteStats([1, 2, 3, 4], [5, 2, 5, 1]);
+
+      expect(bimodal.isModeUnique, false);
+      expect(bimodal.modes, [1, 3]);
+      expect(bimodal.mode, 1);
+    });
+
     test('picks the class whose cumulative effectif exceeds N/2 on an exact boundary, not an average', () {
       // xi 1..4, ni all 1 (total effectif 4, threshold = 2). The cumulative
       // effectif hits exactly 2 at xi=2 -- matching the app's own course

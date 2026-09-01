@@ -90,12 +90,17 @@ X = ${noZero(niSum)} / $n<br>
   if (selected.contains(StatOption.mode)) {
     final modeGapBefore = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex - 1);
     final modeGapAfter = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex + 1);
+    final multipleModesNote = r.isModeUnique
+        ? ''
+        : '<i>${t.multipleModesNote} '
+              '${r.modalClassIndices.map((i) => '[${noZero(l1[i])} - ${noZero(l2[i])}[').join(', ')}'
+              '</i><br><br>';
     buffer.write('''
 <b><font color='blue'><u>${t.modeSectionTitle}</u></font></b><br><br>
 <b>Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</b><br>
 Mo = ${noZero(l1[r.modalClassIndex])} + ${noZero(k[r.modalClassIndex])} * ((${noZero(modeGapBefore)}) / ((${noZero(modeGapBefore)})+(${noZero(modeGapAfter)})))<br>
 <font color='red'><b><u>Mo = ${noZero(r.mode)}</u></b></font><br><br>
-''');
+$multipleModesNote''');
   }
 
   if (selected.contains(StatOption.median)) {

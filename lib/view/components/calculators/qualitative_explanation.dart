@@ -43,11 +43,13 @@ X = ${noZero(r.total)} / ${r.modalities.length}<br>
   }
 
   if (selected.contains(QualitativeStatOption.mode)) {
+    final modeValue = r.isModeUnique ? r.modeModality : r.modeModalities.join(', ');
+    final multipleModesNote = r.isModeUnique ? '' : '<i>${t.multipleModesNote}</i><br><br>';
     buffer.write('''
 <b><font color='blue'><u>${t.modeSectionTitle}</u></font></b><br><br>
 ${t.qltMode}<br>
-<font color='red'><b><u>Mo >>> ${r.modeModality}</u></b></font><br><br>
-''');
+<font color='red'><b><u>Mo >>> $modeValue</u></b></font><br><br>
+$multipleModesNote''');
   }
 
   return buffer.toString();

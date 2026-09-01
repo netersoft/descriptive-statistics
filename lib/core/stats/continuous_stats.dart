@@ -21,6 +21,13 @@ class ContinuousStatsResult {
   /// Index of the modal class (highest effectif).
   final int modalClassIndex;
 
+  /// Every class index tied for the highest effectif, ascending. Length 1
+  /// unless the distribution has no unique modal class (bimodal/
+  /// multimodal); [modalClassIndex] is always [modalClassIndices].first.
+  final List<int> modalClassIndices;
+
+  bool get isModeUnique => modalClassIndices.length == 1;
+
   /// Index of the median class (where the cumulative effectif crosses half
   /// the total).
   final int medianClassIndex;
@@ -66,6 +73,7 @@ class ContinuousStatsResult {
     required this.cumulativeAscending,
     required this.cumulativeDescending,
     required this.modalClassIndex,
+    required this.modalClassIndices,
     required this.medianClassIndex,
     required this.weightedMean,
     required this.simpleMean,
@@ -133,8 +141,8 @@ ContinuousStatsResult computeContinuousStats(
   var xiSum = 0.0;
   var xiniSum = 0.0;
   var xi2niSum = 0.0;
-  var maxNiIndex = 0;
   var maxNi = 0.0;
+  final modeIndices = <int>[];
   var xiMax = cl2[0];
   var xiMin = cl1[0];
   final xini = List<double>.filled(n, 0);
@@ -150,7 +158,11 @@ ContinuousStatsResult computeContinuousStats(
 
     if (niR[i] > maxNi) {
       maxNi = niR[i];
-      maxNiIndex = i;
+      modeIndices
+        ..clear()
+        ..add(i);
+    } else if (niR[i] == maxNi) {
+      modeIndices.add(i);
     }
     if (cl2[i] > xiMax) xiMax = cl2[i];
     if (cl1[i] < xiMin) xiMin = cl1[i];
@@ -203,6 +215,7 @@ ContinuousStatsResult computeContinuousStats(
   final weightedMean = arrondi(xiniSum / niSum, precision);
   final simpleMean = arrondi(niSum / n, precision);
 
+  final maxNiIndex = modeIndices.first;
   final modeGapBefore = niR[maxNiIndex] - niAt(maxNiIndex - 1);
   final modeGapAfter = niR[maxNiIndex] - niAt(maxNiIndex + 1);
   final mode = arrondi(
@@ -244,6 +257,7 @@ ContinuousStatsResult computeContinuousStats(
     cumulativeAscending: up,
     cumulativeDescending: down,
     modalClassIndex: maxNiIndex,
+    modalClassIndices: modeIndices,
     medianClassIndex: medianIndex,
     weightedMean: weightedMean,
     simpleMean: simpleMean,

@@ -90,6 +90,7 @@
   "weightedMeanLabel": "- Moyenne arithmétique pondérée",
   "simpleMeanLabel": "- Moyenne arithmétique simple",
   "modeSectionTitle": "MODE",
+  "multipleModesNote": "Cette série est plurimodale : plusieurs valeurs sont à égalité pour l'effectif le plus élevé.",
   "modeExplanationD": "Le mode est égal à la variable ayant l'effectif le plus élevé",
   "medianSectionTitle": "MEDIANE",
   "medianExplanationD": "La médiane est égale à la variable ayant l'effectif cumulé croissant directement supérieur à",

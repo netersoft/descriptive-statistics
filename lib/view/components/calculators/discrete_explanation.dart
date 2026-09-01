@@ -65,11 +65,13 @@ X = ${noZero(niSum)} / $n<br>
   }
 
   if (selected.contains(StatOption.mode)) {
+    final modeValue = r.isModeUnique ? noZero(r.mode) : r.modes.map(noZero).join(', ');
+    final multipleModesNote = r.isModeUnique ? '' : '<i>${t.multipleModesNote}</i><br><br>';
     buffer.write('''
 <b><font color='blue'><u>${t.modeSectionTitle}</u></font></b><br><br>
 ${t.modeExplanationD}<br>
-<font color='red'><b><u>Mo = ${noZero(r.mode)}</u></b></font><br><br>
-''');
+<font color='red'><b><u>Mo = $modeValue</u></b></font><br><br>
+$multipleModesNote''');
   }
 
   if (selected.contains(StatOption.median)) {

@@ -24,6 +24,13 @@ class QualitativeStatsResult {
   /// The modality with the highest effectif (first one seen wins ties).
   final String modeModality;
 
+  /// Every modality tied for the highest effectif, in first-seen order.
+  /// Length 1 unless the distribution has no unique mode; [modeModality]
+  /// is always [modeModalities].first.
+  final List<String> modeModalities;
+
+  bool get isModeUnique => modeModalities.length == 1;
+
   const QualitativeStatsResult({
     required this.modalities,
     required this.effectifs,
@@ -33,6 +40,7 @@ class QualitativeStatsResult {
     required this.total,
     required this.mean,
     required this.modeModality,
+    required this.modeModalities,
   });
 }
 
@@ -88,14 +96,20 @@ QualitativeStatsResult computeQualitativeStats(
     );
   }
 
-  var modeModality = distinctModalities.first;
   var modeValue = 0.0;
+  final modeIndices = <int>[];
   for (var i = 0; i < effectifs.length; i++) {
     if (effectifs[i] > modeValue) {
       modeValue = effectifs[i];
-      modeModality = distinctModalities[i];
+      modeIndices
+        ..clear()
+        ..add(i);
+    } else if (effectifs[i] == modeValue) {
+      modeIndices.add(i);
     }
   }
+  final modeModalities = [for (final i in modeIndices) distinctModalities[i]];
+  final modeModality = modeModalities.first;
 
   final mean = arrondi(total / distinctModalities.length, precision);
 
@@ -108,5 +122,6 @@ QualitativeStatsResult computeQualitativeStats(
     total: arrondi(total, precision),
     mean: mean,
     modeModality: modeModality,
+    modeModalities: modeModalities,
   );
 }

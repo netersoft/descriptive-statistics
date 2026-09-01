@@ -36,6 +36,16 @@ void main() {
 
     test('finds the modality with the highest effectif', () {
       expect(result.modeModality, 'A');
+      expect(result.isModeUnique, true);
+      expect(result.modeModalities, ['A']);
+    });
+
+    test('reports every modality tied for the highest effectif when the mode is not unique', () {
+      final bimodal = computeQualitativeStats(['A', 'B', 'C'], [10, 5, 10]);
+
+      expect(bimodal.isModeUnique, false);
+      expect(bimodal.modeModalities, ['A', 'C']);
+      expect(bimodal.modeModality, 'A');
     });
 
     test('computes the mean of the aggregated effectifs', () {

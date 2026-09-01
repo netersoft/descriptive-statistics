@@ -90,6 +90,7 @@
   "weightedMeanLabel": "- Weighted arithmetic mean",
   "simpleMeanLabel": "- Simple arithmetic mean",
   "modeSectionTitle": "MODE",
+  "multipleModesNote": "This series has no unique mode: multiple values are tied for the highest frequency.",
   "modeExplanationD": "The mode is equal to the variable with the highest frequency",
   "medianSectionTitle": "MEDIAN",
   "medianExplanationD": "The median is equal to the variable with the cumulative relative frequency directly above",
