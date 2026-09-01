@@ -256,6 +256,9 @@ ContinuousStatsResult computeContinuousStats(
   final standardDeviation = arrondi(math.sqrt(variance), precision);
   final standardError = arrondi(standardDeviation / math.sqrt(n), precision);
   final coefficientOfVariation = arrondi((standardDeviation / weightedMean) * 100, precision);
+  // Rounded to the configured precision like every other stat here --
+  // deliberately not left as a raw double the way the legacy app displays
+  // it, which can otherwise show a distracting long float tail.
   final range = arrondi(xiMax - xiMin, precision);
 
   return ContinuousStatsResult(

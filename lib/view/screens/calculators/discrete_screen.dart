@@ -65,7 +65,11 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
     setState(() {
       _entries.removeWhere((e) => e.xi.text.trim().isEmpty && e.ni.text.trim().isEmpty);
       for (final row in rows) {
-        _entries.add(_EntryControllers()..xi.text = row[0]..ni.text = row[1]);
+        _entries.add(
+          _EntryControllers()
+            ..xi.text = row[0]
+            ..ni.text = row[1],
+        );
       }
     });
   }
@@ -146,7 +150,11 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
     await locator<BackupsRepository>().add(
       Backup(
         name: name,
-        resolutionHtml: buildDiscreteExplanationHtml(result, calculatorState.selectedStats),
+        resolutionHtml: buildDiscreteExplanationHtml(
+          result,
+          calculatorState.selectedStats,
+          ref.read(discreteCalculatorProvider.notifier).decimalPrecision,
+        ),
         xi: result.xi.join('_'),
         ni: result.ni.join('_'),
         date: date,
@@ -299,7 +307,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
                 ),
               ],
               const SizedBox(height: 16),
-              DiscreteExplanation(result: result, selectedStats: state.selectedStats),
+              DiscreteExplanation(result: result, selectedStats: state.selectedStats, precision: notifier.decimalPrecision),
               const SizedBox(height: 16),
               Row(
                 children: [

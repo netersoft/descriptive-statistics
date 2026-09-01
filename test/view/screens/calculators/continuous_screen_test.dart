@@ -86,6 +86,43 @@ void main() {
       expect(explanation, contains('ETENDUE'));
     });
 
+    testWidgets('shows the correct modal/median class bounds when classes are entered out of order', (tester) async {
+      await pumpScreen(tester);
+
+      for (var i = 0; i < 4; i++) {
+        await addRow(tester);
+      }
+
+      // Same classes/effectifs as the main fixture above (modal/median
+      // class [10,20), ni=8), entered out of order. The explanation panel
+      // is handed the same (sorted) l1/l2 arrays the engine computed
+      // modalClassIndex/medianClassIndex against -- if it were handed the
+      // raw entry-order arrays instead, it would label the wrong class
+      // interval here even though the highlighted Mo/Me values stayed
+      // correct.
+      const rows = [
+        ['20', '30', '4'],
+        ['0', '10', '5'],
+        ['30', '40', '3'],
+        ['10', '20', '8'],
+      ];
+      final textFields = find.byType(TextField);
+      for (var i = 0; i < rows.length; i++) {
+        await tester.enterText(textFields.at(i * 3), rows[i][0]);
+        await tester.enterText(textFields.at(i * 3 + 1), rows[i][1]);
+        await tester.enterText(textFields.at(i * 3 + 2), rows[i][2]);
+      }
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      final explanation = explanationText(tester);
+      expect(explanation, contains('10 - 20'));
+      expect(explanation, isNot(contains('0 - 10')));
+      expect(explanation, isNot(contains('20 - 30')));
+      expect(explanation, isNot(contains('30 - 40')));
+    });
+
     testWidgets('shows an error snackbar with fewer than two rows', (tester) async {
       await pumpScreen(tester);
 

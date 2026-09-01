@@ -16,11 +16,12 @@ import '../../../core/tools/functions/number_parsing.dart';
 class DiscreteExplanation extends StatelessWidget {
   final DiscreteStatsResult result;
   final Set<StatOption> selectedStats;
+  final int precision;
 
-  const DiscreteExplanation({required this.result, required this.selectedStats, super.key});
+  const DiscreteExplanation({required this.result, required this.selectedStats, required this.precision, super.key});
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats), buildAsync: false);
+  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats, precision), buildAsync: false);
 }
 
 /// The intermediate sums below (xiniSum, covarianceSum, the two standard
@@ -28,14 +29,20 @@ class DiscreteExplanation extends StatelessWidget {
 /// final statistics -- but are cheap to recompute here from the already
 /// rounded [DiscreteStatsResult.xi]/[DiscreteStatsResult.ni] purely for
 /// display, reproducing exactly what the engine computed internally.
-String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selected) {
+/// [precision] must match the value the result was computed with, so the
+/// intermediate values shown here round the same way as the final stats
+/// they lead into.
+String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selected, int precision) {
   final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
   String fmt(double v) => noZero(v, decimalSeparator: sep);
 
   final n = r.xi.length;
   final niSum = r.ni.reduce((a, b) => a + b);
-  final xiniSum = r.xini.reduce((a, b) => a + b);
-  final xi2niSum = r.xi2ni.reduce((a, b) => a + b);
+  // Re-rounded (not just the raw sum of already-rounded rows) so summing
+  // rows like 0.1 + 0.2 can't reintroduce binary floating-point noise into
+  // the displayed intermediate value.
+  final xiniSum = arrondi(r.xini.reduce((a, b) => a + b), precision);
+  final xi2niSum = arrondi(r.xi2ni.reduce((a, b) => a + b), precision);
 
   final xMean = r.xi.reduce((a, b) => a + b) / n;
   final yMean = niSum / n;
@@ -122,11 +129,11 @@ Vx&sup2; = (${fmt(xi2niSum)} / ${fmt(niSum)}) - ${fmt(r.weightedMean)}&sup2;<br>
     buffer.write('''
 <b><font color='blue'><u>${t.covarianceSectionTitle}</u></font></b><br><br>
 <b>Cov(X,Y) = &sum;(Xi - X)(Yi - Y) / (n - 1)</b><br>
-Cov(X,Y) = ${fmt(arrondi(covarianceSum, 3))} / $n - 1<br>
+Cov(X,Y) = ${fmt(arrondi(covarianceSum, precision))} / $n - 1<br>
 <font color='red'><b><u>Cov(X,Y) = ${fmt(r.covariance)}</u></b></font><br><br>
 <b><font color='blue'><u>${t.correlationSectionTitle}</u></font></b><br><br>
 <b>r = Cov(X, Y) / &sigma;(x)&sigma;(y)</b><br>
-r = ${fmt(r.covariance)} / ( ${fmt(arrondi(xDeviation, 3))} * ${fmt(arrondi(yDeviation, 3))} )<br>
+r = ${fmt(r.covariance)} / ( ${fmt(arrondi(xDeviation, precision))} * ${fmt(arrondi(yDeviation, precision))} )<br>
 <font color='red'><b><u>r = ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}</u></b></font><br><br>
 ''');
   }
