@@ -10,6 +10,7 @@ import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
+import '../../../core/tools/functions/number_parsing.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/collapsible_checklist.dart';
@@ -177,6 +178,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
     final state = ref.watch(discreteCalculatorProvider);
     final notifier = ref.read(discreteCalculatorProvider.notifier);
     final result = state.result;
+    String fmt(double v) => noZero(v, decimalSeparator: decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode));
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -276,12 +278,12 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
                   rows: [
                     for (var i = 0; i < result.xi.length; i++)
                       [
-                        noZero(result.xi[i]),
-                        noZero(result.ni[i]),
-                        noZero(result.xini[i]),
-                        noZero(result.xi2ni[i]),
-                        noZero(result.cumulativeAscending[i]),
-                        noZero(result.cumulativeDescending[i]),
+                        fmt(result.xi[i]),
+                        fmt(result.ni[i]),
+                        fmt(result.xini[i]),
+                        fmt(result.xi2ni[i]),
+                        fmt(result.cumulativeAscending[i]),
+                        fmt(result.cumulativeDescending[i]),
                       ],
                   ],
                 ),

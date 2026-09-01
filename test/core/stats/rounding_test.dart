@@ -40,5 +40,13 @@ void main() {
     test('keeps the decimal part for fractional values', () {
       expect(noZero(3.5), '3.5');
     });
+
+    test('uses the given decimal separator for fractional values', () {
+      expect(noZero(3.5, decimalSeparator: ','), '3,5');
+    });
+
+    test('drops the trailing zero regardless of decimal separator', () {
+      expect(noZero(3.0, decimalSeparator: ','), '3');
+    });
   });
 }

@@ -10,6 +10,7 @@ import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
+import '../../../core/tools/functions/number_parsing.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/collapsible_checklist.dart';
@@ -174,6 +175,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
     final state = ref.watch(qualitativeCalculatorProvider);
     final notifier = ref.read(qualitativeCalculatorProvider.notifier);
     final result = state.result;
+    String fmt(double v) => noZero(v, decimalSeparator: decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode));
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -272,10 +274,10 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
                     for (var i = 0; i < result.modalities.length; i++)
                       [
                         result.modalities[i],
-                        noZero(result.effectifs[i]),
-                        noZero(result.frequencies[i]),
-                        noZero(result.cumulativeEffectifs[i]),
-                        noZero(result.cumulativeFrequencies[i]),
+                        fmt(result.effectifs[i]),
+                        fmt(result.frequencies[i]),
+                        fmt(result.cumulativeEffectifs[i]),
+                        fmt(result.cumulativeFrequencies[i]),
                       ],
                   ],
                 ),

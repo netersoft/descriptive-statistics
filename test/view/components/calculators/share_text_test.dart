@@ -1,4 +1,5 @@
 import 'package:flutter_starter/core/providers/calculators/calculator_types.dart';
+import 'package:flutter_starter/core/services/i18n/translations.g.dart';
 import 'package:flutter_starter/core/stats/continuous_stats.dart';
 import 'package:flutter_starter/core/stats/discrete_stats.dart';
 import 'package:flutter_starter/core/stats/qualitative_stats.dart';
@@ -19,6 +20,20 @@ void main() {
       expect(text, isNot(contains('Me =')));
     });
 
+    test('displays decimals with the comma or dot matching the current locale', () async {
+      final fractional = computeDiscreteStats([1, 2, 3], [1, 2, 5]);
+
+      // French (the default/base locale) uses a comma.
+      expect(buildDiscreteShareText(fractional, {StatOption.mean}), contains('X = 2,5'));
+
+      // English uses a dot; restore French afterwards so other tests in this
+      // suite (which don't reset locale themselves) aren't affected.
+      await AppLocale.en.build();
+      await LocaleSettings.setLocaleRaw('en');
+      expect(buildDiscreteShareText(fractional, {StatOption.mean}), contains('X = 2.5'));
+      await LocaleSettings.setLocaleRaw('fr');
+    });
+
     test('lists every tied value for a non-unique mode', () {
       final bimodal = computeDiscreteStats([1, 2, 3, 4], [5, 2, 5, 1]);
       final text = buildDiscreteShareText(bimodal, {StatOption.mode});
@@ -35,7 +50,8 @@ void main() {
 
       expect(text, contains('L1: 0, 10, 20, 30'));
       expect(text, contains('L2: 10, 20, 30, 40'));
-      expect(text, contains('X = 17.5'));
+      // French (the default test locale) displays decimals with a comma.
+      expect(text, contains('X = 17,5'));
       expect(text, isNot(contains('Mo =')));
     });
   });
