@@ -29,4 +29,16 @@ void main() {
       expect(parseDecimal(''), isNull);
     });
   });
+
+  group('decimalSeparatorForLocale', () {
+    test('is a comma for fr/de/es/pt', () {
+      for (final code in ['fr', 'de', 'es', 'pt']) {
+        expect(decimalSeparatorForLocale(code), ',');
+      }
+    });
+
+    test('is a dot for en', () {
+      expect(decimalSeparatorForLocale('en'), '.');
+    });
+  });
 }

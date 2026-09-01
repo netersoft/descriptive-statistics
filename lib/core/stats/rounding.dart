@@ -20,12 +20,17 @@ double arrondi(double value, int decimals) {
 }
 
 /// Formats [value] without a trailing ".0" for whole numbers, matching the
-/// legacy app's `noZero()`.
-String noZero(double value) {
+/// legacy app's `noZero()`. Uses [decimalSeparator] between the whole and
+/// fractional parts (default '.') -- pass ',' to match the fr/de/es/pt
+/// convention `parseDecimal` already accepts on input, so results are shown
+/// the same way the user typed them.
+String noZero(double value, {String decimalSeparator = '.'}) {
   final text = value.toString();
   final dotIndex = text.indexOf('.');
-  if (dotIndex != -1 && text.substring(dotIndex + 1) == '0') {
-    return text.substring(0, dotIndex);
+  final whole = dotIndex == -1 ? text : text.substring(0, dotIndex);
+  final fraction = dotIndex == -1 ? '' : text.substring(dotIndex + 1);
+  if (fraction == '0' || fraction.isEmpty) {
+    return whole;
   }
-  return text;
+  return '$whole$decimalSeparator$fraction';
 }

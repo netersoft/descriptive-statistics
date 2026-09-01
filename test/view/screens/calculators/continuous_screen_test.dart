@@ -76,9 +76,10 @@ void main() {
       expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
 
       final explanation = explanationText(tester);
-      expect(explanation, contains('X = 17.5'));
-      expect(explanation, contains('Mo = 14.2857'));
-      expect(explanation, contains('Me = 16.25'));
+      // French (the default test locale) displays decimals with a comma.
+      expect(explanation, contains('X = 17,5'));
+      expect(explanation, contains('Mo = 14,2857'));
+      expect(explanation, contains('Me = 16,25'));
       expect(explanation, contains('Classe Modale'));
       expect(explanation, contains('Classe Mediante'));
       expect(explanation, contains('MOYENNES'));

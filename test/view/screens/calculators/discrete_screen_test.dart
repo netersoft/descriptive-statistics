@@ -78,7 +78,8 @@ void main() {
       // explanation (rather than reading provider state directly) exercises
       // the actual HtmlWidget rendering path.
       final explanation = explanationText(tester);
-      expect(explanation, contains('X = 2.333'));
+      // French (the default test locale) displays decimals with a comma.
+      expect(explanation, contains('X = 2,333'));
       expect(explanation, contains('X = 4'));
       expect(explanation, contains('MOYENNES'));
       expect(explanation, contains('ETENDUE'));

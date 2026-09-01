@@ -5,6 +5,7 @@ import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/qualitative_stats.dart';
 import '../../../core/stats/rounding.dart';
+import '../../../core/tools/functions/number_parsing.dart';
 
 /// Renders the legend, total effectif, and (gated by [selectedStats]) mean
 /// and mode sections for a [QualitativeStatsResult] -- mirrors the legacy
@@ -22,6 +23,9 @@ class QualitativeExplanation extends StatelessWidget {
 }
 
 String buildQualitativeExplanationHtml(QualitativeStatsResult r, Set<QualitativeStatOption> selected) {
+  final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
+  String fmt(double v) => noZero(v, decimalSeparator: sep);
+
   final buffer = StringBuffer('''
 <b>${t.qltTabTitle1}</b> : ${t.tableModalities}<br>
 <b>${t.qltTabTitle2}</b> : ${t.tableEffectifs}<br>
@@ -30,15 +34,15 @@ String buildQualitativeExplanationHtml(QualitativeStatsResult r, Set<Qualitative
 <b>${t.qltTabTitle5}</b> : ${t.tableCFrequencies}<br><br>
 <b><font color='blue'><u>${t.effectifTotal}</u></font></b><br><br>
 <b>E = &sum;Ni</b><br>
-<font color='red'><b><u>E = ${noZero(r.total)}</u></b></font><br><br>
+<font color='red'><b><u>E = ${fmt(r.total)}</u></b></font><br><br>
 ''');
 
   if (selected.contains(QualitativeStatOption.mean)) {
     buffer.write('''
 <b><font color='blue'><u>${t.meanSectionTitle}</u></font></b><br><br>
 <b>X = &sum;Ni / n</b><br>
-X = ${noZero(r.total)} / ${r.modalities.length}<br>
-<font color='red'><b><u>X = ${noZero(r.mean)}</u></b></font><br><br>
+X = ${fmt(r.total)} / ${r.modalities.length}<br>
+<font color='red'><b><u>X = ${fmt(r.mean)}</u></b></font><br><br>
 ''');
   }
 

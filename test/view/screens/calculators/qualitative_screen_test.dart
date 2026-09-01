@@ -84,7 +84,8 @@ void main() {
 
       final explanation = explanationText(tester);
       expect(explanation, contains('E = 85'));
-      expect(explanation, contains('X = 28.3333'));
+      // French (the default test locale) displays decimals with a comma.
+      expect(explanation, contains('X = 28,3333'));
       expect(explanation, contains('Mo >>> A'));
       expect(explanation, contains('EFFECTIF TOTAL'));
     });

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/constants/chart_options.dart';
+import '../../../core/tools/functions/number_parsing.dart';
 import '../../themes/app_theme.dart';
 
 /// Paged view over a fixed list of charts, with a page indicator and
@@ -147,10 +148,12 @@ Widget qualitativeBarChart({required List<String> labels, required List<double> 
   ),
 );
 
-Widget _quantitativeBarChart({required List<double> xi, required List<double> ni}) => qualitativeBarChart(labels: xi.map(noZero).toList(), values: ni);
+String _fmt(double v) => noZero(v, decimalSeparator: decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode));
+
+Widget _quantitativeBarChart({required List<double> xi, required List<double> ni}) => qualitativeBarChart(labels: xi.map(_fmt).toList(), values: ni);
 
 Widget _quantitativeLineChart({required List<double> xi, required List<double> ni}) {
-  final labels = xi.map(noZero).toList();
+  final labels = xi.map(_fmt).toList();
   return LineChart(
     LineChartData(
       titlesData: FlTitlesData(
