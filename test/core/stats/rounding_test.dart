@@ -21,6 +21,14 @@ void main() {
     test('leaves already-precise values unchanged', () {
       expect(arrondi(3.0, 3), 3.0);
     });
+
+    test('rounds values whose binary representation falls just short of the half', () {
+      // 1.005 and 0.145 are actually stored as ~1.00499999999999989 and
+      // ~0.144999999999999990 -- without the epsilon nudge these would
+      // truncate down to 1.0/0.14 instead of rounding up.
+      expect(arrondi(1.005, 2), 1.01);
+      expect(arrondi(0.145, 2), 0.15);
+    });
   });
 
   group('noZero', () {

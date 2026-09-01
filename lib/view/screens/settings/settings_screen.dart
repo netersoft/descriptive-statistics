@@ -29,6 +29,7 @@ class SettingsScreen extends StatelessWidget {
       backgroundColor: AppTheme.getAppbarBgColor(),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
         onPressed: () {
           context.pop();
         },

@@ -99,6 +99,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                     }),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline),
+                      tooltip: context.t.delete,
                       onPressed: () => _confirmDelete(key),
                     ),
                   ),

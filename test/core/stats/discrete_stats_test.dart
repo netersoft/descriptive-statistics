@@ -80,5 +80,56 @@ void main() {
         ),
       );
     });
+
+    test('throws on a negative effectif', () {
+      expect(
+        () => computeDiscreteStats([1, 2], [3, -1]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.negativeEffectif),
+        ),
+      );
+    });
+
+    test('throws when every effectif is zero', () {
+      expect(
+        () => computeDiscreteStats([1, 2], [0, 0]),
+        throwsA(
+          isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.zeroTotalEffectif),
+        ),
+      );
+    });
+
+    test('sorts rows by Xi regardless of input order', () {
+      // Same distribution as the symmetric fixture above (xi 1..5, ni 2,4,6,4,2)
+      // but entered out of order -- the cumulative-frequency logic requires
+      // ascending Xi, so results must match the sorted fixture exactly.
+      final outOfOrder = computeDiscreteStats(
+        [3, 1, 5, 2, 4],
+        [6, 2, 2, 4, 4],
+        precision: 4,
+      );
+
+      expect(outOfOrder.xi, [1, 2, 3, 4, 5]);
+      expect(outOfOrder.ni, [2, 4, 6, 4, 2]);
+      expect(outOfOrder.median, 3);
+      expect(outOfOrder.weightedMean, closeTo(3.0, 1e-9));
+    });
+
+    test('merges rows sharing the same Xi by summing their Ni', () {
+      final merged = computeDiscreteStats([2, 1, 2], [3, 5, 4]);
+
+      expect(merged.xi, [1, 2]);
+      expect(merged.ni, [5, 7]);
+    });
+
+    test('picks the class whose cumulative effectif exceeds N/2 on an exact boundary, not an average', () {
+      // xi 1..4, ni all 1 (total effectif 4, threshold = 2). The cumulative
+      // effectif hits exactly 2 at xi=2 -- matching the app's own course
+      // documentation ("la variable ayant l'effectif cumulé croissant
+      // directement supérieur à 1/2*sum(Ni)"), the median is xi=3 (the first
+      // class *strictly above* the threshold), not the average of 2 and 3.
+      final boundary = computeDiscreteStats([1, 2, 3, 4], [1, 1, 1, 1]);
+      expect(boundary.median, 3);
+    });
   });
 }

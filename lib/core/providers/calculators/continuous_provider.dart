@@ -45,7 +45,7 @@ class ContinuousCalculatorState {
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ContinuousCalculator extends _$ContinuousCalculator {
   @override
   ContinuousCalculatorState build() => ContinuousCalculatorState(selectedStats: StatOption.values.toSet());
@@ -102,7 +102,13 @@ class ContinuousCalculator extends _$ContinuousCalculator {
       state = state.copyWith(result: result, l1: l1, l2: l2);
       return null;
     } on StatsInputException catch (e) {
-      return e.reason == StatsErrorReason.insufficientData ? CalculationError.insufficientData : CalculationError.syntaxError;
+      return switch (e.reason) {
+        StatsErrorReason.insufficientData => CalculationError.insufficientData,
+        StatsErrorReason.negativeEffectif ||
+        StatsErrorReason.zeroTotalEffectif ||
+        StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
+      };
     }
   }
 }

@@ -33,7 +33,7 @@ class QualitativeCalculatorState {
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class QualitativeCalculator extends _$QualitativeCalculator {
   @override
   QualitativeCalculatorState build() => QualitativeCalculatorState(selectedStats: QualitativeStatOption.values.toSet());
@@ -86,7 +86,13 @@ class QualitativeCalculator extends _$QualitativeCalculator {
       state = state.copyWith(result: result);
       return null;
     } on StatsInputException catch (e) {
-      return e.reason == StatsErrorReason.insufficientData ? CalculationError.insufficientData : CalculationError.syntaxError;
+      return switch (e.reason) {
+        StatsErrorReason.insufficientData => CalculationError.insufficientData,
+        StatsErrorReason.negativeEffectif ||
+        StatsErrorReason.zeroTotalEffectif ||
+        StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
+      };
     }
   }
 }

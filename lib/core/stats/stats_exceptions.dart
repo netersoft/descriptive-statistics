@@ -9,8 +9,15 @@ enum StatsErrorReason {
   /// The input lists don't all have the same length.
   lengthMismatch,
 
-  /// A continuous class's upper bound is below its lower bound.
-  negativeClassWidth,
+  /// A continuous class's upper bound isn't strictly above its lower bound.
+  invalidClassWidth,
+
+  /// An effectif (or, for qualitative data, a value) is negative.
+  negativeEffectif,
+
+  /// The total effectif is zero, which would divide by zero downstream
+  /// (mean, variance, coefficient of variation, frequencies...).
+  zeroTotalEffectif,
 }
 
 /// Thrown by the `compute*Stats` functions when the input shape is invalid.

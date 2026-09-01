@@ -32,8 +32,13 @@ class _EntryControllers {
   }
 }
 
-class _QualitativeScreenState extends ConsumerState<QualitativeScreen> {
+class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with AutomaticKeepAliveClientMixin {
   final List<_EntryControllers> _entries = [];
+
+  // Without this, the TabBarView disposes this screen (and its in-progress
+  // entry rows) whenever the user switches to another tab and back.
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -65,6 +70,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> {
     CalculationError.insufficientData => context.t.insufficientData,
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
+    CalculationError.invalidValue => context.t.invalidValueError,
   };
 
   String _optionLabel(QualitativeStatOption option) => switch (option) {
@@ -132,6 +138,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final state = ref.watch(qualitativeCalculatorProvider);
     final notifier = ref.read(qualitativeCalculatorProvider.notifier);
     final result = state.result;

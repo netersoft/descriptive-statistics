@@ -33,7 +33,7 @@ class DiscreteCalculatorState {
   );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DiscreteCalculator extends _$DiscreteCalculator {
   @override
   DiscreteCalculatorState build() => DiscreteCalculatorState(selectedStats: StatOption.values.toSet());
@@ -86,7 +86,13 @@ class DiscreteCalculator extends _$DiscreteCalculator {
       state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: decimalPrecision));
       return null;
     } on StatsInputException catch (e) {
-      return e.reason == StatsErrorReason.insufficientData ? CalculationError.insufficientData : CalculationError.syntaxError;
+      return switch (e.reason) {
+        StatsErrorReason.insufficientData => CalculationError.insufficientData,
+        StatsErrorReason.negativeEffectif ||
+        StatsErrorReason.zeroTotalEffectif ||
+        StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
+      };
     }
   }
 }

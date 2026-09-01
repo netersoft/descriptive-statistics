@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/constants/chart_options.dart';
 import '../../themes/app_theme.dart';
@@ -34,7 +35,16 @@ class _ChartCarouselState extends State<ChartCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.charts.isEmpty) return const SizedBox.shrink();
+    if (widget.charts.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Text(
+          context.t.noChartTypeSelected,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      );
+    }
 
     return Column(
       children: [
@@ -44,6 +54,7 @@ class _ChartCarouselState extends State<ChartCarousel> {
             children: [
               IconButton(
                 icon: const Icon(Icons.chevron_left),
+                tooltip: context.t.previous,
                 onPressed: _page > 0 ? () => _goTo(_page - 1) : null,
               ),
               Expanded(
@@ -55,6 +66,7 @@ class _ChartCarouselState extends State<ChartCarousel> {
               ),
               IconButton(
                 icon: const Icon(Icons.chevron_right),
+                tooltip: context.t.next,
                 onPressed: _page < widget.charts.length - 1 ? () => _goTo(_page + 1) : null,
               ),
             ],
@@ -158,23 +170,49 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
   );
 }
 
+/// Pie slices are colored from a fixed palette with no other visual
+/// encoding, so a legend mapping color to modality is the only way a
+/// color-blind or low-vision user can tell them apart.
 Widget _qualitativePieChart({required List<String> labels, required List<double> values}) {
   final total = values.fold<double>(0, (a, b) => a + b);
   const colors = AppTheme.chartPalette;
 
-  return PieChart(
-    PieChartData(
-      sectionsSpace: 2,
-      centerSpaceRadius: 40,
-      sections: [
-        for (var i = 0; i < values.length; i++)
-          PieChartSectionData(
-            value: values[i],
-            color: colors[i % colors.length],
-            title: total == 0 ? '' : '${(values[i] / total * 100).round()}%',
-            radius: 70,
+  return Column(
+    children: [
+      Expanded(
+        child: PieChart(
+          PieChartData(
+            sectionsSpace: 2,
+            centerSpaceRadius: 40,
+            sections: [
+              for (var i = 0; i < values.length; i++)
+                PieChartSectionData(
+                  value: values[i],
+                  color: colors[i % colors.length],
+                  title: total == 0 ? '' : '${(values[i] / total * 100).round()}%',
+                  radius: 70,
+                ),
+            ],
           ),
-      ],
-    ),
+        ),
+      ),
+      const SizedBox(height: 4),
+      Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 12,
+        runSpacing: 4,
+        children: [
+          for (var i = 0; i < labels.length; i++)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(width: 10, height: 10, color: colors[i % colors.length]),
+                const SizedBox(width: 4),
+                Text(labels[i], style: const TextStyle(fontSize: 12)),
+              ],
+            ),
+        ],
+      ),
+    ],
   );
 }

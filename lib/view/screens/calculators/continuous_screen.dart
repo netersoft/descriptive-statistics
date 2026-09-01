@@ -34,8 +34,13 @@ class _EntryControllers {
   }
 }
 
-class _ContinuousScreenState extends ConsumerState<ContinuousScreen> {
+class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with AutomaticKeepAliveClientMixin {
   final List<_EntryControllers> _entries = [];
+
+  // Without this, the TabBarView disposes this screen (and its in-progress
+  // entry rows) whenever the user switches to another tab and back.
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -68,6 +73,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> {
     CalculationError.insufficientData => context.t.insufficientData,
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
+    CalculationError.invalidValue => context.t.invalidValueError,
   };
 
   String _optionLabel(StatOption option) => switch (option) {
@@ -146,6 +152,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final state = ref.watch(continuousCalculatorProvider);
     final notifier = ref.read(continuousCalculatorProvider.notifier);
     final result = state.result;
