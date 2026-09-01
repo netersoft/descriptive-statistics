@@ -60,6 +60,13 @@ void main() {
     // -- Empty state --
     expect(find.text('Aucune sauvegarde trouvée!'), findsOneWidget);
 
+    // Export/import stay available even with nothing saved yet -- a fresh
+    // device needs to be able to import before it has any backups of its
+    // own. Not tapped here: both trigger real platform channels
+    // (file_picker/share_plus) that aren't mocked in this widget test.
+    expect(find.text('Exporter les sauvegardes'), findsOneWidget);
+    expect(find.text('Importer des sauvegardes'), findsOneWidget);
+
     // -- Listing: adding to the repository reactively updates the screen,
     // no re-pump of the widget needed. --
     await tester.runAsync(() async {
