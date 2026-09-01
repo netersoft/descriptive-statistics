@@ -98,16 +98,24 @@ class ContinuousCalculator extends _$ContinuousCalculator {
       ni.add(parsedNi);
     }
 
+    // Sort by L1 ascending here too (mirroring the engine's own internal
+    // sort) so the indices in [result] (modalClassIndex, medianClassIndex,
+    // modalClassIndices) correctly refer to positions in the stored l1/l2 --
+    // otherwise the explanation panel would label the wrong class when rows
+    // aren't entered in ascending order.
+    final order = List<int>.generate(l1.length, (i) => i)..sort((a, b) => l1[a].compareTo(l1[b]));
+    final sortedL1 = [for (final i in order) l1[i]];
+    final sortedL2 = [for (final i in order) l2[i]];
+    final sortedNi = [for (final i in order) ni[i]];
+
     try {
-      final result = computeContinuousStats(l1, l2, ni, precision: decimalPrecision);
-      state = state.copyWith(result: result, l1: l1, l2: l2);
+      final result = computeContinuousStats(sortedL1, sortedL2, sortedNi, precision: decimalPrecision);
+      state = state.copyWith(result: result, l1: sortedL1, l2: sortedL2);
       return null;
     } on StatsInputException catch (e) {
       return switch (e.reason) {
         StatsErrorReason.insufficientData => CalculationError.insufficientData,
-        StatsErrorReason.negativeEffectif ||
-        StatsErrorReason.zeroTotalEffectif ||
-        StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.negativeEffectif || StatsErrorReason.zeroTotalEffectif || StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
         StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
       };
     }

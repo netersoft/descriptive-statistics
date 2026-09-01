@@ -67,7 +67,12 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
     setState(() {
       _entries.removeWhere((e) => e.l1.text.trim().isEmpty && e.l2.text.trim().isEmpty && e.ni.text.trim().isEmpty);
       for (final row in rows) {
-        _entries.add(_EntryControllers()..l1.text = row[0]..l2.text = row[1]..ni.text = row[2]);
+        _entries.add(
+          _EntryControllers()
+            ..l1.text = row[0]
+            ..l2.text = row[1]
+            ..ni.text = row[2],
+        );
       }
     });
   }
@@ -154,6 +159,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
           calculatorState.l1,
           calculatorState.l2,
           calculatorState.selectedStats,
+          ref.read(continuousCalculatorProvider.notifier).decimalPrecision,
         ),
         xi: result.xi.join('_'),
         ni: result.ni.join('_'),
@@ -317,6 +323,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                 l1: state.l1,
                 l2: state.l2,
                 selectedStats: state.selectedStats,
+                precision: notifier.decimalPrecision,
               ),
               const SizedBox(height: 16),
               Row(
