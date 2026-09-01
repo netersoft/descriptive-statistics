@@ -127,7 +127,7 @@ Cov(X,Y) = ${fmt(arrondi(covarianceSum, 3))} / $n - 1<br>
 <b><font color='blue'><u>${t.correlationSectionTitle}</u></font></b><br><br>
 <b>r = Cov(X, Y) / &sigma;(x)&sigma;(y)</b><br>
 r = ${fmt(r.covariance)} / ( ${fmt(arrondi(xDeviation, 3))} * ${fmt(arrondi(yDeviation, 3))} )<br>
-<font color='red'><b><u>r = ${fmt(r.correlation)}</u></b></font><br><br>
+<font color='red'><b><u>r = ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}</u></b></font><br><br>
 ''');
   }
 
@@ -149,9 +149,8 @@ SE = ${fmt(r.standardDeviation)} / &radic;$n<br>
 <b><font color='blue'><u>${t.coefficientOfVariationSectionTitle}</u></font></b><br><br>
 <b>CV = (Vx / X) * 100</b><br>
 CV = (${fmt(r.standardDeviation)} / ${fmt(r.weightedMean)}) * 100<br>
-<font color='red'><b><u>CV = ${fmt(r.coefficientOfVariation)}</u></b></font><br><br>
-<b>${r.isHomogeneous ? t.distribHomo : t.distribHetero}</b><br><br>
-''');
+<font color='red'><b><u>CV = ${r.isCoefficientOfVariationDefined ? fmt(r.coefficientOfVariation) : t.undefinedValue}</u></b></font><br><br>
+${r.isCoefficientOfVariationDefined ? '<b>${r.isHomogeneous ? t.distribHomo : t.distribHetero}</b><br><br>' : ''}''');
   }
 
   buffer.write('''

@@ -44,7 +44,7 @@ String buildDiscreteShareText(DiscreteStatsResult r, Set<StatOption> selected) {
   if (selected.contains(StatOption.covariance)) {
     buffer
       ..writeln('${t.covarianceSectionTitle}: ${fmt(r.covariance)}')
-      ..writeln('${t.correlationSectionTitle}: ${fmt(r.correlation)}');
+      ..writeln('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.standardDeviation)) {
     buffer
@@ -53,8 +53,10 @@ String buildDiscreteShareText(DiscreteStatsResult r, Set<StatOption> selected) {
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
     buffer.writeln(
-      '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
-      '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})',
+      r.isCoefficientOfVariationDefined
+          ? '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
+                '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})'
+          : '${t.coefficientOfVariationSectionTitle}: ${t.undefinedValue}',
     );
   }
   buffer.write('${t.rangeSectionTitle}: ${fmt(r.range)}');
@@ -102,7 +104,7 @@ String buildContinuousShareText(
   if (selected.contains(StatOption.covariance)) {
     buffer
       ..writeln('${t.covarianceSectionTitle}: ${fmt(r.covariance)}')
-      ..writeln('${t.correlationSectionTitle}: ${fmt(r.correlation)}');
+      ..writeln('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.standardDeviation)) {
     buffer
@@ -111,8 +113,10 @@ String buildContinuousShareText(
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
     buffer.writeln(
-      '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
-      '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})',
+      r.isCoefficientOfVariationDefined
+          ? '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
+                '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})'
+          : '${t.coefficientOfVariationSectionTitle}: ${t.undefinedValue}',
     );
   }
   buffer.write('${t.rangeSectionTitle}: ${fmt(r.range)}');
