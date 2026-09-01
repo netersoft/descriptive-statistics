@@ -82,6 +82,9 @@ void main() {
       expect(explanation, contains('X = 4'));
       expect(explanation, contains('MOYENNES'));
       expect(explanation, contains('ETENDUE'));
+      // Save and Share sit side by side once a result exists.
+      expect(find.text('Enregistrer'), findsOneWidget);
+      expect(find.text('Partager'), findsOneWidget);
     });
 
     testWidgets('accepts comma as the decimal separator, as fr/de/es/pt keyboards produce', (tester) async {
@@ -166,6 +169,46 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TextField), findsNothing);
+    });
+
+    testWidgets('bulk-imports pasted rows, replacing empty leftover rows, and calculates from them', (tester) async {
+      await pumpScreen(tester);
+
+      // A leftover empty row from before the paste should be cleared away.
+      await addRow(tester);
+
+      await tester.tap(find.text('Importer des données'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField).last, '1;2\n2,5;4\n3;6');
+      await tester.tap(find.text('Importer'));
+      await tester.pumpAndSettle();
+
+      final textFields = find.byType(TextField);
+      expect(textFields, findsNWidgets(6));
+      expect(find.widgetWithText(TextField, '1'), findsOneWidget);
+      expect(find.widgetWithText(TextField, '2,5'), findsOneWidget);
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Erreur de syntaxe!'), findsNothing);
+      expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
+    });
+
+    testWidgets('rejects a pasted row with the wrong number of fields', (tester) async {
+      await pumpScreen(tester);
+
+      await tester.tap(find.text('Importer des données'));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField).last, '1;2;3');
+      await tester.tap(find.text('Importer'));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Format invalide'), findsOneWidget);
+      // The dialog stays open on error instead of importing anything.
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('unchecking a stat option hides its section from the explanation', (tester) async {

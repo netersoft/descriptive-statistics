@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
@@ -9,10 +10,12 @@ import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/rounding.dart';
+import '../../components/calculators/bulk_import_dialog.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/collapsible_checklist.dart';
 import '../../components/calculators/deletable_entry_row.dart';
 import '../../components/calculators/qualitative_explanation.dart';
+import '../../components/calculators/share_text.dart';
 import '../../components/calculators/stats_table.dart';
 
 class QualitativeScreen extends ConsumerStatefulWidget {
@@ -53,6 +56,21 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
   void _removeEntry(int index) => setState(() {
     _entries.removeAt(index).dispose();
   });
+
+  Future<void> _bulkImport() async {
+    final rows = await showBulkImportDialog(
+      context: context,
+      fieldLabels: [context.t.modalityLabel, context.t.effectifLabel],
+    );
+    if (rows == null) return;
+
+    setState(() {
+      _entries.removeWhere((e) => e.modality.text.trim().isEmpty && e.value.text.trim().isEmpty);
+      for (final row in rows) {
+        _entries.add(_EntryControllers()..modality.text = row[0]..value.text = row[1]);
+      }
+    });
+  }
 
   void _calculate() {
     final notifier = ref.read(qualitativeCalculatorProvider.notifier);
@@ -136,6 +154,20 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
     }
   }
 
+  Future<void> _share() async {
+    final calculatorState = ref.read(qualitativeCalculatorProvider);
+    final result = calculatorState.result;
+    if (result == null) return;
+
+    final box = context.findRenderObject() as RenderBox?;
+    await SharePlus.instance.share(
+      ShareParams(
+        text: buildQualitativeShareText(result, calculatorState.selectedStats),
+        sharePositionOrigin: box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -171,10 +203,19 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
                         ],
                         onDelete: () => _removeEntry(i),
                       ),
-                    TextButton.icon(
-                      onPressed: _addEntry,
-                      icon: const Icon(Icons.add_circle_outline),
-                      label: Text(context.t.addEntry),
+                    Wrap(
+                      children: [
+                        TextButton.icon(
+                          onPressed: _addEntry,
+                          icon: const Icon(Icons.add_circle_outline),
+                          label: Text(context.t.addEntry),
+                        ),
+                        TextButton.icon(
+                          onPressed: _bulkImport,
+                          icon: const Icon(Icons.content_paste),
+                          label: Text(context.t.bulkImportAction),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -252,13 +293,24 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
               const SizedBox(height: 16),
               QualitativeExplanation(result: result, selectedStats: state.selectedStats),
               const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: _save,
-                  icon: const Icon(Icons.save_outlined),
-                  label: Text(context.t.save),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _save,
+                      icon: const Icon(Icons.save_outlined),
+                      label: Text(context.t.save),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _share,
+                      icon: const Icon(Icons.share_outlined),
+                      label: Text(context.t.share),
+                    ),
+                  ),
+                ],
               ),
             ],
             const SizedBox(height: 80),
