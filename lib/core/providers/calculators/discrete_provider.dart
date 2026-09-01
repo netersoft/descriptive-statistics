@@ -5,6 +5,7 @@ import '../../services/shared_preferences/keys.dart';
 import '../../services/shared_preferences/service.dart';
 import '../../stats/discrete_stats.dart';
 import '../../stats/stats_exceptions.dart';
+import '../../tools/functions/number_parsing.dart';
 import 'calculator_types.dart';
 
 part 'discrete_provider.g.dart';
@@ -73,8 +74,8 @@ class DiscreteCalculator extends _$DiscreteCalculator {
         return CalculationError.emptyField;
       }
 
-      final parsedXi = double.tryParse(xiText[i]);
-      final parsedNi = double.tryParse(niText[i]);
+      final parsedXi = parseDecimal(xiText[i]);
+      final parsedNi = parseDecimal(niText[i]);
       if (parsedXi == null || parsedNi == null) {
         return CalculationError.syntaxError;
       }

@@ -5,6 +5,7 @@ import '../../services/shared_preferences/keys.dart';
 import '../../services/shared_preferences/service.dart';
 import '../../stats/continuous_stats.dart';
 import '../../stats/stats_exceptions.dart';
+import '../../tools/functions/number_parsing.dart';
 import 'calculator_types.dart';
 
 part 'continuous_provider.g.dart';
@@ -86,9 +87,9 @@ class ContinuousCalculator extends _$ContinuousCalculator {
         return CalculationError.emptyField;
       }
 
-      final parsedL1 = double.tryParse(l1Text[i]);
-      final parsedL2 = double.tryParse(l2Text[i]);
-      final parsedNi = double.tryParse(niText[i]);
+      final parsedL1 = parseDecimal(l1Text[i]);
+      final parsedL2 = parseDecimal(l2Text[i]);
+      final parsedNi = parseDecimal(niText[i]);
       if (parsedL1 == null || parsedL2 == null || parsedNi == null) {
         return CalculationError.syntaxError;
       }
