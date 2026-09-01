@@ -271,6 +271,7 @@ class SettingsListWrapper extends ConsumerWidget {
           ],
         ),
         SettingsSection(
+          title: Text(context.t.applicationSectionTitle),
           tiles: <SettingsTile>[
             SettingsTile.navigation(
               leading: const Icon(Icons.info),

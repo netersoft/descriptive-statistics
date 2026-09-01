@@ -54,6 +54,7 @@
   "chartTypeBar": "Barres",
   "chartTypeLine": "Lignes",
   "chartTypePie": "Cercles",
+  "applicationSectionTitle": "Application",
   "calcVarD": "Calculer une série statistique à variables quantitatives discrètes",
   "addEntry": "Ajouter une entrée",
   "calculate": "Calculer",

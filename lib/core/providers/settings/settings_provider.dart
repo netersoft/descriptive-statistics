@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../enums/app_brightness.dart';
 import '../../helpers/router/navigation_helper.dart';
@@ -42,12 +42,20 @@ class Settings extends _$Settings {
     );
   }
 
+  /// Opens the app's Play Store listing directly.
+  ///
+  /// Google explicitly recommends against wiring the native in-app review
+  /// flow (`requestReview()`) to an always-available menu action like this
+  /// one: it silently no-ops once the user's review quota is spent or the
+  /// conditions aren't met, with no way for the caller to detect that --
+  /// verified on-device, where Play Core logs a successful request yet shows
+  /// nothing. A menu item the user tapped on purpose should always do
+  /// something visible, so redirect straight to the store instead.
+  /// https://developer.android.com/guide/playcore/in-app-review#when-to-request
   Future<void> rateApp() async {
-    final inAppReview = InAppReview.instance;
-    if (await inAppReview.isAvailable()) {
-      await inAppReview.requestReview();
-    } else {
-      await inAppReview.openStoreListing();
+    final uri = Uri.parse(_playStoreUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
