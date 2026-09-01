@@ -97,23 +97,21 @@ icons_launcher:
       enable: false
       image_path: assets/images/launcher/icon.png
 
-# Splash logo have size 1440x1440
+# No logo: the launcher icon is already shown by the app's own splashScreenBody
+# (see lib/view/redirection.dart) right after this native splash, so showing it
+# twice is redundant. On Android 12+, simply omitting `image` does NOT mean "no
+# icon" -- the OS then auto-derives one from the adaptive launcher icon and
+# masks it into a circle, cropping any square artwork's corners. Passing a
+# fully transparent placeholder is what actually renders no visible logo.
 flutter_native_splash:
-  image: assets/images/launcher/splash_logo.png
   color: '#353839'
-  #background_image: assets/background.png
-  #branding: assets/dart.png
-  image_dark: assets/images/launcher/splash_logo.png
   color_dark: '#262626'
-  #background_image_dark: assets/dark_background.png
-  #branding_dark: assets/dark_dart.png
-  #branding_mode: bottom
   fullscreen: true
   android_12:
-    image: assets/images/launcher/splash_logo.png
+    image: assets/images/launcher/blank_splash_icon.png
     icon_background_color: '#353839'
     color: '#353839'
-    image_dark: assets/images/launcher/splash_logo.png
+    image_dark: assets/images/launcher/blank_splash_icon.png
     icon_background_color_dark: '#262626'
     color_dark: '#262626'
 

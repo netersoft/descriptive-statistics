@@ -106,6 +106,25 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.25),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset('assets/images/launcher/icon.png', width: 60.0, height: 60.0),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 Text(
                   context.t.appNameAlt,
                   style: const TextStyle(fontSize: 21, color: Colors.white),

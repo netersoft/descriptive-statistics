@@ -12,6 +12,7 @@ import '../../../core/services/i18n/config.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/tools/constants/chart_options.dart';
 import '../../components/misc/floating_modal.dart';
+import '../../themes/app_colors.dart';
 import '../../themes/app_theme.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -93,6 +94,11 @@ class SettingsListWrapper extends ConsumerWidget {
     );
 
     return SettingsList(
+      // settings_ui colors section titles with colorScheme.primary, which this
+      // app pins to the brand's dark onyx (#353839) for buttons/app bars --
+      // invisible against the dark scaffold. Override just that color in dark
+      // mode; light mode keeps the package's default (unaffected).
+      darkTheme: const SettingsThemeData(titleTextColor: AppColors.skyBlue),
       sections: [
         SettingsSection(
           tiles: <SettingsTile>[
