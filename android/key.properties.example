@@ -1,0 +1,12 @@
+# Template for android/key.properties (gitignored, never commit the real file).
+#
+# Once you have the release keystore:
+#   1. Drop the keystore file somewhere under android/ (e.g. android/app/upload-keystore.jks).
+#   2. cp android/key.properties.example android/key.properties
+#   3. Fill in the values below.
+# android/app/build.gradle picks this up automatically and switches the release
+# build type from the debug key to this one -- see the signingConfigs block.
+storePassword=
+keyPassword=
+keyAlias=
+storeFile=upload-keystore.jks
