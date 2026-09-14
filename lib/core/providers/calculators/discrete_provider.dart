@@ -57,7 +57,7 @@ class DiscreteCalculator extends _$DiscreteCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int get decimalPrecision => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
+  int getDecimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
 
   /// Parses [xiText]/[niText] (one entry per row) and computes the stats,
   /// storing the result in state on success. Returns the failure reason on
@@ -84,7 +84,7 @@ class DiscreteCalculator extends _$DiscreteCalculator {
     }
 
     try {
-      state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: decimalPrecision));
+      state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: getDecimalPrecision()));
       return null;
     } on StatsInputException catch (e) {
       return switch (e.reason) {

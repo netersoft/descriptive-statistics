@@ -59,7 +59,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int get decimalPrecision => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
+  int getDecimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
 
   /// Parses [modalityText]/[valueText] (one entry per row) and computes the
   /// stats, storing the result in state on success. Returns the failure
@@ -83,7 +83,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
     }
 
     try {
-      final result = computeQualitativeStats(modalityText, values, precision: decimalPrecision);
+      final result = computeQualitativeStats(modalityText, values, precision: getDecimalPrecision());
       state = state.copyWith(result: result);
       return null;
     } on StatsInputException catch (e) {
