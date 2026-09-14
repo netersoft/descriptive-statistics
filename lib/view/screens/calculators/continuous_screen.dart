@@ -159,7 +159,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
           calculatorState.l1,
           calculatorState.l2,
           calculatorState.selectedStats,
-          ref.read(continuousCalculatorProvider.notifier).decimalPrecision,
+          ref.read(continuousCalculatorProvider.notifier).getDecimalPrecision(),
         ),
         xi: result.xi.join('_'),
         ni: result.ni.join('_'),
@@ -323,7 +323,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                 l1: state.l1,
                 l2: state.l2,
                 selectedStats: state.selectedStats,
-                precision: notifier.decimalPrecision,
+                precision: notifier.getDecimalPrecision(),
               ),
               const SizedBox(height: 16),
               Row(

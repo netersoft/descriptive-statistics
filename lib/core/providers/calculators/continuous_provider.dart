@@ -69,7 +69,7 @@ class ContinuousCalculator extends _$ContinuousCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int get decimalPrecision => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
+  int getDecimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
 
   /// Parses [l1Text]/[l2Text]/[niText] (one entry per row) and computes the
   /// stats, storing the result in state on success. Returns the failure
@@ -109,7 +109,7 @@ class ContinuousCalculator extends _$ContinuousCalculator {
     final sortedNi = [for (final i in order) ni[i]];
 
     try {
-      final result = computeContinuousStats(sortedL1, sortedL2, sortedNi, precision: decimalPrecision);
+      final result = computeContinuousStats(sortedL1, sortedL2, sortedNi, precision: getDecimalPrecision());
       state = state.copyWith(result: result, l1: sortedL1, l2: sortedL2);
       return null;
     } on StatsInputException catch (e) {

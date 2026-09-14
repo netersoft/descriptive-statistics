@@ -153,7 +153,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
         resolutionHtml: buildDiscreteExplanationHtml(
           result,
           calculatorState.selectedStats,
-          ref.read(discreteCalculatorProvider.notifier).decimalPrecision,
+          ref.read(discreteCalculatorProvider.notifier).getDecimalPrecision(),
         ),
         xi: result.xi.join('_'),
         ni: result.ni.join('_'),
@@ -307,7 +307,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
                 ),
               ],
               const SizedBox(height: 16),
-              DiscreteExplanation(result: result, selectedStats: state.selectedStats, precision: notifier.decimalPrecision),
+              DiscreteExplanation(result: result, selectedStats: state.selectedStats, precision: notifier.getDecimalPrecision()),
               const SizedBox(height: 16),
               Row(
                 children: [
