@@ -115,11 +115,11 @@ List<Widget> buildQualitativeCharts({
   if (types.contains(QualitativeChartType.pie)) _qualitativePieChart(labels: modalities, values: effectifs),
 ];
 
-Widget _bottomLabel(List<String> labels, double value) {
+Widget _bottomLabel(List<String> labels, double value, TitleMeta meta) {
   final index = value.toInt();
   if (index < 0 || index >= labels.length) return const SizedBox.shrink();
   return SideTitleWidget(
-    axisSide: AxisSide.bottom,
+    meta: meta,
     space: 6,
     child: Text(labels[index], style: const TextStyle(fontSize: 11)),
   );
@@ -130,9 +130,9 @@ Widget _bottomLabel(List<String> labels, double value) {
 /// the saved xi/ni.
 Widget qualitativeBarChart({required List<String> labels, required List<double> values}) => BarChart(
   BarChartData(
-    barTouchData: BarTouchData(enabled: false),
+    barTouchData: const BarTouchData(enabled: false),
     titlesData: FlTitlesData(
-      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v), reservedSize: 28)),
+      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
       leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
       topTitles: const AxisTitles(),
       rightTitles: const AxisTitles(),
@@ -157,7 +157,7 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
   return LineChart(
     LineChartData(
       titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v), reservedSize: 28)),
+        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
         leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
         topTitles: const AxisTitles(),
         rightTitles: const AxisTitles(),
