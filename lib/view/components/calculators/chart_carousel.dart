@@ -157,7 +157,7 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
   return LineChart(
     LineChartData(
       titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
+        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, interval: 1, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
         leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
         topTitles: const AxisTitles(),
         rightTitles: const AxisTitles(),

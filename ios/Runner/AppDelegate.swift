@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import sign_in_with_apple
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
