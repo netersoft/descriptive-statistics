@@ -13,7 +13,7 @@ void main() {
     const ni = [3.0, 5.0, 2.0];
     final r = computeContinuousStats(l1, l2, ni, precision: 6);
 
-    test('rounds the covariance-sum and standard-deviation intermediates to the requested precision, not a hardcoded one', () {
+    test('rounds the covariance-sum and standard-deviation intermediates to the precision the result was computed with, not a hardcoded one', () {
       // Independently recomputed with the exact same logic the builder
       // uses internally, so this fails if the builder ever hardcodes a
       // precision instead of honoring the one it's given.
@@ -34,7 +34,7 @@ void main() {
       final yDeviation = math.sqrt(ySquares / (n - 1));
 
       for (final precision in [1, 6]) {
-        final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.covariance}, precision);
+        final html = buildContinuousExplanationHtml(computeContinuousStats(l1, l2, ni, precision: precision), l1, l2, {StatOption.covariance});
 
         // French (the default test locale) displays decimals with a comma.
         expect(html, contains(noZero(arrondi(covarianceSum, precision), decimalSeparator: ',')));
@@ -47,21 +47,21 @@ void main() {
       final xiniSum = arrondi(r.xini.reduce((a, b) => a + b), 6);
       final xi2niSum = arrondi(r.xi2ni.reduce((a, b) => a + b), 6);
 
-      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.mean, StatOption.variance}, 6);
+      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.mean, StatOption.variance});
 
       expect(html, contains(noZero(xiniSum, decimalSeparator: ',')));
       expect(html, contains(noZero(xi2niSum, decimalSeparator: ',')));
     });
 
     test('labels the modal/median class from the same l1/l2 arrays the result was computed from', () {
-      final html = buildContinuousExplanationHtml(r, l1, l2, {}, 6);
+      final html = buildContinuousExplanationHtml(r, l1, l2, {});
 
       expect(html, contains('${noZero(l1[r.modalClassIndex])} - ${noZero(l2[r.modalClassIndex])}'));
       expect(html, contains('${noZero(l1[r.medianClassIndex])} - ${noZero(l2[r.medianClassIndex])}'));
     });
 
     test('shows the interpolation formula for quartiles and deciles instead of the discrete lookup wording', () {
-      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.quartiles}, 6);
+      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.quartiles});
 
       for (final (name, fraction) in [('Q1', '1/4'), ('Q3', '3/4'), ('D1', '1/10'), ('D9', '9/10')]) {
         expect(html, contains('$name = L1 + k(($fraction * &sum;Ni - N1) / Ni)'));
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('runs the mode formula on effectifs when classes share the same width', () {
-      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.mode}, 6);
+      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.mode});
 
       expect(html, contains('Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2)))'));
       expect(html, isNot(contains('effectifs corrigés')));
@@ -81,7 +81,7 @@ void main() {
       const ul2 = [10.0, 30.0, 40.0];
       final unequal = computeContinuousStats(ul1, ul2, [10, 16, 6]);
 
-      final html = buildContinuousExplanationHtml(unequal, ul1, ul2, {StatOption.mode}, 3);
+      final html = buildContinuousExplanationHtml(unequal, ul1, ul2, {StatOption.mode});
 
       expect(html, contains('Mo = L1 + k((d0 - d1) / ((d0 - d1) + (d0 - d2)))'));
       expect(html, contains('effectifs corrigés'));

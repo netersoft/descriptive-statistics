@@ -16,12 +16,11 @@ import '../../../core/tools/functions/number_parsing.dart';
 class DiscreteExplanation extends StatelessWidget {
   final DiscreteStatsResult result;
   final Set<StatOption> selectedStats;
-  final int precision;
 
-  const DiscreteExplanation({required this.result, required this.selectedStats, required this.precision, super.key});
+  const DiscreteExplanation({required this.result, required this.selectedStats, super.key});
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats, precision), buildAsync: false);
+  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats), buildAsync: false);
 }
 
 /// The intermediate sums below (xiniSum, covarianceSum, the two standard
@@ -32,7 +31,8 @@ class DiscreteExplanation extends StatelessWidget {
 /// [precision] must match the value the result was computed with, so the
 /// intermediate values shown here round the same way as the final stats
 /// they lead into.
-String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selected, int precision) {
+String buildDiscreteExplanationHtml(DiscreteStatsResult r, Set<StatOption> selected) {
+  final precision = r.precision;
   final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
   String fmt(double v) => noZero(v, decimalSeparator: sep);
 

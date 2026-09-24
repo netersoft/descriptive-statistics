@@ -64,6 +64,12 @@ class DiscreteStatsResult {
   final double coefficientOfVariation;
   final double range;
 
+  /// Decimal places every value above was rounded to. Carried with the
+  /// result so anything rendering it later (explanation, saved backup)
+  /// rounds its intermediate values the same way, even if the setting has
+  /// changed since.
+  final int precision;
+
   /// False when all Ni are identical, making the standard deviation of Ni
   /// zero and the correlation formula's denominator zero (0/0 -> NaN).
   bool get isCorrelationDefined => !correlation.isNaN;
@@ -99,6 +105,7 @@ class DiscreteStatsResult {
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
+    required this.precision,
     this.medianMidpoint,
     this.firstQuartileMidpoint,
     this.thirdQuartileMidpoint,
@@ -273,6 +280,7 @@ DiscreteStatsResult computeDiscreteStats(
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,
+    precision: precision,
     medianMidpoint: _midpointOnExactTie(medianOperator, medianIndex, xiR, precision),
     firstQuartileMidpoint: _midpointOnExactTie(firstQuartOperator, firstQuartIndex, xiR, precision),
     thirdQuartileMidpoint: _midpointOnExactTie(thirdQuartOperator, thirdQuartIndex, xiR, precision),

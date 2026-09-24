@@ -272,5 +272,39 @@ void main() {
 
       expect(find.byType(ChartCarousel), findsNothing);
     });
+
+    testWidgets('keeps the explanation at the precision it was calculated with after the setting changes', (tester) async {
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      // xi=[1,2,4]: the Xi standard deviation shown in the correlation step
+      // is √(42/18) = 1.52753 -> "1,528" at 3 decimals, "1,5" at 1.
+      const rows = [
+        ['1', '1'],
+        ['2', '2'],
+        ['4', '7'],
+      ];
+      for (var i = 0; i < rows.length; i++) {
+        await tester.enterText(textFields.at(i * 2), rows[i][0]);
+        await tester.enterText(textFields.at(i * 2 + 1), rows[i][1]);
+      }
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+      expect(explanationText(tester), contains('1,528'));
+
+      // The user lowers the precision in Settings, then comes back and
+      // interacts with the screen (anything that rebuilds it) without
+      // recalculating.
+      when(() => mockPrefs.getInt(any(), defaultValue: any(named: 'defaultValue'))).thenReturn(1);
+      await tester.tap(find.text('Calculs'));
+      await tester.pumpAndSettle();
+
+      final explanation = explanationText(tester);
+      expect(explanation, contains('1,528'));
+      expect(explanation, isNot(contains('( 1,5 *')));
+    });
   });
 }
