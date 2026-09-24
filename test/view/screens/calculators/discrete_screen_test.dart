@@ -1,7 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter/core/data/backups/backup_data.dart';
+import 'package:flutter_starter/core/data/backups/backups_repository.dart';
+import 'package:flutter_starter/core/models/backup_model.dart';
 import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
+import 'package:flutter_starter/core/services/di/locator.dart';
 import 'package:flutter_starter/core/services/i18n/translations.g.dart';
 import 'package:flutter_starter/core/tools/constants/chart_options.dart';
 import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
@@ -13,6 +17,8 @@ import '../../../helpers/test_utils.dart';
 
 void main() {
   late MockSharedPreferencesService mockPrefs;
+
+  setUpAll(() => registerFallbackValue(Backup(name: '', resolutionHtml: '', xi: '', ni: '', date: '')));
 
   setUp(() async {
     mockPrefs = MockSharedPreferencesService();
@@ -333,5 +339,43 @@ void main() {
       expect(explanation, contains('1,528'));
       expect(explanation, isNot(contains('( 1,5 *')));
     });
+
+    testWidgets('saves the calculation with its kind, data and save time so the backup can be recomputed', (tester) async {
+      final repository = _MockBackupsRepository();
+      when(() => repository.add(any())).thenAnswer((_) async {});
+      locator.registerSingleton<BackupsRepository>(repository);
+      addTearDown(() => locator.unregister<BackupsRepository>());
+
+      await pumpScreen(tester);
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      await tester.enterText(textFields.at(0), '1');
+      await tester.enterText(textFields.at(1), '2');
+      await tester.enterText(textFields.at(2), '2');
+      await tester.enterText(textFields.at(3), '4');
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text('Enregistrer'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Enregistrer'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).last, 'Etude');
+      await tester.tap(find.widgetWithText(TextButton, 'Enregistrer'));
+      await tester.pumpAndSettle();
+
+      final saved = verify(() => repository.add(captureAny())).captured.single as Backup;
+      expect(saved.name, 'Etude');
+      expect(saved.kind, 'discrete');
+      expect(saved.createdAt, isNotNull);
+      final data = BackupData.decode(saved.kind, saved.data)!;
+      expect(data.numbers(0), [1, 2]);
+      expect(data.numbers(1), [2, 4]);
+      expect(data.selectedStats, containsAll(['mean', 'median', 'charts']));
+      expect(data.precision, 3);
+    });
   });
 }
+
+class _MockBackupsRepository extends Mock implements BackupsRepository {}

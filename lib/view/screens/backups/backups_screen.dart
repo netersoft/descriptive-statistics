@@ -11,8 +11,7 @@ import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
-import '../../../core/stats/rounding.dart';
-import '../../../core/tools/functions/number_parsing.dart';
+import '../../components/backups/backup_presentation.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/misc/themed_html.dart';
 
@@ -102,27 +101,6 @@ class _BackupsScreenState extends State<BackupsScreen> {
     }
   }
 
-  /// Parses the saved xi/ni for a mini bar chart -- returns null when
-  /// either side is missing or the counts don't line up (backups from
-  /// before charts were introduced have no chart data of their own to
-  /// show, so this quietly falls back to just the HTML resolution).
-  (List<String>, List<double>)? _miniChartData(Backup backup) {
-    if (backup.xi.isEmpty || backup.ni.isEmpty) return null;
-
-    // Xi are stored as Dart's raw double.toString() ("1.0", "4.5"): show
-    // them the way the calculators do ("1", "4,5" in fr/de/es/pt).
-    final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
-    final labels = [
-      for (final raw in backup.xi.split('_'))
-        if (double.tryParse(raw) case final value?) noZero(value, decimalSeparator: separator) else raw,
-    ];
-    final values = backup.ni.split('_').map(double.tryParse).toList();
-
-    if (values.length != labels.length || values.any((v) => v == null)) return null;
-
-    return (labels, values.cast<double>());
-  }
-
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Column(
@@ -168,7 +146,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                       children: [
                         ListTile(
                           title: Text(backup.name),
-                          subtitle: Text(backup.date),
+                          subtitle: Text(backupDateLabel(backup, LocaleSettings.currentLocale.languageCode)),
                           onTap: () => setState(() {
                             if (expanded) {
                               _expandedKeys.remove(key);
@@ -183,7 +161,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                           ),
                         ),
                         if (expanded) ...[
-                          if (_miniChartData(backup) case (final labels, final values))
+                          if (backupChartData(backup, LocaleSettings.currentLocale.languageCode) case (final labels, final values))
                             Padding(
                               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                               child: SizedBox(
@@ -195,7 +173,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: ThemedHtml(backup.resolutionHtml),
+                              child: ThemedHtml(backupExplanationHtml(backup)),
                             ),
                           ),
                         ],

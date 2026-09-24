@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/data/backups/backup_data.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/qualitative_provider.dart';
 import '../../../core/providers/settings/settings_provider.dart';
@@ -57,6 +58,12 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
 
     await saveCalculationBackup(
       context,
+      data: BackupData(
+        kind: BackupKind.qualitative,
+        columns: [result.modalities, result.effectifs],
+        selectedStats: [for (final option in state.selectedStats) option.name],
+        precision: result.precision,
+      ),
       resolutionHtml: buildQualitativeExplanationHtml(result, state.selectedStats),
       xi: List<int>.generate(result.modalities.length, (i) => i).join('_'),
       ni: result.effectifs.join('_'),

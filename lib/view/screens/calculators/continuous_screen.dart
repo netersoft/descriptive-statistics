@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/data/backups/backup_data.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/continuous_provider.dart';
 import '../../../core/providers/settings/settings_provider.dart';
@@ -54,6 +55,12 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
 
     await saveCalculationBackup(
       context,
+      data: BackupData(
+        kind: BackupKind.continuous,
+        columns: [state.l1, state.l2, result.ni],
+        selectedStats: [for (final option in state.selectedStats) option.name],
+        precision: result.precision,
+      ),
       resolutionHtml: buildContinuousExplanationHtml(result, state.l1, state.l2, state.selectedStats),
       xi: result.xi.join('_'),
       ni: result.ni.join('_'),

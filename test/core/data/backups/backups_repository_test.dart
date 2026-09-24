@@ -90,4 +90,29 @@ void main() {
 
     expect(events, [1, 0]);
   });
+
+  test('persists the kind, data and save time, and still reads backups saved without them', () async {
+    final saved = DateTime(2026, 3, 7, 9, 5);
+    await repository.add(sampleBackup('Ancienne'));
+    await repository.add(
+      Backup(
+        name: 'Nouvelle',
+        resolutionHtml: '<b>X</b>',
+        xi: '1_2',
+        ni: '2_4',
+        date: '07.03.2026 - 09:05',
+        kind: 'discrete',
+        data: '{"columns": [[1, 2], [2, 4]], "selectedStats": ["mean"], "precision": 3}',
+        createdAt: saved,
+      ),
+    );
+
+    final [old, fresh] = repository.readAll();
+    expect(old.kind, isNull);
+    expect(old.data, isNull);
+    expect(old.createdAt, isNull);
+    expect(fresh.kind, 'discrete');
+    expect(fresh.data, contains('"selectedStats"'));
+    expect(fresh.createdAt, saved);
+  });
 }
