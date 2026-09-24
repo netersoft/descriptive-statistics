@@ -108,8 +108,11 @@ android {
             // so `flutter build apk --release` keeps working out of the box.
             signingConfig keystorePropertiesFile.exists() ? signingConfigs.release : signingConfigs.debug
 
-            minifyEnabled false
-            shrinkResources false
+            // R8: strips unused Java/Kotlin code (the dex was ~10.7 MB without
+            // it) and unused Android resources. Flutter's Gradle plugin and the
+            // plugins' own consumer rules supply the keep rules they need.
+            minifyEnabled true
+            shrinkResources true
         }
         debug {
             minifyEnabled false
