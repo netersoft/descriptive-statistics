@@ -91,6 +91,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
     CalculationError.invalidValue => context.t.invalidValueError,
+    CalculationError.overlappingClasses => context.t.overlappingClassesError,
   };
 
   String _optionLabel(StatOption option) => switch (option) {

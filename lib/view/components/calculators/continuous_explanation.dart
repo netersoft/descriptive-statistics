@@ -11,11 +11,10 @@ import '../../../core/tools/functions/number_parsing.dart';
 
 /// Renders the step-by-step formula walkthrough for a
 /// [ContinuousStatsResult], gated by which [StatOption]s are selected --
-/// mirrors the legacy app's HTML "resolution" panel. Quartiles/deciles/
-/// variance/covariance/standard-deviation/coefficient-of-variation sections
-/// are textually identical to the Discrete screen's (only the underlying
-/// values differ, since they're interpolated here); mode and median show
-/// the class-interpolation formula instead of a plain lookup.
+/// mirrors the legacy app's HTML "resolution" panel. Variance/covariance/
+/// standard-deviation/coefficient-of-variation sections are textually
+/// identical to the Discrete screen's; mode, median, quartiles and deciles
+/// show the class-interpolation formula instead of a plain lookup.
 class ContinuousExplanation extends StatelessWidget {
   final ContinuousStatsResult result;
   final List<double> l1;
@@ -80,7 +79,7 @@ String buildContinuousExplanationHtml(
   final xDeviation = math.sqrt(xSquares / (n - 1));
   final yDeviation = math.sqrt(ySquares / (n - 1));
 
-  double niAt(int index) => index >= 0 && index < n ? r.ni[index] : 0;
+  double weightAt(int index) => index >= 0 && index < n ? r.modeWeights[index] : 0;
   double upBefore(int index) => index > 0 ? r.cumulativeAscending[index - 1] : 0;
 
   final buffer = StringBuffer('''
@@ -103,8 +102,12 @@ X = ${fmt(niSum)} / $n<br>
   }
 
   if (selected.contains(StatOption.mode)) {
-    final modeGapBefore = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex - 1);
-    final modeGapAfter = r.ni[r.modalClassIndex] - niAt(r.modalClassIndex + 1);
+    final modeGapBefore = arrondi(r.modeWeights[r.modalClassIndex] - weightAt(r.modalClassIndex - 1), precision);
+    final modeGapAfter = arrondi(r.modeWeights[r.modalClassIndex] - weightAt(r.modalClassIndex + 1), precision);
+    // With unequal class widths the formula runs on densities d = Ni / k
+    // instead of effectifs, so label its terms accordingly.
+    final (w0, w1, w2) = r.usesDensities ? ('d0', 'd1', 'd2') : ('N0', 'N1', 'N2');
+    final densitiesNote = r.usesDensities ? '<i>${t.unequalWidthsModeNote}</i><br>' : '';
     final multipleModesNote = r.isModeUnique
         ? ''
         : '<i>${t.multipleModesNote} '
@@ -112,7 +115,7 @@ X = ${fmt(niSum)} / $n<br>
               '</i><br><br>';
     buffer.write('''
 <b><font color='blue'><u>${t.modeSectionTitle}</u></font></b><br><br>
-<b>Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2))</b><br>
+$densitiesNote<b>Mo = L1 + k(($w0 - $w1) / (($w0 - $w1) + ($w0 - $w2)))</b><br>
 Mo = ${fmt(l1[r.modalClassIndex])} + ${fmt(k[r.modalClassIndex])} * ((${fmt(modeGapBefore)}) / ((${fmt(modeGapBefore)})+(${fmt(modeGapAfter)})))<br>
 <font color='red'><b><u>Mo = ${fmt(r.mode)}</u></b></font><br><br>
 $multipleModesNote''');
@@ -127,27 +130,29 @@ Me = ${fmt(l1[r.medianClassIndex])} + ${fmt(k[r.medianClassIndex])} * (((${fmt(n
 ''');
   }
 
+  // Same interpolation as the median, in the class where the cumulative
+  // effectif crosses the given fraction of the total.
+  String interpolation(String name, String fraction, double fractionValue, int index, double value) =>
+      '''
+${t.quantileInterpolationLabel} <b>$fraction&sum;Ni</b><br>
+<b>$name = L1 + k(($fraction * &sum;Ni - N1) / Ni)</b><br>
+$name = ${fmt(l1[index])} + ${fmt(k[index])} * (((${fmt(arrondi(niSum * fractionValue, precision))}) - ${fmt(upBefore(index))}) / ${fmt(r.ni[index])})<br>
+<font color='red'><b><u>$name = ${fmt(value)}</u></b></font><br><br>
+''';
+
   if (selected.contains(StatOption.quartiles)) {
     buffer.write('''
 <b><font color='blue'><u>${t.quartilesSectionTitle}</u></font></b><br><br>
 <font color='magenta'>${t.firstQuartLabel}</font><br>
-${t.firstQuartExplanationD} <b>1/4&sum;Ni</b><br>
-<font color='red'><b><u>Q1 = ${fmt(r.firstQuartile)}</u></b></font><br><br>
-<font color='magenta'>${t.thirdQuartLabel}</font><br>
-${t.thirdQuartExplanationD} <b>3/4&sum;Ni</b><br>
-<font color='red'><b><u>Q3 = ${fmt(r.thirdQuartile)}</u></b></font><br><br>
-<font color='magenta'>${t.interQuartLabel}</font><br>
+${interpolation('Q1', '1/4', 1 / 4, r.firstQuartileClassIndex, r.firstQuartile)}<font color='magenta'>${t.thirdQuartLabel}</font><br>
+${interpolation('Q3', '3/4', 3 / 4, r.thirdQuartileClassIndex, r.thirdQuartile)}<font color='magenta'>${t.interQuartLabel}</font><br>
 <b>IIQ = Q3 - Q1</b><br>
 IIQ = ${fmt(r.thirdQuartile)} - ${fmt(r.firstQuartile)}<br>
 <font color='red'><b><u>IIQ = ${fmt(r.interquartileRange)}</u></b></font><br><br>
 <b><font color='blue'><u>${t.decilesSectionTitle}</u></font></b><br><br>
 <font color='magenta'>${t.firstDecileLabel}</font><br>
-${t.firstDecileExplanationD} <b>1/10&sum;Ni</b><br>
-<font color='red'><b><u>D1 = ${fmt(r.firstDecile)}</u></b></font><br><br>
-<font color='magenta'>${t.ninthDecileLabel}</font><br>
-${t.ninthDecileExplanationD} <b>9/10&sum;Ni</b><br>
-<font color='red'><b><u>D9 = ${fmt(r.ninthDecile)}</u></b></font><br><br>
-''');
+${interpolation('D1', '1/10', 1 / 10, r.firstDecileClassIndex, r.firstDecile)}<font color='magenta'>${t.ninthDecileLabel}</font><br>
+${interpolation('D9', '9/10', 9 / 10, r.ninthDecileClassIndex, r.ninthDecile)}''');
   }
 
   if (selected.contains(StatOption.variance)) {

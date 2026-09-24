@@ -156,6 +156,26 @@ void main() {
       );
     });
 
+    testWidgets('shows a dedicated error snackbar for overlapping classes', (tester) async {
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      // [0, 20[ then [10, 30[: values between 10 and 20 would be counted twice.
+      await tester.enterText(textFields.at(0), '0');
+      await tester.enterText(textFields.at(1), '20');
+      await tester.enterText(textFields.at(2), '5');
+      await tester.enterText(textFields.at(3), '10');
+      await tester.enterText(textFields.at(4), '30');
+      await tester.enterText(textFields.at(5), '5');
+
+      await tester.tap(find.text('Calculer'));
+      await tester.pump();
+
+      expect(find.text('Les classes se chevauchent : chaque classe doit commencer après la fin de la précédente.'), findsOneWidget);
+    });
+
     testWidgets('removing an entry row removes its fields', (tester) async {
       await pumpScreen(tester);
 

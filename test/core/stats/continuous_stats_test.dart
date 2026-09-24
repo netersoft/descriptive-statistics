@@ -35,9 +35,18 @@ void main() {
       expect(result.interquartileRange, closeTo(15.0, 1e-9));
     });
 
-    test('looks deciles up at the class midpoint (not interpolated)', () {
-      expect(result.firstDecile, 5);
-      expect(result.ninthDecile, 35);
+    test('interpolates deciles within their class, like the median and quartiles', () {
+      // D1: ΣNi/10 = 2 falls in [0,10) -> 0 + 10 * ((2 - 0) / 5) = 4.
+      // D9: 9ΣNi/10 = 18 falls in [30,40) -> 30 + 10 * ((18 - 17) / 3).
+      expect(result.firstDecileClassIndex, 0);
+      expect(result.ninthDecileClassIndex, 3);
+      expect(result.firstDecile, 4);
+      expect(result.ninthDecile, closeTo(33.3333, 1e-3));
+    });
+
+    test('keeps using effectifs for the mode when every class has the same width', () {
+      expect(result.usesDensities, isFalse);
+      expect(result.modeWeights, result.ni);
     });
 
     test('computes variance, standard deviation, and standard error', () {
@@ -197,6 +206,42 @@ void main() {
 
       expect(result.variance, closeTo(2 / 9, 1e-3));
       expect(result.standardDeviation.isNaN, isFalse);
+    });
+  });
+
+  group('computeContinuousStats class validation', () {
+    test('rejects overlapping classes', () {
+      expect(
+        () => computeContinuousStats([0, 5], [10, 15], [1, 1]),
+        throwsA(isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.overlappingClasses)),
+      );
+    });
+
+    test('detects the overlap regardless of input order', () {
+      expect(
+        () => computeContinuousStats([5, 0], [15, 10], [1, 1]),
+        throwsA(isA<StatsInputException>().having((e) => e.reason, 'reason', StatsErrorReason.overlappingClasses)),
+      );
+    });
+
+    test('accepts touching bounds and gaps between classes', () {
+      expect(() => computeContinuousStats([0, 10], [10, 20], [1, 1]), returnsNormally);
+      // Integer-style classes: 10-19 then 20-29.
+      expect(() => computeContinuousStats([10, 20], [19, 29], [1, 1]), returnsNormally);
+    });
+  });
+
+  group('computeContinuousStats mode with unequal class widths', () {
+    // Effectifs alone would pick [10,30) (16 > 10), but it's twice as wide:
+    // densities are 10/10 = 1, 16/20 = 0.8 and 6/10 = 0.6, so the modal
+    // class is [0,10): Mo = 0 + 10 * ((1 - 0) / ((1 - 0) + (1 - 0.8))).
+    final result = computeContinuousStats([0, 10, 30], [10, 30, 40], [10, 16, 6]);
+
+    test('picks the modal class and interpolates from densities', () {
+      expect(result.usesDensities, isTrue);
+      expect(result.modeWeights, [1, 0.8, 0.6]);
+      expect(result.modalClassIndex, 0);
+      expect(result.mode, closeTo(8.333, 1e-3));
     });
   });
 }

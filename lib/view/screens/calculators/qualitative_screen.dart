@@ -90,6 +90,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
     CalculationError.invalidValue => context.t.invalidValueError,
+    CalculationError.overlappingClasses => context.t.overlappingClassesError,
   };
 
   String _optionLabel(QualitativeStatOption option) => switch (option) {
