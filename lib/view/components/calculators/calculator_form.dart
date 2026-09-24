@@ -53,8 +53,9 @@ class EntryRows {
 }
 
 /// The card holding a calculator's entry rows, with its "add an entry" and
-/// "import data" actions. [labels] and [keyboardTypes] give each field's
-/// label and keyboard, in row order.
+/// "import data" actions -- plus "raw series" when [onRawSeries] is set.
+/// [labels] and [keyboardTypes] give each field's label and keyboard, in
+/// row order.
 class EntryRowsCard extends StatelessWidget {
   final EntryRows rows;
   final List<String> labels;
@@ -62,6 +63,7 @@ class EntryRowsCard extends StatelessWidget {
   final VoidCallback onAdd;
   final ValueChanged<int> onRemove;
   final VoidCallback onBulkImport;
+  final VoidCallback? onRawSeries;
 
   const EntryRowsCard({
     required this.rows,
@@ -70,6 +72,7 @@ class EntryRowsCard extends StatelessWidget {
     required this.onAdd,
     required this.onRemove,
     required this.onBulkImport,
+    this.onRawSeries,
     super.key,
   });
 
@@ -103,6 +106,12 @@ class EntryRowsCard extends StatelessWidget {
                 icon: const Icon(Icons.content_paste),
                 label: Text(context.t.bulkImportAction),
               ),
+              if (onRawSeries != null)
+                TextButton.icon(
+                  onPressed: onRawSeries,
+                  icon: const Icon(Icons.format_list_numbered),
+                  label: Text(context.t.rawSeriesAction),
+                ),
             ],
           ),
         ],

@@ -46,6 +46,19 @@ void main() {
   String explanationText(WidgetTester tester) => tester.widgetList<RichText>(find.byType(RichText)).map((w) => w.text.toPlainText()).join('\n');
 
   group('QualitativeScreen', () {
+    testWidgets('fills modality/effectif rows from a raw series', (tester) async {
+      await pumpScreen(tester);
+
+      await tester.tap(find.text('Série brute'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).last, 'Rouge; Bleu\nRouge, Très bien');
+      await tester.tap(find.text('Compter'));
+      await tester.pumpAndSettle();
+
+      final values = [for (final field in tester.widgetList<TextField>(find.byType(TextField))) field.controller!.text];
+      expect(values, ['Rouge', '2', 'Bleu', '1', 'Très bien', '1']);
+    });
+
     testWidgets('adding rows, calculating, and rendering the table and explanation', (tester) async {
       await pumpScreen(tester);
 

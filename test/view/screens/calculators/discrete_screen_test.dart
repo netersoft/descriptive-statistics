@@ -57,6 +57,36 @@ void main() {
   String explanationText(WidgetTester tester) => tester.widgetList<RichText>(find.byType(RichText)).map((w) => w.text.toPlainText()).join('\n');
 
   group('DiscreteScreen', () {
+    testWidgets('fills Xi/Ni rows from a raw series, keeping rows already filled in', (tester) async {
+      await pumpScreen(tester);
+      await addRow(tester);
+      await tester.enterText(find.byType(TextField).first, '10');
+      await tester.enterText(find.byType(TextField).at(1), '1');
+
+      await tester.tap(find.text('Série brute'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).last, '3, 5 5;7\n3 2,5');
+      await tester.tap(find.text('Compter'));
+      await tester.pumpAndSettle();
+
+      final values = [for (final field in tester.widgetList<TextField>(find.byType(TextField))) field.controller!.text];
+      expect(values, ['10', '1', '2,5', '1', '3', '2', '5', '2', '7', '1']);
+    });
+
+    testWidgets('names the value it cannot read in a raw series', (tester) async {
+      await pumpScreen(tester);
+
+      await tester.tap(find.text('Série brute'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).last, '1 3,5,5 2');
+      await tester.tap(find.text('Compter'));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('« 3,5,5 »'), findsOneWidget);
+      // The dialog stays open so the series can be fixed.
+      expect(find.text('Compter'), findsOneWidget);
+    });
+
     testWidgets('adding rows, calculating, and rendering the table and explanation', (tester) async {
       await pumpScreen(tester);
 

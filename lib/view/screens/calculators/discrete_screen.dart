@@ -6,6 +6,7 @@ import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/discrete_provider.dart';
 import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../../core/stats/raw_series.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
@@ -13,6 +14,7 @@ import '../../components/calculators/calculator_actions.dart';
 import '../../components/calculators/calculator_form.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/discrete_explanation.dart';
+import '../../components/calculators/raw_series_dialog.dart';
 import '../../components/calculators/share_text.dart';
 import '../../components/calculators/stats_table.dart';
 
@@ -40,6 +42,18 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
 
   Future<void> _bulkImport() async {
     final rows = await showBulkImportDialog(context: context, fieldLabels: const ['Xi', 'Ni']);
+    if (rows != null) setState(() => _entries.importRows(rows));
+  }
+
+  Future<void> _rawSeries() async {
+    final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
+    final rows = await showRawSeriesDialog(
+      context: context,
+      hint: context.t.rawSeriesNumericHint,
+      toRows: (text) => [
+        for (final (:value, :count) in tallyNumericSeries(text)) [noZero(value, decimalSeparator: separator), '$count'],
+      ],
+    );
     if (rows != null) setState(() => _entries.importRows(rows));
   }
 
@@ -98,6 +112,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
               onAdd: () => setState(_entries.add),
               onRemove: (i) => setState(() => _entries.removeAt(i)),
               onBulkImport: _bulkImport,
+              onRawSeries: _rawSeries,
             ),
             const SizedBox(height: 12),
             StatOptionsChecklist<StatOption>(
