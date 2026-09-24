@@ -95,6 +95,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
     CalculationError.emptyField => context.t.emptyFieldError,
     CalculationError.syntaxError => context.t.syntaxError,
     CalculationError.invalidValue => context.t.invalidValueError,
+    CalculationError.overlappingClasses => context.t.overlappingClassesError,
   };
 
   String _optionLabel(StatOption option) => switch (option) {

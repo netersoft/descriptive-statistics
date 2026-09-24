@@ -59,5 +59,34 @@ void main() {
       expect(html, contains('${noZero(l1[r.modalClassIndex])} - ${noZero(l2[r.modalClassIndex])}'));
       expect(html, contains('${noZero(l1[r.medianClassIndex])} - ${noZero(l2[r.medianClassIndex])}'));
     });
+
+    test('shows the interpolation formula for quartiles and deciles instead of the discrete lookup wording', () {
+      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.quartiles}, 6);
+
+      for (final (name, fraction) in [('Q1', '1/4'), ('Q3', '3/4'), ('D1', '1/10'), ('D9', '9/10')]) {
+        expect(html, contains('$name = L1 + k(($fraction * &sum;Ni - N1) / Ni)'));
+      }
+      expect(html, isNot(contains('directement supérieur')));
+    });
+
+    test('runs the mode formula on effectifs when classes share the same width', () {
+      final html = buildContinuousExplanationHtml(r, l1, l2, {StatOption.mode}, 6);
+
+      expect(html, contains('Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2)))'));
+      expect(html, isNot(contains('effectifs corrigés')));
+    });
+
+    test('runs the mode formula on densities, and says so, when class widths differ', () {
+      const ul1 = [0.0, 10.0, 30.0];
+      const ul2 = [10.0, 30.0, 40.0];
+      final unequal = computeContinuousStats(ul1, ul2, [10, 16, 6]);
+
+      final html = buildContinuousExplanationHtml(unequal, ul1, ul2, {StatOption.mode}, 3);
+
+      expect(html, contains('Mo = L1 + k((d0 - d1) / ((d0 - d1) + (d0 - d2)))'));
+      expect(html, contains('effectifs corrigés'));
+      // d0 - d1 = 1 - 0 and d0 - d2 = 1 - 0.8.
+      expect(html, contains('((1) / ((1)+(0,2)))'));
+    });
   });
 }

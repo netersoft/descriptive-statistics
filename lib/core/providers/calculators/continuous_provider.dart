@@ -116,6 +116,7 @@ class ContinuousCalculator extends _$ContinuousCalculator {
       return switch (e.reason) {
         StatsErrorReason.insufficientData => CalculationError.insufficientData,
         StatsErrorReason.negativeEffectif || StatsErrorReason.zeroTotalEffectif || StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.overlappingClasses => CalculationError.overlappingClasses,
         StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
       };
     }

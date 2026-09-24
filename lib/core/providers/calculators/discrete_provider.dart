@@ -91,7 +91,8 @@ class DiscreteCalculator extends _$DiscreteCalculator {
         StatsErrorReason.insufficientData => CalculationError.insufficientData,
         StatsErrorReason.negativeEffectif ||
         StatsErrorReason.zeroTotalEffectif ||
-        StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
+        StatsErrorReason.invalidClassWidth ||
+        StatsErrorReason.overlappingClasses => CalculationError.invalidValue,
         StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
       };
     }

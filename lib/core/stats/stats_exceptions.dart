@@ -12,6 +12,10 @@ enum StatsErrorReason {
   /// A continuous class's upper bound isn't strictly above its lower bound.
   invalidClassWidth,
 
+  /// A continuous class starts before the previous one (sorted by lower
+  /// bound) ends, so some values would be counted in two classes.
+  overlappingClasses,
+
   /// An effectif (or, for qualitative data, a value) is negative.
   negativeEffectif,
 

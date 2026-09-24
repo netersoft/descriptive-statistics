@@ -18,15 +18,35 @@ class ContinuousStatsResult {
   /// Descending cumulative effectif ("N-" in the legacy app) per class.
   final List<double> cumulativeDescending;
 
-  /// Index of the modal class (highest effectif).
+  /// Index of the modal class (highest effectif, or highest density when
+  /// [usesDensities]).
   final int modalClassIndex;
 
-  /// Every class index tied for the highest effectif, ascending. Length 1
+  /// Every class index tied for the highest effectif (or density), ascending. Length 1
   /// unless the distribution has no unique modal class (bimodal/
   /// multimodal); [modalClassIndex] is always [modalClassIndices].first.
   final List<int> modalClassIndices;
 
   bool get isModeUnique => modalClassIndices.length == 1;
+
+  /// True when the classes don't all share the same width. The mode formula
+  /// `Mo = L1 + k((N0 - N1) / ((N0 - N1) + (N0 - N2)))` compares
+  /// effectifs, which is only meaningful when every class is equally wide;
+  /// with unequal widths, the modal class and N0/N1/N2 are taken from the
+  /// densities `Ni / k` (effectifs corrigés) instead.
+  final bool usesDensities;
+
+  /// The per-class values the mode was computed from: [ni] when classes
+  /// share the same width, `Ni / k` densities otherwise (see
+  /// [usesDensities]).
+  final List<double> modeWeights;
+
+  /// Class index each quantile was interpolated in (where the ascending
+  /// cumulative effectif crosses 1/4, 3/4, 1/10 and 9/10 of the total).
+  final int firstQuartileClassIndex;
+  final int thirdQuartileClassIndex;
+  final int firstDecileClassIndex;
+  final int ninthDecileClassIndex;
 
   /// Index of the median class (where the cumulative effectif crosses half
   /// the total).
@@ -45,9 +65,7 @@ class ContinuousStatsResult {
   final double thirdQuartile;
   final double interquartileRange;
 
-  /// Looked up at the class midpoint rather than interpolated within the
-  /// class -- preserved as-is from the legacy app, which (inconsistently
-  /// with how it computes the median/quartiles) does the same.
+  /// Interpolated within their class, like the median and quartiles.
   final double firstDecile;
   final double ninthDecile;
 
@@ -84,6 +102,12 @@ class ContinuousStatsResult {
     required this.modalClassIndex,
     required this.modalClassIndices,
     required this.medianClassIndex,
+    required this.usesDensities,
+    required this.modeWeights,
+    required this.firstQuartileClassIndex,
+    required this.thirdQuartileClassIndex,
+    required this.firstDecileClassIndex,
+    required this.ninthDecileClassIndex,
     required this.weightedMean,
     required this.simpleMean,
     required this.mode,
@@ -139,6 +163,15 @@ ContinuousStatsResult computeContinuousStats(
   if (k.any((width) => width <= 0)) {
     throw const StatsInputException(StatsErrorReason.invalidClassWidth);
   }
+  // Touching bounds ([0, 10[ then [10, 20[) and gaps (10-19 then 20-29, a
+  // common way to write integer classes) are both fine; a class starting
+  // before the previous one ends would count some values twice.
+  for (var i = 1; i < n; i++) {
+    if (cl1[i] < cl2[i - 1]) {
+      throw const StatsInputException(StatsErrorReason.overlappingClasses);
+    }
+  }
+  final usesDensities = k.any((width) => (width - k[0]).abs() > 1e-9 * k[0].abs().clamp(1, double.infinity));
 
   final niR = List<double>.generate(n, (i) => arrondi(cni[i], precision));
   if (niR.any((value) => value < 0)) {
@@ -149,8 +182,6 @@ ContinuousStatsResult computeContinuousStats(
   var niSum = 0.0;
   var xiSum = 0.0;
   var xiniSum = 0.0;
-  var maxNi = 0.0;
-  final modeIndices = <int>[];
   var xiMax = cl2[0];
   var xiMin = cl1[0];
   final xini = List<double>.filled(n, 0);
@@ -163,19 +194,25 @@ ContinuousStatsResult computeContinuousStats(
     xi2ni[i] = arrondi(xiR[i] * xiR[i] * niR[i], precision);
     xiniSum += xini[i];
 
-    if (niR[i] > maxNi) {
-      maxNi = niR[i];
-      modeIndices
-        ..clear()
-        ..add(i);
-    } else if (niR[i] == maxNi) {
-      modeIndices.add(i);
-    }
     if (cl2[i] > xiMax) xiMax = cl2[i];
     if (cl1[i] < xiMin) xiMin = cl1[i];
   }
   if (niSum == 0) {
     throw const StatsInputException(StatsErrorReason.zeroTotalEffectif);
+  }
+
+  final modeWeights = usesDensities ? List<double>.generate(n, (i) => niR[i] / k[i]) : niR;
+  var maxWeight = 0.0;
+  final modeIndices = <int>[];
+  for (var i = 0; i < n; i++) {
+    if (modeWeights[i] > maxWeight) {
+      maxWeight = modeWeights[i];
+      modeIndices
+        ..clear()
+        ..add(i);
+    } else if (modeWeights[i] == maxWeight) {
+      modeIndices.add(i);
+    }
   }
 
   final up = List<double>.filled(n, 0);
@@ -216,34 +253,29 @@ ContinuousStatsResult computeContinuousStats(
   final firstDecileIndex = _firstIndexPastThreshold(firstDecileOperator);
   final ninthDecileIndex = _firstIndexPastThreshold(ninthDecileOperator);
 
-  double niAt(int index) => index >= 0 && index < n ? niR[index] : 0;
+  double weightAt(int index) => index >= 0 && index < n ? modeWeights[index] : 0;
   double upBefore(int index) => index > 0 ? up[index - 1] : 0;
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
   final simpleMean = arrondi(niSum / n, precision);
 
   final maxNiIndex = modeIndices.first;
-  final modeGapBefore = niR[maxNiIndex] - niAt(maxNiIndex - 1);
-  final modeGapAfter = niR[maxNiIndex] - niAt(maxNiIndex + 1);
+  final modeGapBefore = modeWeights[maxNiIndex] - weightAt(maxNiIndex - 1);
+  final modeGapAfter = modeWeights[maxNiIndex] - weightAt(maxNiIndex + 1);
   final mode = arrondi(
     cl1[maxNiIndex] + k[maxNiIndex] * (modeGapBefore / (modeGapBefore + modeGapAfter)),
     precision,
   );
 
-  final median = arrondi(
-    cl1[medianIndex] + k[medianIndex] * ((niSum / 2 - upBefore(medianIndex)) / niR[medianIndex]),
-    precision,
-  );
-  final firstQuartile = arrondi(
-    cl1[firstQuartIndex] + k[firstQuartIndex] * ((niSum / 4 - upBefore(firstQuartIndex)) / niR[firstQuartIndex]),
-    precision,
-  );
-  final thirdQuartile = arrondi(
-    cl1[thirdQuartIndex] + k[thirdQuartIndex] * ((niSum * 3 / 4 - upBefore(thirdQuartIndex)) / niR[thirdQuartIndex]),
-    precision,
-  );
-  final firstDecile = arrondi(xiR[firstDecileIndex], precision);
-  final ninthDecile = arrondi(xiR[ninthDecileIndex], precision);
+  // Linear interpolation within the class where the cumulative effectif
+  // crosses [fraction] of the total: L1 + k((fraction·ΣNi - N+prev) / Ni).
+  double interpolate(int index, double fraction) => arrondi(cl1[index] + k[index] * ((niSum * fraction - upBefore(index)) / niR[index]), precision);
+
+  final median = interpolate(medianIndex, 1 / 2);
+  final firstQuartile = interpolate(firstQuartIndex, 1 / 4);
+  final thirdQuartile = interpolate(thirdQuartIndex, 3 / 4);
+  final firstDecile = interpolate(firstDecileIndex, 1 / 10);
+  final ninthDecile = interpolate(ninthDecileIndex, 9 / 10);
 
   final interquartileRange = arrondi(thirdQuartile - firstQuartile, precision);
   // Computed as Σni(xi − x̄)²/Σni from the unrounded mean rather than the
@@ -279,6 +311,12 @@ ContinuousStatsResult computeContinuousStats(
     modalClassIndex: maxNiIndex,
     modalClassIndices: modeIndices,
     medianClassIndex: medianIndex,
+    usesDensities: usesDensities,
+    modeWeights: modeWeights,
+    firstQuartileClassIndex: firstQuartIndex,
+    thirdQuartileClassIndex: thirdQuartIndex,
+    firstDecileClassIndex: firstDecileIndex,
+    ninthDecileClassIndex: ninthDecileIndex,
     weightedMean: weightedMean,
     simpleMean: simpleMean,
     mode: mode,
