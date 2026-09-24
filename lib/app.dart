@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,28 +17,6 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-
-    EasyLoading.instance
-      ..indicatorType = EasyLoadingIndicatorType.ring
-      ..maskColor = Colors.black.withValues(alpha: 0.2)
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..maskType = EasyLoadingMaskType.custom
-      ..backgroundColor = AppTheme.pickColor(
-        light: Colors.white,
-        dark: Colors.black,
-      )
-      ..indicatorColor = AppTheme.pickColor(
-        light: AppTheme.primaryColor,
-        dark: Colors.white,
-      )
-      ..progressColor = AppTheme.pickColor(
-        light: AppTheme.primaryColor,
-        dark: Colors.white,
-      )
-      ..textColor = AppTheme.getTextColor()
-      ..dismissOnTap = false
-      ..indicatorSize = 45.0
-      ..radius = 5.0;
 
     return const AppLifecycleLayer(child: AppRouterView());
   }
@@ -63,7 +40,6 @@ class AppRouterView extends ConsumerWidget {
         ],
         routerConfig: router,
         onGenerateTitle: (ctx) => t.appNameAlt,
-        builder: EasyLoading.init(),
       ),
     ),
   );
