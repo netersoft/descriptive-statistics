@@ -17,7 +17,9 @@ import '../../tools/constants/chart_options.dart';
 
 part 'settings_provider.g.dart';
 
-final _navigationHelper = locator<NavigationHelper>();
+// Resolved on each use rather than cached in a final global, so it always
+// matches the locator's current registration (tests re-register it).
+NavigationHelper get _navigationHelper => locator<NavigationHelper>();
 
 const _playStoreUrl = 'https://play.google.com/store/apps/details?id=com.neteru.tixtat';
 
@@ -61,6 +63,9 @@ class Settings extends _$Settings {
 
   Future<void> changeLanguage(String newValue) async {
     final navigator = _navigationHelper.navigatorKey.currentState;
+    // Persisted so it survives a cold start -- bootstrap otherwise falls
+    // back to the device locale (see applySavedOrDeviceLocale).
+    await prefs.setString(PrefKeys.language, newValue);
     await LocaleSettings.setLocaleRaw(newValue);
 
     try {

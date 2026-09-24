@@ -1,6 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/core/enums/app_brightness.dart';
 import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
+import 'package:flutter_starter/core/services/i18n/translations.g.dart';
 import 'package:flutter_starter/core/services/shared_preferences/keys.dart';
 import 'package:flutter_starter/core/tools/constants/chart_options.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,6 +61,21 @@ void main() {
 
       verify(() => mockPrefs.setString(PrefKeys.brightness, AppBrightness.light.name)).called(1);
       verifyNever(() => mockNav.go(any()));
+    });
+
+    test('changeLanguage persists the picked language so it survives a restart', () async {
+      when(() => mockPrefs.setString(any(), any())).thenAnswer((_) async => true);
+      // No live navigator in a unit test: the relaunch step is skipped.
+      when(() => mockNav.navigatorKey).thenReturn(GlobalKey<NavigatorState>());
+
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      addTearDown(() => LocaleSettings.setLocaleRaw('fr'));
+
+      await container.read(settingsProvider.notifier).changeLanguage('de');
+
+      verify(() => mockPrefs.setString(PrefKeys.language, 'de')).called(1);
+      expect(LocaleSettings.currentLocale, AppLocale.de);
     });
 
     test('getDecimalPrecision defaults to 3 when unset', () {
