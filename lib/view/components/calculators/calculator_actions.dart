@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../core/data/backups/backup_data.dart';
 import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
@@ -48,9 +49,13 @@ String formatBackupDate(DateTime date) {
 }
 
 /// Asks the user to name the study, then saves it as a [Backup] and
-/// confirms with a snackbar. Does nothing if the user cancels.
+/// confirms with a snackbar. Does nothing if the user cancels. [data] lets
+/// the Backups screen recompute the calculation (and so show it in the
+/// current language); [resolutionHtml], [xi] and [ni] keep the fields older
+/// app versions rely on filled in.
 Future<void> saveCalculationBackup(
   BuildContext context, {
+  required BackupData data,
   required String resolutionHtml,
   required String xi,
   required String ni,
@@ -58,8 +63,18 @@ Future<void> saveCalculationBackup(
   final name = await _promptForStudyName(context);
   if (name == null) return;
 
+  final now = DateTime.now();
   await locator<BackupsRepository>().add(
-    Backup(name: name, resolutionHtml: resolutionHtml, xi: xi, ni: ni, date: formatBackupDate(DateTime.now())),
+    Backup(
+      name: name,
+      resolutionHtml: resolutionHtml,
+      xi: xi,
+      ni: ni,
+      date: formatBackupDate(now),
+      kind: data.kind.name,
+      data: data.encode(),
+      createdAt: now,
+    ),
   );
 
   if (context.mounted) {

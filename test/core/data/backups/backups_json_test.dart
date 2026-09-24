@@ -47,5 +47,44 @@ void main() {
     test('throws when a backup entry is not an object', () {
       expect(() => parseBackupsJson('{"backups": ["not an object"]}'), throwsFormatException);
     });
+
+    test('round-trips the optional kind, data and save time', () {
+      final saved = DateTime(2026, 3, 7, 9, 5);
+      final json = exportBackupsToJson([
+        Backup(
+          name: 'Etude',
+          resolutionHtml: '<b>X</b>',
+          xi: '1_2',
+          ni: '2_4',
+          date: '07.03.2026 - 09:05',
+          kind: 'discrete',
+          data: '{"columns": [[1, 2], [2, 4]], "selectedStats": ["mean"], "precision": 3}',
+          createdAt: saved,
+        ),
+      ]);
+      final parsed = parseBackupsJson(json).single;
+
+      expect(parsed.kind, 'discrete');
+      expect(parsed.data, contains('"precision": 3'));
+      expect(parsed.createdAt, saved);
+    });
+
+    test('still reads version 1 files, which have no optional fields', () {
+      final parsed = parseBackupsJson(
+        '{"version": 1, "backups": [{"name": "Etude", "resolutionHtml": "<b>X</b>", "xi": "1_2", "ni": "2_4", "date": "01.01.2026"}]}',
+      ).single;
+
+      expect(parsed.name, 'Etude');
+      expect(parsed.kind, isNull);
+      expect(parsed.data, isNull);
+      expect(parsed.createdAt, isNull);
+    });
+
+    test('throws when an optional field has the wrong type', () {
+      expect(
+        () => parseBackupsJson('{"backups": [{"name": "E", "resolutionHtml": "", "xi": "", "ni": "", "date": "", "kind": 3}]}'),
+        throwsFormatException,
+      );
+    });
   });
 }

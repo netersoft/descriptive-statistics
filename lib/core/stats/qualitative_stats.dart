@@ -31,6 +31,9 @@ class QualitativeStatsResult {
 
   bool get isModeUnique => modeModalities.length == 1;
 
+  /// Decimal places every value above was rounded to.
+  final int precision;
+
   const QualitativeStatsResult({
     required this.modalities,
     required this.effectifs,
@@ -41,6 +44,7 @@ class QualitativeStatsResult {
     required this.mean,
     required this.modeModality,
     required this.modeModalities,
+    required this.precision,
   });
 }
 
@@ -123,5 +127,6 @@ QualitativeStatsResult computeQualitativeStats(
     mean: mean,
     modeModality: modeModality,
     modeModalities: modeModalities,
+    precision: precision,
   );
 }

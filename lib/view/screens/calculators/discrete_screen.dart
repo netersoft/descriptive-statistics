@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/data/backups/backup_data.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/discrete_provider.dart';
 import '../../../core/providers/settings/settings_provider.dart';
@@ -54,6 +55,12 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
 
     await saveCalculationBackup(
       context,
+      data: BackupData(
+        kind: BackupKind.discrete,
+        columns: [result.xi, result.ni],
+        selectedStats: [for (final option in state.selectedStats) option.name],
+        precision: result.precision,
+      ),
       resolutionHtml: buildDiscreteExplanationHtml(result, state.selectedStats),
       xi: result.xi.join('_'),
       ni: result.ni.join('_'),
