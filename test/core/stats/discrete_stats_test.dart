@@ -164,4 +164,43 @@ void main() {
       expect(boundary.median, 3);
     });
   });
+
+  group('computeDiscreteStats variance precision', () {
+    /// Two-pass population variance straight from the definition, as an
+    /// independent reference.
+    double referenceVariance(List<double> xi, List<double> ni) {
+      final total = ni.reduce((a, b) => a + b);
+      var mean = 0.0;
+      for (var i = 0; i < xi.length; i++) {
+        mean += xi[i] * ni[i] / total;
+      }
+      var sum = 0.0;
+      for (var i = 0; i < xi.length; i++) {
+        sum += ni[i] * (xi[i] - mean) * (xi[i] - mean);
+      }
+      return sum / total;
+    }
+
+    // Large, tightly clustered Xi made Σxi²ni/Σni − x̄² (with x̄ already
+    // rounded) cancel catastrophically: 1000/1001 came out as -0.445 (NaN
+    // standard deviation) and 123456..123458 as 83.11 instead of ~0.806.
+    final cases = <(List<double>, List<double>)>[
+      ([1000, 1001], [1, 2]),
+      ([123456, 123457, 123458], [3, 1, 2]),
+      ([1e6, 1e6 + 0.5, 1e6 + 1], [7, 3, 5]),
+      ([-5000.25, -4999.75, -4999.5], [2, 9, 4]),
+    ];
+
+    for (final (xi, ni) in cases) {
+      test('matches the reference for xi=$xi ni=$ni', () {
+        final result = computeDiscreteStats(xi, ni);
+        final expected = referenceVariance(xi, ni);
+
+        expect(result.variance, closeTo(expected, 1e-3));
+        expect(result.variance, greaterThanOrEqualTo(0));
+        expect(result.standardDeviation.isNaN, isFalse);
+        expect(result.isCoefficientOfVariationDefined, isTrue);
+      });
+    }
+  });
 }

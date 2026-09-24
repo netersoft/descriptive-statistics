@@ -187,4 +187,16 @@ void main() {
       );
     });
   });
+
+  group('computeContinuousStats variance precision', () {
+    test('stays exact for large, narrow classes', () {
+      // Midpoints 1000.5 and 1001.5 with ni 1 and 2: mean 1001.1667,
+      // variance = (1·0.6667² + 2·0.3333²)/3 = 0.2222. The old
+      // Σxi²ni/Σni − x̄² form (with x̄ rounded) returned a negative value.
+      final result = computeContinuousStats([1000, 1001], [1001, 1002], [1, 2]);
+
+      expect(result.variance, closeTo(2 / 9, 1e-3));
+      expect(result.standardDeviation.isNaN, isFalse);
+    });
+  });
 }
