@@ -49,4 +49,32 @@ void main() {
 
     expect(find.text('Chart A'), findsOneWidget);
   });
+
+  group('roundedPercentages', () {
+    test('adds up to exactly 100 where rounding each share separately would not', () {
+      // 62.5 % and 37.5 % would each round up to 63 % + 38 % = 101 %.
+      expect(roundedPercentages([5, 3]), [63, 37]);
+      // Three thirds would each round down to 33 % -> 99 %.
+      expect(roundedPercentages([1, 1, 1]), [34, 33, 33]);
+    });
+
+    test('keeps exact shares unchanged', () {
+      expect(roundedPercentages([1, 3]), [25, 75]);
+    });
+
+    test('always sums to 100 for arbitrary values', () {
+      for (final values in <List<double>>[
+        [7.0, 11, 13, 17, 19],
+        [0.1, 0.2, 0.3],
+        [1.0, 0, 2],
+        [3.0, 3, 3, 3, 3, 3, 3],
+      ]) {
+        expect(roundedPercentages(values).reduce((a, b) => a + b), 100, reason: '$values');
+      }
+    });
+
+    test('is empty when the values sum to zero', () {
+      expect(roundedPercentages([0, 0]), isEmpty);
+    });
+  });
 }

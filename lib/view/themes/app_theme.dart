@@ -151,8 +151,13 @@ abstract class AppTheme {
   }
 
   static ThemeData _buildDarkTheme(BuildContext context) {
+    // The brand's onyx primary is nearly invisible on the dark scaffold, and
+    // Material widgets (text/elevated buttons, checkboxes, links, active
+    // indicators) all draw with colorScheme.primary -- use the brand's sky
+    // blue as the dark theme's primary instead.
     final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
-      primary: primaryColor,
+      primary: secondaryColor,
+      onPrimary: Colors.white,
       secondary: secondaryColor,
     );
     final ThemeData base = ThemeData(

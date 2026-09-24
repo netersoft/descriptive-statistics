@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/qualitative_stats.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
+import '../misc/themed_html.dart';
 
 /// Renders the legend, total effectif, and (gated by [selectedStats]) mean
 /// and mode sections for a [QualitativeStatsResult] -- mirrors the legacy
@@ -19,7 +19,7 @@ class QualitativeExplanation extends StatelessWidget {
   const QualitativeExplanation({required this.result, required this.selectedStats, super.key});
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildQualitativeExplanationHtml(result, selectedStats), buildAsync: false);
+  Widget build(BuildContext context) => ThemedHtml(buildQualitativeExplanationHtml(result, selectedStats));
 }
 
 String buildQualitativeExplanationHtml(QualitativeStatsResult r, Set<QualitativeStatOption> selected) {

@@ -74,8 +74,9 @@ void main() {
         Backup(
           name: 'Etude 1',
           resolutionHtml: 'Explication détaillée ici',
-          xi: '1_2_3',
-          ni: '2_4_6',
+          // Xi as the calculators actually store them (raw double.toString()).
+          xi: '1.0_2.0_4.5',
+          ni: '2.0_4.0_6.0',
           date: '01.01.2026 - 10:00',
         ),
       );
@@ -103,5 +104,9 @@ void main() {
 
     expect(renderedText(), contains('Explication détaillée ici'));
     expect(find.byType(BarChart), findsOneWidget);
+    // The mini chart labels Xi the way the calculators display them.
+    expect(find.text('1'), findsOneWidget);
+    expect(find.text('4,5'), findsOneWidget);
+    expect(find.text('1.0'), findsNothing);
   });
 }
