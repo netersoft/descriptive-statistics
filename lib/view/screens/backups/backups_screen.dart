@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,7 +11,10 @@ import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../../core/stats/rounding.dart';
+import '../../../core/tools/functions/number_parsing.dart';
 import '../../components/calculators/chart_carousel.dart';
+import '../../components/misc/themed_html.dart';
 
 /// Lists saved calculation results (from the Discrete/Continuous/
 /// Qualitative screens' Save action), expandable to show the stored
@@ -107,7 +109,13 @@ class _BackupsScreenState extends State<BackupsScreen> {
   (List<String>, List<double>)? _miniChartData(Backup backup) {
     if (backup.xi.isEmpty || backup.ni.isEmpty) return null;
 
-    final labels = backup.xi.split('_');
+    // Xi are stored as Dart's raw double.toString() ("1.0", "4.5"): show
+    // them the way the calculators do ("1", "4,5" in fr/de/es/pt).
+    final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
+    final labels = [
+      for (final raw in backup.xi.split('_'))
+        if (double.tryParse(raw) case final value?) noZero(value, decimalSeparator: separator) else raw,
+    ];
     final values = backup.ni.split('_').map(double.tryParse).toList();
 
     if (values.length != labels.length || values.any((v) => v == null)) return null;
@@ -187,7 +195,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: HtmlWidget(backup.resolutionHtml, buildAsync: false),
+                              child: ThemedHtml(backup.resolutionHtml),
                             ),
                           ),
                         ],

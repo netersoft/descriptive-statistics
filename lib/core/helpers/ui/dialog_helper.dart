@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../view/themes/app_theme.dart';
 import '../../services/di/locator.dart';
 import '../../services/i18n/translations.g.dart';
 import '../router/navigation_helper.dart';
@@ -41,7 +40,7 @@ abstract class DialogHelper {
           TextButton(
             child: Text(
               context.t.ok,
-              style: TextStyle(color: AppTheme.primaryColor, fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             onPressed: () {
               context.pop();
@@ -69,10 +68,7 @@ abstract class DialogHelper {
               TextButton(
                 child: Text(
                   context.t.ok,
-                  style: TextStyle(
-                    color: AppTheme.primaryColor,
-                    fontSize: 16.0,
-                  ),
+                  style: const TextStyle(fontSize: 16.0),
                 ),
                 onPressed: () {
                   context.pop();

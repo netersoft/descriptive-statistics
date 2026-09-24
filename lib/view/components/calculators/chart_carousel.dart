@@ -82,7 +82,7 @@ class _ChartCarouselState extends State<ChartCarousel> {
                   padding: const EdgeInsets.symmetric(horizontal: 3),
                   child: CircleAvatar(
                     radius: 3,
-                    backgroundColor: i == _page ? AppTheme.primaryColor : Colors.grey.shade400,
+                    backgroundColor: i == _page ? Theme.of(context).colorScheme.primary : Colors.grey.shade400,
                   ),
                 ),
             ],
@@ -128,23 +128,25 @@ Widget _bottomLabel(List<String> labels, double value, TitleMeta meta) {
 /// Simple bar chart of arbitrary (label, value) pairs -- also used for the
 /// Backups screen's mini-chart, which only ever needs one plain view of
 /// the saved xi/ni.
-Widget qualitativeBarChart({required List<String> labels, required List<double> values}) => BarChart(
-  BarChartData(
-    barTouchData: const BarTouchData(enabled: false),
-    titlesData: FlTitlesData(
-      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
-      leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
-      topTitles: const AxisTitles(),
-      rightTitles: const AxisTitles(),
+Widget qualitativeBarChart({required List<String> labels, required List<double> values}) => Builder(
+  builder: (context) => BarChart(
+    BarChartData(
+      barTouchData: const BarTouchData(enabled: false),
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
+        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
+        topTitles: const AxisTitles(),
+        rightTitles: const AxisTitles(),
+      ),
+      borderData: FlBorderData(show: false),
+      barGroups: [
+        for (var i = 0; i < values.length; i++)
+          BarChartGroupData(
+            x: i,
+            barRods: [BarChartRodData(toY: values[i], color: Theme.of(context).colorScheme.primary, width: 16)],
+          ),
+      ],
     ),
-    borderData: FlBorderData(show: false),
-    barGroups: [
-      for (var i = 0; i < values.length; i++)
-        BarChartGroupData(
-          x: i,
-          barRods: [BarChartRodData(toY: values[i], color: AppTheme.primaryColor, width: 16)],
-        ),
-    ],
   ),
 );
 
@@ -154,21 +156,25 @@ Widget _quantitativeBarChart({required List<double> xi, required List<double> ni
 
 Widget _quantitativeLineChart({required List<double> xi, required List<double> ni}) {
   final labels = xi.map(_fmt).toList();
-  return LineChart(
-    LineChartData(
-      titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, interval: 1, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
-        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
-        topTitles: const AxisTitles(),
-        rightTitles: const AxisTitles(),
-      ),
-      borderData: FlBorderData(show: false),
-      lineBarsData: [
-        LineChartBarData(
-          spots: [for (var i = 0; i < ni.length; i++) FlSpot(i.toDouble(), ni[i])],
-          color: AppTheme.primaryColor,
+  return Builder(
+    builder: (context) => LineChart(
+      LineChartData(
+        titlesData: FlTitlesData(
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: true, interval: 1, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28),
+          ),
+          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
+          topTitles: const AxisTitles(),
+          rightTitles: const AxisTitles(),
         ),
-      ],
+        borderData: FlBorderData(show: false),
+        lineBarsData: [
+          LineChartBarData(
+            spots: [for (var i = 0; i < ni.length; i++) FlSpot(i.toDouble(), ni[i])],
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -177,7 +183,7 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
 /// encoding, so a legend mapping color to modality is the only way a
 /// color-blind or low-vision user can tell them apart.
 Widget _qualitativePieChart({required List<String> labels, required List<double> values}) {
-  final total = values.fold<double>(0, (a, b) => a + b);
+  final percentages = roundedPercentages(values);
   const colors = AppTheme.chartPalette;
 
   return Column(
@@ -192,7 +198,7 @@ Widget _qualitativePieChart({required List<String> labels, required List<double>
                 PieChartSectionData(
                   value: values[i],
                   color: colors[i % colors.length],
-                  title: total == 0 ? '' : '${(values[i] / total * 100).round()}%',
+                  title: percentages.isEmpty ? '' : '${percentages[i]}%',
                   radius: 70,
                 ),
             ],
@@ -218,4 +224,28 @@ Widget _qualitativePieChart({required List<String> labels, required List<double>
       ),
     ],
   );
+}
+
+/// Whole-number percentages of [values] that always add up to exactly 100,
+/// using the largest remainder method: floor every share, then hand the
+/// missing points to the shares with the largest fractional parts (earliest
+/// first on ties). Rounding each share on its own can add up to 99 or 101
+/// (62.5 % and 37.5 % would both round up to 63 % + 38 %). Empty when the
+/// values sum to zero.
+List<int> roundedPercentages(List<double> values) {
+  final total = values.fold<double>(0, (a, b) => a + b);
+  if (total <= 0) return const [];
+
+  final exact = [for (final v in values) v / total * 100];
+  final result = [for (final p in exact) p.floor()];
+  final missing = 100 - result.fold<int>(0, (a, b) => a + b);
+  final byRemainder = List<int>.generate(values.length, (i) => i)
+    ..sort((a, b) {
+      final diff = (exact[b] - exact[b].floor()).compareTo(exact[a] - exact[a].floor());
+      return diff != 0 ? diff : a.compareTo(b);
+    });
+  for (var k = 0; k < missing; k++) {
+    result[byRemainder[k % values.length]]++;
+  }
+  return result;
 }

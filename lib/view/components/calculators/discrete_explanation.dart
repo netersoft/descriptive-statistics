@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/discrete_stats.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
+import '../misc/themed_html.dart';
 
 /// Renders the step-by-step formula walkthrough for a [DiscreteStatsResult],
 /// gated by which [StatOption]s are selected -- mirrors the legacy
@@ -20,7 +20,7 @@ class DiscreteExplanation extends StatelessWidget {
   const DiscreteExplanation({required this.result, required this.selectedStats, super.key});
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildDiscreteExplanationHtml(result, selectedStats), buildAsync: false);
+  Widget build(BuildContext context) => ThemedHtml(buildDiscreteExplanationHtml(result, selectedStats));
 }
 
 /// The intermediate sums below (xiniSum, covarianceSum, the two standard

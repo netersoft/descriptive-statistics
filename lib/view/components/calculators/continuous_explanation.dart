@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/continuous_stats.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
+import '../misc/themed_html.dart';
 
 /// Renders the step-by-step formula walkthrough for a
 /// [ContinuousStatsResult], gated by which [StatOption]s are selected --
@@ -30,7 +30,7 @@ class ContinuousExplanation extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildContinuousExplanationHtml(result, l1, l2, selectedStats), buildAsync: false);
+  Widget build(BuildContext context) => ThemedHtml(buildContinuousExplanationHtml(result, l1, l2, selectedStats));
 }
 
 /// The intermediate sums below aren't part of [ContinuousStatsResult] -- it

@@ -111,4 +111,29 @@ APP_ACCENT_COLOR='#f5f5f5'
       expect(AppTheme.getContentRelativeColor(Colors.black), Colors.white);
     });
   });
+
+  group('AppTheme.setup', () {
+    ThemeData? built;
+    Widget capture() => Builder(
+      builder: (context) {
+        built = AppTheme.setup(context);
+        return const SizedBox();
+      },
+    );
+
+    testWidgets('keeps the brand onyx as the light theme primary', (tester) async {
+      stubBrightness(AppBrightness.light.name);
+      await tester.pumpWidget(capture());
+
+      expect(built!.colorScheme.primary, AppTheme.primaryColor);
+    });
+
+    testWidgets('uses the brand sky blue as the dark theme primary, since onyx is unreadable on the dark scaffold', (tester) async {
+      stubBrightness(AppBrightness.dark.name);
+      await tester.pumpWidget(capture());
+
+      expect(built!.colorScheme.primary, AppTheme.secondaryColor);
+      expect(built!.colorScheme.onPrimary, Colors.white);
+    });
+  });
 }
