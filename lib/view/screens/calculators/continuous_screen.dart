@@ -150,10 +150,16 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                 ChartCarousel(
                   charts: buildQuantitativeCharts(
                     xi: result.xi,
-                    ni: result.ni,
+                    // Bar heights only compare fairly between equally wide
+                    // classes; otherwise plot densities, like the mode does.
+                    ni: result.usesDensities ? result.modeWeights : result.ni,
                     types: ref.watch(settingsProvider).continuousChartTypes,
                   ),
                 ),
+                if (result.usesDensities) ...[
+                  const SizedBox(height: 4),
+                  Text(context.t.densityChartNote, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+                ],
               ],
               const SizedBox(height: 16),
               ContinuousExplanation(

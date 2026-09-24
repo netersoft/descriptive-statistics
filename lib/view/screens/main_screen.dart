@@ -37,7 +37,11 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
 
     tabController = TabController(length: _tabCount, vsync: this, initialIndex: ref.read(homeProvider));
     tabController.addListener(() {
-      if (!tabController.indexIsChanging) {
+      if (!tabController.indexIsChanging && tabController.index != ref.read(homeProvider)) {
+        // The tabs stay alive in the background, so a field focused in one
+        // of them would keep the keyboard up -- or bring it back -- on
+        // another. Covers both tapping a tab and swiping to it.
+        _releaseFocus();
         ref.read(homeProvider.notifier).tabIndex = tabController.index;
       }
     });
@@ -47,6 +51,16 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  /// Flutter hands focus back to a route's last focused field when the
+  /// route becomes current again, reopening the keyboard on a screen the
+  /// user merely came back to (e.g. from Settings). Clear it before leaving.
+  void _releaseFocus() => FocusManager.instance.primaryFocus?.unfocus();
+
+  void _openSettings() {
+    _releaseFocus();
+    const SettingsRoute().push(context);
   }
 
   void _goToTab(int index) {
@@ -77,9 +91,7 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
       ),
       actions: [
         IconButton(
-          onPressed: () {
-            const SettingsRoute().push(context);
-          },
+          onPressed: _openSettings,
           icon: const Icon(Icons.settings, color: Colors.white),
           tooltip: context.t.settings,
         ),
@@ -169,7 +181,7 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
             title: Text(context.t.settings),
             onTap: () {
               Navigator.of(context).pop();
-              const SettingsRoute().push(context);
+              _openSettings();
             },
           ),
           ListTile(
