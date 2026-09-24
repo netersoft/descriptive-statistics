@@ -289,7 +289,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
                   charts: buildQualitativeCharts(
                     modalities: result.modalities,
                     effectifs: result.effectifs,
-                    types: ref.read(settingsProvider.notifier).getQualitativeChartTypes(),
+                    types: ref.watch(settingsProvider).qualitativeChartTypes,
                   ),
                 ),
               ],

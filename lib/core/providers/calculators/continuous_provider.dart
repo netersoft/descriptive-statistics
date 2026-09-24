@@ -1,11 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../services/di/locator.dart';
-import '../../services/shared_preferences/keys.dart';
-import '../../services/shared_preferences/service.dart';
 import '../../stats/continuous_stats.dart';
 import '../../stats/stats_exceptions.dart';
 import '../../tools/functions/number_parsing.dart';
+import '../settings/settings_provider.dart';
 import 'calculator_types.dart';
 
 part 'continuous_provider.g.dart';
@@ -69,8 +67,6 @@ class ContinuousCalculator extends _$ContinuousCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int _decimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
-
   /// Parses [l1Text]/[l2Text]/[niText] (one entry per row) and computes the
   /// stats, storing the result in state on success. Returns the failure
   /// reason on error, or null on success.
@@ -109,7 +105,7 @@ class ContinuousCalculator extends _$ContinuousCalculator {
     final sortedNi = [for (final i in order) ni[i]];
 
     try {
-      final result = computeContinuousStats(sortedL1, sortedL2, sortedNi, precision: _decimalPrecision());
+      final result = computeContinuousStats(sortedL1, sortedL2, sortedNi, precision: ref.read(settingsProvider).decimalPrecision);
       state = state.copyWith(result: result, l1: sortedL1, l2: sortedL2);
       return null;
     } on StatsInputException catch (e) {

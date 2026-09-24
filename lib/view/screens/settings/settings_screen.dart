@@ -47,7 +47,7 @@ class SettingsListWrapper extends ConsumerWidget {
     required String summary,
     required List<T> allTypes,
     required String Function(BuildContext, T) label,
-    required Set<T> Function() getSelected,
+    required Set<T> Function(SettingsState) getSelected,
     required void Function(Set<T>) setSelected,
   }) => SettingsTile.navigation(
     leading: const Icon(Icons.bar_chart),
@@ -56,31 +56,29 @@ class SettingsListWrapper extends ConsumerWidget {
     description: Text(summary),
     onPressed: (context) => showFloatingModalBottomSheet(
       context: context,
-      builder: (sheetContext) => StatefulBuilder(
-        builder: (sheetContext, setSheetState) => Material(
-          child: SafeArea(
-            top: false,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (final type in allTypes)
-                  CheckboxListTile(
-                    title: Text(label(sheetContext, type)),
-                    value: getSelected().contains(type),
-                    onChanged: (checked) => setSheetState(() {
-                      final selected = getSelected();
-                      if (checked ?? false) {
-                        selected.add(type);
-                      } else {
-                        selected.remove(type);
-                      }
-                      setSelected(selected);
-                    }),
-                  ),
-              ],
+      builder: (sheetContext) => Consumer(
+        builder: (sheetContext, ref, _) {
+          final selected = getSelected(ref.watch(settingsProvider));
+          return Material(
+            child: SafeArea(
+              top: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final type in allTypes)
+                    CheckboxListTile(
+                      title: Text(label(sheetContext, type)),
+                      value: selected.contains(type),
+                      onChanged: (checked) => setSelected({
+                        ...selected.where((t) => t != type),
+                        if (checked ?? false) type,
+                      }),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     ),
   );
@@ -88,6 +86,7 @@ class SettingsListWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.read(settingsProvider.notifier);
+    final state = ref.watch(settingsProvider);
 
     var currentLang = I18nConfig.langItems.firstWhereOrNull(
       (item) => item.code == LocaleSettings.instance.currentLocale.languageCode,
@@ -143,7 +142,7 @@ class SettingsListWrapper extends ConsumerWidget {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('${settings.getDecimalPrecision()}'),
+                  Text('${state.decimalPrecision}'),
                   const Icon(Icons.chevron_right),
                 ],
               ),
@@ -155,9 +154,9 @@ class SettingsListWrapper extends ConsumerWidget {
                     child: SafeArea(
                       top: false,
                       child: RadioGroup<int>(
-                        groupValue: settings.getDecimalPrecision(),
+                        groupValue: state.decimalPrecision,
                         onChanged: (value) {
-                          if (value != settings.getDecimalPrecision()) {
+                          if (value != state.decimalPrecision) {
                             settings.setDecimalPrecision(value!);
                           }
                           context.pop();
@@ -184,9 +183,9 @@ class SettingsListWrapper extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    settings.getAppBrightness() == AppBrightness.system.name
+                    state.appBrightness == AppBrightness.system.name
                         ? context.t.system
-                        : settings.getAppBrightness() == AppBrightness.light.name
+                        : state.appBrightness == AppBrightness.light.name
                         ? context.t.light
                         : context.t.dark,
                   ),
@@ -201,9 +200,9 @@ class SettingsListWrapper extends ConsumerWidget {
                     child: SafeArea(
                       top: false,
                       child: RadioGroup<String>(
-                        groupValue: settings.getAppBrightness(),
+                        groupValue: state.appBrightness,
                         onChanged: (value) {
-                          if (value != settings.getAppBrightness()) {
+                          if (value != state.appBrightness) {
                             settings.setAppBrightness(value!);
                             context.pop();
                           }
@@ -242,7 +241,7 @@ class SettingsListWrapper extends ConsumerWidget {
               summary: context.t.discreteChartTypesSummary,
               allTypes: QuantitativeChartType.values,
               label: quantitativeChartTypeLabel,
-              getSelected: settings.getDiscreteChartTypes,
+              getSelected: (state) => state.discreteChartTypes,
               setSelected: settings.setDiscreteChartTypes,
             ),
             _chartTypesTile<QuantitativeChartType>(
@@ -251,7 +250,7 @@ class SettingsListWrapper extends ConsumerWidget {
               summary: context.t.continuousChartTypesSummary,
               allTypes: QuantitativeChartType.values,
               label: quantitativeChartTypeLabel,
-              getSelected: settings.getContinuousChartTypes,
+              getSelected: (state) => state.continuousChartTypes,
               setSelected: settings.setContinuousChartTypes,
             ),
             _chartTypesTile<QualitativeChartType>(
@@ -260,7 +259,7 @@ class SettingsListWrapper extends ConsumerWidget {
               summary: context.t.qualitativeChartTypesSummary,
               allTypes: QualitativeChartType.values,
               label: qualitativeChartTypeLabel,
-              getSelected: settings.getQualitativeChartTypes,
+              getSelected: (state) => state.qualitativeChartTypes,
               setSelected: settings.setQualitativeChartTypes,
             ),
           ],

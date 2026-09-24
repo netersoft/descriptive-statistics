@@ -27,7 +27,7 @@ void main() {
   tearDown(teardownTestLocator);
 
   group('SettingsProvider', () {
-    test('getAppBrightness defaults to system when unset', () {
+    test('appBrightness defaults to system when unset', () {
       when(
         () => mockPrefs.getString(any(), defaultValue: any(named: 'defaultValue')),
       ).thenReturn(AppBrightness.system.name);
@@ -35,11 +35,11 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getAppBrightness(), AppBrightness.system.name);
+      final settings = container.read(settingsProvider);
+      expect(settings.appBrightness, AppBrightness.system.name);
     });
 
-    test('getAppBrightness returns the stored value', () {
+    test('appBrightness returns the stored value', () {
       when(
         () => mockPrefs.getString(any(), defaultValue: any(named: 'defaultValue')),
       ).thenReturn(AppBrightness.dark.name);
@@ -47,8 +47,8 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getAppBrightness(), AppBrightness.dark.name);
+      final settings = container.read(settingsProvider);
+      expect(settings.appBrightness, AppBrightness.dark.name);
     });
 
     test('setAppBrightness persists the value without relaunching', () {
@@ -59,6 +59,7 @@ void main() {
 
       container.read(settingsProvider.notifier).setAppBrightness(AppBrightness.light.name, relaunch: false);
 
+      expect(container.read(settingsProvider).appBrightness, AppBrightness.light.name);
       verify(() => mockPrefs.setString(PrefKeys.brightness, AppBrightness.light.name)).called(1);
       verifyNever(() => mockNav.go(any()));
     });
@@ -78,7 +79,7 @@ void main() {
       expect(LocaleSettings.currentLocale, AppLocale.de);
     });
 
-    test('getDecimalPrecision defaults to 3 when unset', () {
+    test('decimalPrecision defaults to 3 when unset', () {
       when(
         () => mockPrefs.getInt(any(), defaultValue: any(named: 'defaultValue')),
       ).thenReturn(3);
@@ -86,11 +87,11 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getDecimalPrecision(), 3);
+      final settings = container.read(settingsProvider);
+      expect(settings.decimalPrecision, 3);
     });
 
-    test('setDecimalPrecision persists the value and remounts the settings screen', () {
+    test('setDecimalPrecision persists the value and updates the state without navigating', () {
       when(() => mockPrefs.setInt(any(), any())).thenAnswer((_) async => true);
 
       final container = ProviderContainer();
@@ -99,27 +100,28 @@ void main() {
       container.read(settingsProvider.notifier).setDecimalPrecision(5);
 
       verify(() => mockPrefs.setInt(PrefKeys.decimalPrecision, 5)).called(1);
-      verify(() => mockNav.go(any())).called(1);
+      expect(container.read(settingsProvider).decimalPrecision, 5);
+      verifyNever(() => mockNav.go(any()));
     });
 
-    test('getDiscreteChartTypes defaults to all types when unset', () {
+    test('discreteChartTypes defaults to all types when unset', () {
       when(() => mockPrefs.getListString(any())).thenReturn(null);
 
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getDiscreteChartTypes(), QuantitativeChartType.values.toSet());
+      final settings = container.read(settingsProvider);
+      expect(settings.discreteChartTypes, QuantitativeChartType.values.toSet());
     });
 
-    test('getContinuousChartTypes returns the stored subset', () {
+    test('continuousChartTypes returns the stored subset', () {
       when(() => mockPrefs.getListString(any())).thenReturn(['bar']);
 
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getContinuousChartTypes(), {QuantitativeChartType.bar});
+      final settings = container.read(settingsProvider);
+      expect(settings.continuousChartTypes, {QuantitativeChartType.bar});
     });
 
     test('setDiscreteChartTypes persists the selected type names', () {
@@ -131,16 +133,17 @@ void main() {
       container.read(settingsProvider.notifier).setDiscreteChartTypes({QuantitativeChartType.line});
 
       verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['line'])).called(1);
+      expect(container.read(settingsProvider).discreteChartTypes, {QuantitativeChartType.line});
     });
 
-    test('getQualitativeChartTypes defaults to all types when unset', () {
+    test('qualitativeChartTypes defaults to all types when unset', () {
       when(() => mockPrefs.getListString(any())).thenReturn(null);
 
       final container = ProviderContainer();
       addTearDown(container.dispose);
 
-      final settings = container.read(settingsProvider.notifier);
-      expect(settings.getQualitativeChartTypes(), QualitativeChartType.values.toSet());
+      final settings = container.read(settingsProvider);
+      expect(settings.qualitativeChartTypes, QualitativeChartType.values.toSet());
     });
 
     test('setQualitativeChartTypes persists the selected type names', () {

@@ -1,11 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../services/di/locator.dart';
-import '../../services/shared_preferences/keys.dart';
-import '../../services/shared_preferences/service.dart';
 import '../../stats/qualitative_stats.dart';
 import '../../stats/stats_exceptions.dart';
 import '../../tools/functions/number_parsing.dart';
+import '../settings/settings_provider.dart';
 import 'calculator_types.dart';
 
 part 'qualitative_provider.g.dart';
@@ -59,8 +57,6 @@ class QualitativeCalculator extends _$QualitativeCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int _decimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
-
   /// Parses [modalityText]/[valueText] (one entry per row) and computes the
   /// stats, storing the result in state on success. Returns the failure
   /// reason on error, or null on success.
@@ -83,7 +79,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
     }
 
     try {
-      final result = computeQualitativeStats(modalityText, values, precision: _decimalPrecision());
+      final result = computeQualitativeStats(modalityText, values, precision: ref.read(settingsProvider).decimalPrecision);
       state = state.copyWith(result: result);
       return null;
     } on StatsInputException catch (e) {

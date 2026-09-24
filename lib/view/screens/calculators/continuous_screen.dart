@@ -313,7 +313,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                   charts: buildQuantitativeCharts(
                     xi: result.xi,
                     ni: result.ni,
-                    types: ref.read(settingsProvider.notifier).getContinuousChartTypes(),
+                    types: ref.watch(settingsProvider).continuousChartTypes,
                   ),
                 ),
               ],
