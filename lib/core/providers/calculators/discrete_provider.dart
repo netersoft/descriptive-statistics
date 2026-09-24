@@ -19,8 +19,6 @@ class DiscreteCalculatorState {
     this.result,
   });
 
-  bool get isSelected => selectedStats.length == StatOption.values.length;
-
   DiscreteCalculatorState copyWith({
     Set<StatOption>? selectedStats,
     bool? showCalculations,
@@ -83,14 +81,7 @@ class DiscreteCalculator extends _$DiscreteCalculator {
       state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: ref.read(settingsProvider).decimalPrecision));
       return null;
     } on StatsInputException catch (e) {
-      return switch (e.reason) {
-        StatsErrorReason.insufficientData => CalculationError.insufficientData,
-        StatsErrorReason.negativeEffectif ||
-        StatsErrorReason.zeroTotalEffectif ||
-        StatsErrorReason.invalidClassWidth ||
-        StatsErrorReason.overlappingClasses => CalculationError.invalidValue,
-        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
-      };
+      return calculationErrorFor(e.reason);
     }
   }
 }
