@@ -119,14 +119,7 @@ flutter:
   assets:
     - .env
     #LAUNCHER
-    - assets/images/launcher/splash_logo.png
-    - assets/images/launcher/logo.png
-    - assets/images/launcher/logo.svg
-    - assets/images/launcher/logo_reverse.svg
     - assets/images/launcher/icon.png
-    - assets/images/launcher/icon.jpg
-    - assets/images/launcher/icon.svg
-    - assets/images/launcher/icon_reverse.svg
     # IMAGES
     - assets/images/
     - assets/images/tutorial/fr/
@@ -143,19 +136,14 @@ flutter:
     - assets/docs/es/
     - assets/docs/pt/
 
+  # Only the weights/styles the app actually renders are bundled: Montserrat
+  # (theme font) at 400/500/600/700 plus italic for the <i> notes in the
+  # explanations, Open Sans (onboarding) at 600/700.
   fonts:
-    - family: proxima_nova
-      fonts:
-        - asset: assets/fonts/proxima_nova.otf
-
     - family: montserrat
       fonts:
         - asset: assets/fonts/montserrat/montserrat_italic.ttf
           style: italic
-        - asset: assets/fonts/montserrat/montserrat_black.ttf
-          weight: 900
-        - asset: assets/fonts/montserrat/montserrat_extra_bold.ttf
-          weight: 800
         - asset: assets/fonts/montserrat/montserrat_bold.ttf
           weight: 700
         - asset: assets/fonts/montserrat/montserrat_semi_bold.ttf
@@ -165,25 +153,10 @@ flutter:
         - asset: assets/fonts/montserrat/montserrat_regular.ttf
           style: normal
           weight: 400
-        - asset: assets/fonts/montserrat/montserrat_light.ttf
-          weight: 300
-        - asset: assets/fonts/montserrat/montserrat_extra_light.ttf
-          weight: 200
-        - asset: assets/fonts/montserrat/montserrat_thin.ttf
-          weight: 100
 
     - family: open_sans
       fonts:
-        - asset: assets/fonts/open_sans/open_sans_italic.ttf
-          style: italic
-        - asset: assets/fonts/open_sans/open_sans_extra_bold.ttf
-          weight: 800
         - asset: assets/fonts/open_sans/open_sans_bold.ttf
           weight: 700
         - asset: assets/fonts/open_sans/open_sans_semi_bold.ttf
           weight: 600
-        - asset: assets/fonts/open_sans/open_sans_regular.ttf
-          style: normal
-          weight: 400
-        - asset: assets/fonts/open_sans/open_sans_light.ttf
-          weight: 300
