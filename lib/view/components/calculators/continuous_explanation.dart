@@ -143,10 +143,10 @@ IIQ = ${fmt(r.thirdQuartile)} - ${fmt(r.firstQuartile)}<br>
 <b><font color='blue'><u>${t.decilesSectionTitle}</u></font></b><br><br>
 <font color='magenta'>${t.firstDecileLabel}</font><br>
 ${t.firstDecileExplanationD} <b>1/10&sum;Ni</b><br>
-<font color='red'><b><u>Q1 = ${fmt(r.firstDecile)}</u></b></font><br><br>
+<font color='red'><b><u>D1 = ${fmt(r.firstDecile)}</u></b></font><br><br>
 <font color='magenta'>${t.ninthDecileLabel}</font><br>
 ${t.ninthDecileExplanationD} <b>9/10&sum;Ni</b><br>
-<font color='red'><b><u>Q3 = ${fmt(r.ninthDecile)}</u></b></font><br><br>
+<font color='red'><b><u>D9 = ${fmt(r.ninthDecile)}</u></b></font><br><br>
 ''');
   }
 

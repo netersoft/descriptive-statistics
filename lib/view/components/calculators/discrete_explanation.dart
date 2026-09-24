@@ -85,12 +85,18 @@ ${t.modeExplanationD}<br>
 $multipleModesNote''');
   }
 
+  // Shown in the first of the median/quantile sections present: the
+  // "directly above" rule is the course's convention, not the only one, so
+  // a user taught to average the two central values can reconcile results.
+  final conventionNote = '<i>${t.quantileConventionNote}</i><br><br>';
+  String tieNote(String name, double? midpoint) => midpoint == null ? '' : '<i>${t.quantileExactTieNote(name: name, value: fmt(midpoint))}</i><br><br>';
+
   if (selected.contains(StatOption.median)) {
     buffer.write('''
 <b><font color='blue'><u>${t.medianSectionTitle}</u></font></b><br><br>
 ${t.medianExplanationD} <b>1/2&sum;Ni</b><br>
 <font color='red'><b><u>Me = ${fmt(r.median)}</u></b></font><br><br>
-''');
+${tieNote('Me', r.medianMidpoint)}$conventionNote''');
   }
 
   if (selected.contains(StatOption.quartiles)) {
@@ -99,21 +105,21 @@ ${t.medianExplanationD} <b>1/2&sum;Ni</b><br>
 <font color='magenta'>${t.firstQuartLabel}</font><br>
 ${t.firstQuartExplanationD} <b>1/4&sum;Ni</b><br>
 <font color='red'><b><u>Q1 = ${fmt(r.firstQuartile)}</u></b></font><br><br>
-<font color='magenta'>${t.thirdQuartLabel}</font><br>
+${tieNote('Q1', r.firstQuartileMidpoint)}<font color='magenta'>${t.thirdQuartLabel}</font><br>
 ${t.thirdQuartExplanationD} <b>3/4&sum;Ni</b><br>
 <font color='red'><b><u>Q3 = ${fmt(r.thirdQuartile)}</u></b></font><br><br>
-<font color='magenta'>${t.interQuartLabel}</font><br>
+${tieNote('Q3', r.thirdQuartileMidpoint)}<font color='magenta'>${t.interQuartLabel}</font><br>
 <b>IIQ = Q3 - Q1</b><br>
 IIQ = ${fmt(r.thirdQuartile)} - ${fmt(r.firstQuartile)}<br>
 <font color='red'><b><u>IIQ = ${fmt(r.interquartileRange)}</u></b></font><br><br>
 <b><font color='blue'><u>${t.decilesSectionTitle}</u></font></b><br><br>
 <font color='magenta'>${t.firstDecileLabel}</font><br>
 ${t.firstDecileExplanationD} <b>1/10&sum;Ni</b><br>
-<font color='red'><b><u>Q1 = ${fmt(r.firstDecile)}</u></b></font><br><br>
-<font color='magenta'>${t.ninthDecileLabel}</font><br>
+<font color='red'><b><u>D1 = ${fmt(r.firstDecile)}</u></b></font><br><br>
+${tieNote('D1', r.firstDecileMidpoint)}<font color='magenta'>${t.ninthDecileLabel}</font><br>
 ${t.ninthDecileExplanationD} <b>9/10&sum;Ni</b><br>
-<font color='red'><b><u>Q3 = ${fmt(r.ninthDecile)}</u></b></font><br><br>
-''');
+<font color='red'><b><u>D9 = ${fmt(r.ninthDecile)}</u></b></font><br><br>
+${tieNote('D9', r.ninthDecileMidpoint)}${selected.contains(StatOption.median) ? '' : conventionNote}''');
   }
 
   if (selected.contains(StatOption.variance)) {

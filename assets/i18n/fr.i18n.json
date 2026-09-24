@@ -100,6 +100,8 @@
   "simpleMeanLabel": "- Moyenne arithmétique simple",
   "modeSectionTitle": "MODE",
   "multipleModesNote": "Cette série est plurimodale : plusieurs valeurs sont à égalité pour l'effectif le plus élevé.",
+  "quantileConventionNote": "Convention utilisée : on retient la première valeur dont l'effectif cumulé croissant dépasse strictement le seuil. Dans d'autres cours, lorsque l'effectif cumulé atteint exactement le seuil, on prend plutôt la moyenne de cette valeur et de la suivante.",
+  "quantileExactTieNote": "Ici, l'effectif cumulé atteint exactement le seuil : avec l'autre convention, on obtiendrait $name = $value.",
   "undefinedValue": "indéfini(e)",
   "modeExplanationD": "Le mode est égal à la variable ayant l'effectif le plus élevé",
   "medianSectionTitle": "MEDIANE",
