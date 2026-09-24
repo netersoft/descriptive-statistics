@@ -27,8 +27,6 @@ class ContinuousCalculatorState {
     this.l2 = const [],
   });
 
-  bool get isSelected => selectedStats.length == StatOption.values.length;
-
   ContinuousCalculatorState copyWith({
     Set<StatOption>? selectedStats,
     bool? showCalculations,
@@ -109,12 +107,7 @@ class ContinuousCalculator extends _$ContinuousCalculator {
       state = state.copyWith(result: result, l1: sortedL1, l2: sortedL2);
       return null;
     } on StatsInputException catch (e) {
-      return switch (e.reason) {
-        StatsErrorReason.insufficientData => CalculationError.insufficientData,
-        StatsErrorReason.negativeEffectif || StatsErrorReason.zeroTotalEffectif || StatsErrorReason.invalidClassWidth => CalculationError.invalidValue,
-        StatsErrorReason.overlappingClasses => CalculationError.overlappingClasses,
-        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
-      };
+      return calculationErrorFor(e.reason);
     }
   }
 }

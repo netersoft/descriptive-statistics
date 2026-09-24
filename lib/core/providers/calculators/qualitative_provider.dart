@@ -19,8 +19,6 @@ class QualitativeCalculatorState {
     this.result,
   });
 
-  bool get isSelected => selectedStats.length == QualitativeStatOption.values.length;
-
   QualitativeCalculatorState copyWith({
     Set<QualitativeStatOption>? selectedStats,
     bool? showCalculations,
@@ -83,14 +81,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
       state = state.copyWith(result: result);
       return null;
     } on StatsInputException catch (e) {
-      return switch (e.reason) {
-        StatsErrorReason.insufficientData => CalculationError.insufficientData,
-        StatsErrorReason.negativeEffectif ||
-        StatsErrorReason.zeroTotalEffectif ||
-        StatsErrorReason.invalidClassWidth ||
-        StatsErrorReason.overlappingClasses => CalculationError.invalidValue,
-        StatsErrorReason.lengthMismatch => CalculationError.syntaxError,
-      };
+      return calculationErrorFor(e.reason);
     }
   }
 }
