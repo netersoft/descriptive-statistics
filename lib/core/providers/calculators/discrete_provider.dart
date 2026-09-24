@@ -1,11 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../services/di/locator.dart';
-import '../../services/shared_preferences/keys.dart';
-import '../../services/shared_preferences/service.dart';
 import '../../stats/discrete_stats.dart';
 import '../../stats/stats_exceptions.dart';
 import '../../tools/functions/number_parsing.dart';
+import '../settings/settings_provider.dart';
 import 'calculator_types.dart';
 
 part 'discrete_provider.g.dart';
@@ -57,8 +55,6 @@ class DiscreteCalculator extends _$DiscreteCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
-  int _decimalPrecision() => locator<SharedPreferencesService>().getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
-
   /// Parses [xiText]/[niText] (one entry per row) and computes the stats,
   /// storing the result in state on success. Returns the failure reason on
   /// error, or null on success.
@@ -84,7 +80,7 @@ class DiscreteCalculator extends _$DiscreteCalculator {
     }
 
     try {
-      state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: _decimalPrecision()));
+      state = state.copyWith(result: computeDiscreteStats(xi, ni, precision: ref.read(settingsProvider).decimalPrecision));
       return null;
     } on StatsInputException catch (e) {
       return switch (e.reason) {

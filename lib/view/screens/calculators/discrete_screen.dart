@@ -302,7 +302,7 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
                   charts: buildQuantitativeCharts(
                     xi: result.xi,
                     ni: result.ni,
-                    types: ref.read(settingsProvider.notifier).getDiscreteChartTypes(),
+                    types: ref.watch(settingsProvider).discreteChartTypes,
                   ),
                 ),
               ],

@@ -26,7 +26,7 @@ void main() {
 
   tearDown(teardownTestLocator);
 
-  testWidgets('changing the number of decimals persists the new value', (tester) async {
+  testWidgets('changing the number of decimals persists the new value and shows it right away', (tester) async {
     final router = GoRouter(
       routes: [GoRoute(path: '/', builder: (context, state) => const SettingsScreen())],
     );
@@ -50,7 +50,10 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(() => mockPrefs.setInt(PrefKeys.decimalPrecision, 5)).called(1);
-    verify(() => mockNav.go(any())).called(1);
+    // The tile's trailing label updates reactively -- no navigation-based
+    // remount of the screen is needed any more.
+    expect(find.text('5'), findsOneWidget);
+    verifyNever(() => mockNav.go(any()));
   });
 
   testWidgets('unchecking a discrete chart type persists the remaining selection', (tester) async {
@@ -77,5 +80,8 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['bar'])).called(1);
+    // The open sheet reflects the new selection immediately.
+    expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Lignes')).value, isFalse);
+    expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Barres')).value, isTrue);
   });
 }

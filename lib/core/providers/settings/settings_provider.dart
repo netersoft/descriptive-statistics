@@ -25,10 +25,28 @@ const _playStoreUrl = 'https://play.google.com/store/apps/details?id=com.neteru.
 
 @Riverpod(keepAlive: true)
 class Settings extends _$Settings {
-  @override
-  SettingsState build() => const SettingsState();
-
   final SharedPreferencesService prefs = locator<SharedPreferencesService>();
+
+  /// Loads every setting from storage once; the setters below then keep
+  /// storage and this state in sync, so anything watching the provider
+  /// (the Settings screen's labels, the calculators' charts and rounding)
+  /// updates as soon as a setting changes.
+  @override
+  SettingsState build() => SettingsState(
+    decimalPrecision: prefs.getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3,
+    appBrightness: prefs.getString(PrefKeys.brightness, defaultValue: AppBrightness.system.name) ?? AppBrightness.system.name,
+    discreteChartTypes: _readTypes(PrefKeys.discreteChartTypes, QuantitativeChartType.values),
+    continuousChartTypes: _readTypes(PrefKeys.continuousChartTypes, QuantitativeChartType.values),
+    qualitativeChartTypes: _readTypes(PrefKeys.qualitativeChartTypes, QualitativeChartType.values),
+  );
+
+  Set<T> _readTypes<T extends Enum>(String key, List<T> values) {
+    final stored = prefs.getListString(key);
+    if (stored == null) return values.toSet();
+    return stored.map(values.byName).toSet();
+  }
+
+  void _writeTypes(String key, Set<Enum> types) => prefs.setStringList(key, types.map((t) => t.name).toList());
 
   Future<void> shareApp() async {
     var ctx = _navigationHelper.navigatorKey.currentContext;
@@ -78,29 +96,17 @@ class Settings extends _$Settings {
     }
   }
 
-  int getDecimalPrecision() => prefs.getInt(PrefKeys.decimalPrecision, defaultValue: 3) ?? 3;
-
   void setDecimalPrecision(int precision) {
     prefs.setInt(PrefKeys.decimalPrecision, precision);
-
-    // Remounts SettingsScreen so its trailing label reflects the new value --
-    // unlike brightness/language, this setting has no other visual effect,
-    // so a full Phoenix.rebirth() isn't warranted.
-    try {
-      _navigationHelper.go(const SettingsRoute().location);
-    } catch (e) {
-      _navigationHelper.pushReplacement(const RedirectionRoute().location);
-    }
+    state = state.copyWith(decimalPrecision: precision);
   }
-
-  String? getAppBrightness() => prefs.getString(
-    PrefKeys.brightness,
-    defaultValue: AppBrightness.system.name,
-  );
 
   void setAppBrightness(String appBrightness, {bool relaunch = true}) {
     prefs.setString(PrefKeys.brightness, appBrightness);
+    state = state.copyWith(appBrightness: appBrightness);
 
+    // The theme is built once from storage (AppTheme.isLight), so switching
+    // it still takes a full rebuild of the app.
     if (relaunch) {
       try {
         _navigationHelper.go(const SettingsRoute().location);
@@ -112,35 +118,52 @@ class Settings extends _$Settings {
     }
   }
 
-  Set<QuantitativeChartType> getDiscreteChartTypes() => _getQuantitativeChartTypes(PrefKeys.discreteChartTypes);
-
-  void setDiscreteChartTypes(Set<QuantitativeChartType> types) => _setChartTypes(PrefKeys.discreteChartTypes, types);
-
-  Set<QuantitativeChartType> getContinuousChartTypes() => _getQuantitativeChartTypes(PrefKeys.continuousChartTypes);
-
-  void setContinuousChartTypes(Set<QuantitativeChartType> types) => _setChartTypes(PrefKeys.continuousChartTypes, types);
-
-  Set<QuantitativeChartType> _getQuantitativeChartTypes(String key) {
-    final stored = prefs.getListString(key);
-    if (stored == null) return QuantitativeChartType.values.toSet();
-    return stored.map(QuantitativeChartType.values.byName).toSet();
+  void setDiscreteChartTypes(Set<QuantitativeChartType> types) {
+    _writeTypes(PrefKeys.discreteChartTypes, types);
+    state = state.copyWith(discreteChartTypes: types);
   }
 
-  Set<QualitativeChartType> getQualitativeChartTypes() {
-    final stored = prefs.getListString(PrefKeys.qualitativeChartTypes);
-    if (stored == null) return QualitativeChartType.values.toSet();
-    return stored.map(QualitativeChartType.values.byName).toSet();
+  void setContinuousChartTypes(Set<QuantitativeChartType> types) {
+    _writeTypes(PrefKeys.continuousChartTypes, types);
+    state = state.copyWith(continuousChartTypes: types);
   }
 
-  void setQualitativeChartTypes(Set<QualitativeChartType> types) => _setChartTypes(PrefKeys.qualitativeChartTypes, types);
-
-  void _setChartTypes(String key, Set<Enum> types) => prefs.setStringList(key, types.map((t) => t.name).toList());
+  void setQualitativeChartTypes(Set<QualitativeChartType> types) {
+    _writeTypes(PrefKeys.qualitativeChartTypes, types);
+    state = state.copyWith(qualitativeChartTypes: types);
+  }
 }
 
 class SettingsState {
-  final bool isLoading;
+  /// Decimal places calculator results are rounded to.
+  final int decimalPrecision;
 
-  const SettingsState({this.isLoading = false});
+  /// An [AppBrightness] name.
+  final String appBrightness;
 
-  SettingsState copyWith({bool? isLoading}) => SettingsState(isLoading: isLoading ?? this.isLoading);
+  final Set<QuantitativeChartType> discreteChartTypes;
+  final Set<QuantitativeChartType> continuousChartTypes;
+  final Set<QualitativeChartType> qualitativeChartTypes;
+
+  const SettingsState({
+    required this.decimalPrecision,
+    required this.appBrightness,
+    required this.discreteChartTypes,
+    required this.continuousChartTypes,
+    required this.qualitativeChartTypes,
+  });
+
+  SettingsState copyWith({
+    int? decimalPrecision,
+    String? appBrightness,
+    Set<QuantitativeChartType>? discreteChartTypes,
+    Set<QuantitativeChartType>? continuousChartTypes,
+    Set<QualitativeChartType>? qualitativeChartTypes,
+  }) => SettingsState(
+    decimalPrecision: decimalPrecision ?? this.decimalPrecision,
+    appBrightness: appBrightness ?? this.appBrightness,
+    discreteChartTypes: discreteChartTypes ?? this.discreteChartTypes,
+    continuousChartTypes: continuousChartTypes ?? this.continuousChartTypes,
+    qualitativeChartTypes: qualitativeChartTypes ?? this.qualitativeChartTypes,
+  );
 }

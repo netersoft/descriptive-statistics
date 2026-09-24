@@ -1,7 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
 import 'package:flutter_starter/core/services/i18n/translations.g.dart';
+import 'package:flutter_starter/core/tools/constants/chart_options.dart';
 import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
 import 'package:flutter_starter/view/screens/calculators/discrete_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -271,6 +273,31 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ChartCarousel), findsNothing);
+    });
+
+    testWidgets('updates the charts as soon as the chart types change in Settings, without recalculating', (tester) async {
+      when(() => mockPrefs.setStringList(any(), any())).thenAnswer((_) async => true);
+      await pumpScreen(tester);
+
+      await addRow(tester);
+      await addRow(tester);
+      final textFields = find.byType(TextField);
+      await tester.enterText(textFields.at(0), '1');
+      await tester.enterText(textFields.at(1), '2');
+      await tester.enterText(textFields.at(2), '2');
+      await tester.enterText(textFields.at(3), '4');
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+      expect(find.byType(BarChart), findsOneWidget);
+
+      // What the Settings screen does when the user keeps only "Lignes".
+      ProviderScope.containerOf(
+        tester.element(find.byType(DiscreteScreen)),
+      ).read(settingsProvider.notifier).setDiscreteChartTypes({QuantitativeChartType.line});
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BarChart), findsNothing);
+      expect(find.byType(LineChart), findsOneWidget);
     });
 
     testWidgets('keeps the explanation at the precision it was calculated with after the setting changes', (tester) async {
