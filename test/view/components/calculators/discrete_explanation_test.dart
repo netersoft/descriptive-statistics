@@ -52,5 +52,26 @@ void main() {
       expect(html, contains(noZero(xiniSum, decimalSeparator: ',')));
       expect(html, contains(noZero(xi2niSum, decimalSeparator: ',')));
     });
+
+    test('states the quantile convention once and shows the midpoint alternative on an exact tie', () {
+      final tie = computeDiscreteStats([1, 2], [1, 1]);
+
+      final html = buildDiscreteExplanationHtml(tie, {StatOption.median, StatOption.quartiles}, 3);
+
+      expect(RegExp('Convention utilisée').allMatches(html).length, 1);
+      expect(html, contains('on obtiendrait Me = 1,5'));
+    });
+
+    test('shows the convention note in the quartiles section when the median is not selected', () {
+      // ΣNi = 3: no N+ (1, 2, 3) lands exactly on 0.3, 0.75, 2.25 or 2.7.
+      final noTie = computeDiscreteStats([1, 2, 3], [1, 1, 1]);
+
+      final html = buildDiscreteExplanationHtml(noTie, {StatOption.quartiles}, 3);
+
+      expect(html, contains('Convention utilisée'));
+      expect(html, contains('D1 = '));
+      expect(html, contains('D9 = '));
+      expect(html, isNot(contains('on obtiendrait')));
+    });
   });
 }

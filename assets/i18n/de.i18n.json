@@ -100,6 +100,8 @@
   "simpleMeanLabel": "- Einfaches arithmetisches Mittel",
   "modeSectionTitle": "MODUS",
   "multipleModesNote": "Diese Reihe hat keinen eindeutigen Modus: mehrere Werte sind bei der höchsten Häufigkeit gleichauf.",
+  "quantileConventionNote": "Verwendete Konvention: Es wird der erste Wert genommen, dessen kumulierte Häufigkeit die Schwelle strikt überschreitet. In manchen Kursen wird stattdessen, wenn die kumulierte Häufigkeit die Schwelle genau erreicht, der Mittelwert dieses Wertes und des nächsten genommen.",
+  "quantileExactTieNote": "Hier erreicht die kumulierte Häufigkeit die Schwelle genau: Mit der anderen Konvention erhielte man $name = $value.",
   "undefinedValue": "undefiniert",
   "modeExplanationD": "Der Modus ist gleich der Variablen mit der höchsten Frequenz",
   "medianSectionTitle": "MEDIAN",

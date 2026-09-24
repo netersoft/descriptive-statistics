@@ -203,4 +203,38 @@ void main() {
       });
     }
   });
+
+  group('computeDiscreteStats midpoint on exact tie', () {
+    test('keeps the course rule and exposes the midpoint when N+ hits ΣNi/2 exactly', () {
+      // N+ = 1, 2 and ΣNi/2 = 1: the course's "directly above" rule gives
+      // Me = 2; averaging the two central values would give 1.5.
+      final r = computeDiscreteStats([1, 2], [1, 1]);
+
+      expect(r.median, 2);
+      expect(r.medianMidpoint, 1.5);
+    });
+
+    test('exposes the midpoint for quartiles and deciles too', () {
+      // N+ = 1..10 with ΣNi = 10: ΣNi/4 = 2.5 (no tie), 3ΣNi/4 = 7.5 (no
+      // tie), ΣNi/10 = 1 and 9ΣNi/10 = 9 (both ties).
+      final r = computeDiscreteStats(
+        [for (var i = 1; i <= 10; i++) i.toDouble()],
+        List.filled(10, 1),
+      );
+
+      expect(r.firstQuartileMidpoint, isNull);
+      expect(r.thirdQuartileMidpoint, isNull);
+      expect(r.firstDecile, 2);
+      expect(r.firstDecileMidpoint, 1.5);
+      expect(r.ninthDecile, 10);
+      expect(r.ninthDecileMidpoint, 9.5);
+    });
+
+    test('is null when no cumulative effectif lands exactly on the threshold', () {
+      final r = computeDiscreteStats([1, 2, 3], [1, 1, 1]);
+
+      expect(r.median, 2);
+      expect(r.medianMidpoint, isNull);
+    });
+  });
 }

@@ -100,6 +100,8 @@
   "simpleMeanLabel": "- Simple arithmetic mean",
   "modeSectionTitle": "MODE",
   "multipleModesNote": "This series has no unique mode: multiple values are tied for the highest frequency.",
+  "quantileConventionNote": "Convention used: the value kept is the first one whose cumulative frequency is strictly above the threshold. Some courses instead take, when the cumulative frequency lands exactly on the threshold, the average of that value and the next one.",
+  "quantileExactTieNote": "Here the cumulative frequency lands exactly on the threshold: with the other convention, you would get $name = $value.",
   "undefinedValue": "undefined",
   "modeExplanationD": "The mode is equal to the variable with the highest frequency",
   "medianSectionTitle": "MEDIAN",

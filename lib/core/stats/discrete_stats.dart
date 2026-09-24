@@ -39,6 +39,19 @@ class DiscreteStatsResult {
   final double interquartileRange;
   final double firstDecile;
   final double ninthDecile;
+
+  /// Set only when the ascending cumulative effectif lands *exactly* on the
+  /// threshold (e.g. N+ = ΣNi/2 for the median). This app follows the
+  /// course's "cumulative effectif directly above" rule, which then picks
+  /// the next value; another common convention takes the midpoint between
+  /// the two values instead. These hold that midpoint, so the explanation
+  /// can show it and a user taught the other convention isn't lost.
+  final double? medianMidpoint;
+  final double? firstQuartileMidpoint;
+  final double? thirdQuartileMidpoint;
+  final double? firstDecileMidpoint;
+  final double? ninthDecileMidpoint;
+
   final double variance;
 
   /// Covariance between the xi values and their own effectifs, exactly as
@@ -86,6 +99,11 @@ class DiscreteStatsResult {
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
+    this.medianMidpoint,
+    this.firstQuartileMidpoint,
+    this.thirdQuartileMidpoint,
+    this.firstDecileMidpoint,
+    this.ninthDecileMidpoint,
   });
 }
 
@@ -255,6 +273,11 @@ DiscreteStatsResult computeDiscreteStats(
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,
+    medianMidpoint: _midpointOnExactTie(medianOperator, medianIndex, xiR, precision),
+    firstQuartileMidpoint: _midpointOnExactTie(firstQuartOperator, firstQuartIndex, xiR, precision),
+    thirdQuartileMidpoint: _midpointOnExactTie(thirdQuartOperator, thirdQuartIndex, xiR, precision),
+    firstDecileMidpoint: _midpointOnExactTie(firstDecileOperator, firstDecileIndex, xiR, precision),
+    ninthDecileMidpoint: _midpointOnExactTie(ninthDecileOperator, ninthDecileIndex, xiR, precision),
   );
 }
 
@@ -271,4 +294,18 @@ int _firstIndexPastThreshold(List<double> operatorValues) {
     if (operatorValues[i] > 0) return i;
   }
   return 0;
+}
+
+/// When some row's cumulative effectif lands exactly on the threshold
+/// (`operatorValues[i] == 0`), the "directly above" rule skips to
+/// [chosenIndex], the next row past it. Returns the midpoint between that
+/// row's Xi and the chosen one -- what the "average the two central values"
+/// convention would give -- or null when no row lands exactly on it.
+double? _midpointOnExactTie(List<double> operatorValues, int chosenIndex, List<double> xi, int precision) {
+  for (var i = 0; i < chosenIndex; i++) {
+    if (operatorValues[i].abs() < 1e-9) {
+      return arrondi((xi[i] + xi[chosenIndex]) / 2, precision);
+    }
+  }
+  return null;
 }

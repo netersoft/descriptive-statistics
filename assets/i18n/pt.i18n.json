@@ -100,6 +100,8 @@
   "simpleMeanLabel": "- Média aritmética simples",
   "modeSectionTitle": "MODO",
   "multipleModesNote": "Esta série não tem uma moda única: vários valores estão empatados com a maior frequência.",
+  "quantileConventionNote": "Convenção utilizada: considera-se o primeiro valor cuja frequência acumulada ultrapassa estritamente o limiar. Em alguns cursos, quando a frequência acumulada atinge exatamente o limiar, toma-se antes a média desse valor e do seguinte.",
+  "quantileExactTieNote": "Aqui a frequência acumulada atinge exatamente o limiar: com a outra convenção obter-se-ia $name = $value.",
   "undefinedValue": "indefinido",
   "modeExplanationD": "O modo é igual à variável com a maior frequência",
   "medianSectionTitle": "MEDIANA",
