@@ -19,6 +19,7 @@ String calculationErrorMessage(BuildContext context, CalculationError error) => 
   CalculationError.emptyField => context.t.emptyFieldError,
   CalculationError.syntaxError => context.t.syntaxError,
   CalculationError.invalidValue => context.t.invalidValueError,
+  CalculationError.invalidClassWidth => context.t.invalidClassWidthError,
   CalculationError.overlappingClasses => context.t.overlappingClassesError,
 };
 

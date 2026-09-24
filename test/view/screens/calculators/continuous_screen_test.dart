@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_starter/core/services/i18n/translations.g.dart';
@@ -133,7 +134,7 @@ void main() {
       expect(find.text('Données Insuffisantes!'), findsOneWidget);
     });
 
-    testWidgets('shows an error snackbar for a negative class width', (tester) async {
+    testWidgets('explains the class bounds when a class has a negative width', (tester) async {
       await pumpScreen(tester);
 
       await addRow(tester);
@@ -151,7 +152,7 @@ void main() {
       await tester.pump();
 
       expect(
-        find.text('Valeurs invalides : les effectifs doivent être positifs, et leur somme ne peut pas être nulle !'),
+        find.text('Classe invalide : la borne supérieure (L2) doit être strictement supérieure à la borne inférieure (L1) !'),
         findsOneWidget,
       );
     });
@@ -205,6 +206,45 @@ void main() {
 
       expect(find.text('Erreur de syntaxe!'), findsNothing);
       expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
+    });
+
+    Future<List<double>> barHeightsFor(WidgetTester tester, List<List<String>> rows) async {
+      await pumpScreen(tester);
+      for (var i = 0; i < rows.length; i++) {
+        await addRow(tester);
+      }
+      final textFields = find.byType(TextField);
+      for (var i = 0; i < rows.length; i++) {
+        for (var field = 0; field < 3; field++) {
+          await tester.enterText(textFields.at(i * 3 + field), rows[i][field]);
+        }
+      }
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+
+      return [for (final group in tester.widget<BarChart>(find.byType(BarChart)).data.barGroups) group.barRods.single.toY];
+    }
+
+    testWidgets('plots densities, and says so, when class widths differ', (tester) async {
+      // [0,10) is 10 wide with ni 10, [10,30) is 20 wide with ni 16:
+      // densities 1 and 0.8.
+      final heights = await barHeightsFor(tester, [
+        ['0', '10', '10'],
+        ['10', '30', '16'],
+      ]);
+
+      expect(heights, [1, 0.8]);
+      expect(find.textContaining('les graphiques représentent les densités'), findsOneWidget);
+    });
+
+    testWidgets('keeps plotting effectifs when every class has the same width', (tester) async {
+      final heights = await barHeightsFor(tester, [
+        ['0', '10', '10'],
+        ['10', '20', '16'],
+      ]);
+
+      expect(heights, [10, 16]);
+      expect(find.textContaining('les graphiques représentent les densités'), findsNothing);
     });
   });
 }

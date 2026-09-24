@@ -96,7 +96,7 @@ void main() {
     expect(calculationErrorFor(StatsErrorReason.insufficientData), CalculationError.insufficientData);
     expect(calculationErrorFor(StatsErrorReason.negativeEffectif), CalculationError.invalidValue);
     expect(calculationErrorFor(StatsErrorReason.zeroTotalEffectif), CalculationError.invalidValue);
-    expect(calculationErrorFor(StatsErrorReason.invalidClassWidth), CalculationError.invalidValue);
+    expect(calculationErrorFor(StatsErrorReason.invalidClassWidth), CalculationError.invalidClassWidth);
     expect(calculationErrorFor(StatsErrorReason.overlappingClasses), CalculationError.overlappingClasses);
     expect(calculationErrorFor(StatsErrorReason.lengthMismatch), CalculationError.syntaxError);
   });
