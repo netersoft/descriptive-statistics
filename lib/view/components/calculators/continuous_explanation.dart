@@ -20,19 +20,17 @@ class ContinuousExplanation extends StatelessWidget {
   final List<double> l1;
   final List<double> l2;
   final Set<StatOption> selectedStats;
-  final int precision;
 
   const ContinuousExplanation({
     required this.result,
     required this.l1,
     required this.l2,
     required this.selectedStats,
-    required this.precision,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) => HtmlWidget(buildContinuousExplanationHtml(result, l1, l2, selectedStats, precision), buildAsync: false);
+  Widget build(BuildContext context) => HtmlWidget(buildContinuousExplanationHtml(result, l1, l2, selectedStats), buildAsync: false);
 }
 
 /// The intermediate sums below aren't part of [ContinuousStatsResult] -- it
@@ -50,8 +48,8 @@ String buildContinuousExplanationHtml(
   List<double> l1,
   List<double> l2,
   Set<StatOption> selected,
-  int precision,
 ) {
+  final precision = r.precision;
   final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
   String fmt(double v) => noZero(v, decimalSeparator: sep);
 

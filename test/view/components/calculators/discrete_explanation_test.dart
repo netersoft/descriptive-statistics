@@ -13,7 +13,7 @@ void main() {
     // precisions below.
     final r = computeDiscreteStats([1, 2, 3], [1, 2, 7], precision: 6);
 
-    test('rounds the covariance-sum and standard-deviation intermediates to the requested precision, not a hardcoded one', () {
+    test('rounds the covariance-sum and standard-deviation intermediates to the precision the result was computed with, not a hardcoded one', () {
       // Independently recomputed with the exact same logic the builder
       // uses internally, so this fails if the builder ever hardcodes a
       // precision instead of honoring the one it's given.
@@ -34,7 +34,7 @@ void main() {
       final yDeviation = math.sqrt(ySquares / (n - 1));
 
       for (final precision in [1, 6]) {
-        final html = buildDiscreteExplanationHtml(r, {StatOption.covariance}, precision);
+        final html = buildDiscreteExplanationHtml(computeDiscreteStats([1, 2, 3], [1, 2, 7], precision: precision), {StatOption.covariance});
 
         // French (the default test locale) displays decimals with a comma.
         expect(html, contains(noZero(arrondi(covarianceSum, precision), decimalSeparator: ',')));
@@ -47,7 +47,7 @@ void main() {
       final xiniSum = arrondi(r.xini.reduce((a, b) => a + b), 6);
       final xi2niSum = arrondi(r.xi2ni.reduce((a, b) => a + b), 6);
 
-      final html = buildDiscreteExplanationHtml(r, {StatOption.mean, StatOption.variance}, 6);
+      final html = buildDiscreteExplanationHtml(r, {StatOption.mean, StatOption.variance});
 
       expect(html, contains(noZero(xiniSum, decimalSeparator: ',')));
       expect(html, contains(noZero(xi2niSum, decimalSeparator: ',')));
@@ -56,7 +56,7 @@ void main() {
     test('states the quantile convention once and shows the midpoint alternative on an exact tie', () {
       final tie = computeDiscreteStats([1, 2], [1, 1]);
 
-      final html = buildDiscreteExplanationHtml(tie, {StatOption.median, StatOption.quartiles}, 3);
+      final html = buildDiscreteExplanationHtml(tie, {StatOption.median, StatOption.quartiles});
 
       expect(RegExp('Convention utilisée').allMatches(html).length, 1);
       expect(html, contains('on obtiendrait Me = 1,5'));
@@ -66,7 +66,7 @@ void main() {
       // ΣNi = 3: no N+ (1, 2, 3) lands exactly on 0.3, 0.75, 2.25 or 2.7.
       final noTie = computeDiscreteStats([1, 2, 3], [1, 1, 1]);
 
-      final html = buildDiscreteExplanationHtml(noTie, {StatOption.quartiles}, 3);
+      final html = buildDiscreteExplanationHtml(noTie, {StatOption.quartiles});
 
       expect(html, contains('Convention utilisée'));
       expect(html, contains('D1 = '));
