@@ -131,7 +131,6 @@ DiscreteStatsResult computeDiscreteStats(
   var niSum = 0.0;
   var xiSum = 0.0;
   var xiniSum = 0.0;
-  var xi2niSum = 0.0;
   var maxNi = 0.0;
   final modeIndices = <int>[];
   var xiMax = xiR[0];
@@ -145,7 +144,6 @@ DiscreteStatsResult computeDiscreteStats(
     xini[i] = arrondi(niR[i] * xiR[i], precision);
     xi2ni[i] = arrondi(xiR[i] * xiR[i] * niR[i], precision);
     xiniSum += xini[i];
-    xi2niSum += xi2ni[i];
 
     if (niR[i] > maxNi) {
       maxNi = niR[i];
@@ -210,7 +208,17 @@ DiscreteStatsResult computeDiscreteStats(
   final firstDecile = arrondi(xiR[firstDecileIndex], precision);
   final ninthDecile = arrondi(xiR[ninthDecileIndex], precision);
   final interquartileRange = arrondi(thirdQuartile - firstQuartile, precision);
-  final variance = arrondi((xi2niSum / niSum) - weightedMean * weightedMean, precision);
+  // Computed as Σni(xi − x̄)²/Σni from the unrounded mean rather than the
+  // equivalent Σxi²ni/Σni − x̄² shown in the explanation: with large Xi,
+  // subtracting two huge, nearly equal terms (one built from the already
+  // rounded mean) wipes out the result -- it could even come out negative,
+  // turning the standard deviation and CV into NaN.
+  final exactMean = xiniSum / niSum;
+  var squaredDeviationsSum = 0.0;
+  for (var i = 0; i < n; i++) {
+    squaredDeviationsSum += niR[i] * (xiR[i] - exactMean) * (xiR[i] - exactMean);
+  }
+  final variance = arrondi(squaredDeviationsSum / niSum, precision);
   final covariance = arrondi(covarianceSum / (n - 1), precision);
   final xDeviation = math.sqrt(xSquaresSum / (n - 1));
   final yDeviation = math.sqrt(ySquaresSum / (n - 1));
