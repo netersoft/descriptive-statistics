@@ -43,9 +43,15 @@ class EntryRows {
   ]);
 
   void _removeAt(int index) {
-    for (final controller in _rows.removeAt(index)) {
-      controller.dispose();
-    }
+    final removed = _rows.removeAt(index);
+    // Its TextFields keep using these controllers until the next rebuild --
+    // and focus may even come back to one of them (e.g. when a dialog that
+    // replaced the rows closes) -- so only dispose of them after that frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      for (final controller in removed) {
+        controller.dispose();
+      }
+    });
   }
 
   /// Appends pasted [rows], first dropping rows the user left entirely

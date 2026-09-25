@@ -7,6 +7,9 @@ import 'package:flutter_starter/view/components/calculators/calculator_form.dart
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // EntryRows disposes removed rows' controllers after the next frame.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('EntryRows', () {
     late EntryRows rows;
 
