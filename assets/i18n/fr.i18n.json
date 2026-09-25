@@ -101,6 +101,7 @@
   "safeguardDone": "Sauvegarde Effectuée!",
   "exportBackupsAction": "Exporter les sauvegardes",
   "importBackupsAction": "Importer des sauvegardes",
+  "loadBackupAction": "Ouvrir dans la calculatrice",
   "backupsImported": "Sauvegardes importées avec succès !",
   "backupsImportInvalidFormat": "Fichier invalide : impossible d'importer ces sauvegardes.",
   "meanSectionTitle": "MOYENNES",

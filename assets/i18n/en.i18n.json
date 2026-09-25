@@ -101,6 +101,7 @@
   "safeguardDone": "Done!",
   "exportBackupsAction": "Export backups",
   "importBackupsAction": "Import backups",
+  "loadBackupAction": "Open in calculator",
   "backupsImported": "Backups imported successfully!",
   "backupsImportInvalidFormat": "Invalid file: these backups could not be imported.",
   "meanSectionTitle": "MEANS",

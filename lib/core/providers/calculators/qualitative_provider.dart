@@ -13,10 +13,18 @@ class QualitativeCalculatorState {
   final bool showCalculations;
   final QualitativeStatsResult? result;
 
+  /// The rows a backup last filled the calculator with (see `load`), for
+  /// the screen to copy into its entry fields; [loadCount] bumps on every
+  /// load so the screen can tell a new one from one it already applied.
+  final List<List<String>>? loadedRows;
+  final int loadCount;
+
   const QualitativeCalculatorState({
     required this.selectedStats,
     this.showCalculations = false,
     this.result,
+    this.loadedRows,
+    this.loadCount = 0,
   });
 
   QualitativeCalculatorState copyWith({
@@ -27,6 +35,8 @@ class QualitativeCalculatorState {
     selectedStats: selectedStats ?? this.selectedStats,
     showCalculations: showCalculations ?? this.showCalculations,
     result: result ?? this.result,
+    loadedRows: loadedRows,
+    loadCount: loadCount,
   );
 }
 
@@ -53,6 +63,19 @@ class QualitativeCalculator extends _$QualitativeCalculator {
 
   void toggleShowCalculations() {
     state = state.copyWith(showCalculations: !state.showCalculations);
+  }
+
+  /// Fills the calculator with a saved backup's [rows] (one list of field
+  /// texts per entry) and [selectedStats], then computes them as if the user
+  /// had typed them and tapped Calculate. Returns the failure reason, if any.
+  CalculationError? load(List<List<String>> rows, Set<QualitativeStatOption> selectedStats) {
+    state = QualitativeCalculatorState(
+      selectedStats: selectedStats,
+      showCalculations: state.showCalculations,
+      loadedRows: rows,
+      loadCount: state.loadCount + 1,
+    );
+    return calculate(rows.map((row) => row[0]).toList(), rows.map((row) => row[1]).toList());
   }
 
   /// Parses [modalityText]/[valueText] (one entry per row) and computes the

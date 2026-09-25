@@ -40,6 +40,14 @@ class EntryRows {
     rows.forEach(add);
   }
 
+  /// Swaps every current row for [rows] -- used when a backup is loaded.
+  void replaceRows(List<List<String>> rows) {
+    for (var i = _rows.length - 1; i >= 0; i--) {
+      removeAt(i);
+    }
+    rows.forEach(add);
+  }
+
   /// The text of [field] in every row, top to bottom.
   List<String> column(int field) => [for (final row in _rows) row[field].text];
 

@@ -35,6 +35,14 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    super.initState();
+    // A backup may have been loaded before this tab was first built.
+    final loaded = ref.read(discreteCalculatorProvider).loadedRows;
+    if (loaded != null) _entries.replaceRows(loaded);
+  }
+
+  @override
   void dispose() {
     _entries.dispose();
     super.dispose();
@@ -92,6 +100,9 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    ref.listen(discreteCalculatorProvider.select((state) => state.loadCount), (_, _) {
+      setState(() => _entries.replaceRows(ref.read(discreteCalculatorProvider).loadedRows!));
+    });
     final state = ref.watch(discreteCalculatorProvider);
     final notifier = ref.read(discreteCalculatorProvider.notifier);
     final result = state.result;

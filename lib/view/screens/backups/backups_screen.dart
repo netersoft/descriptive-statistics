@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../core/data/backups/backup_data.dart';
 import '../../../core/data/backups/backups_json.dart';
 import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../components/backups/backup_presentation.dart';
+import '../../components/backups/load_backup.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/misc/themed_html.dart';
 
@@ -19,14 +22,14 @@ import '../../components/misc/themed_html.dart';
 /// Qualitative screens' Save action), expandable to show the stored
 /// step-by-step resolution, with delete-by-confirmation -- mirrors the
 /// legacy app's BackupsFragment/BackupsAdapter.
-class BackupsScreen extends StatefulWidget {
+class BackupsScreen extends ConsumerStatefulWidget {
   const BackupsScreen({super.key});
 
   @override
-  State<BackupsScreen> createState() => _BackupsScreenState();
+  ConsumerState<BackupsScreen> createState() => _BackupsScreenState();
 }
 
-class _BackupsScreenState extends State<BackupsScreen> {
+class _BackupsScreenState extends ConsumerState<BackupsScreen> {
   final _repository = locator<BackupsRepository>();
   final Set<dynamic> _expandedKeys = {};
 
@@ -176,6 +179,20 @@ class _BackupsScreenState extends State<BackupsScreen> {
                               child: ThemedHtml(backupExplanationHtml(backup)),
                             ),
                           ),
+                          // Backups saved before 1.6 only kept their HTML,
+                          // not the values needed to reload them.
+                          if (BackupData.decode(backup.kind, backup.data) case final data?)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton.icon(
+                                  onPressed: () => loadBackupIntoCalculator(ref, data),
+                                  icon: const Icon(Icons.calculate_outlined),
+                                  label: Text(context.t.loadBackupAction),
+                                ),
+                              ),
+                            ),
                         ],
                       ],
                     ),

@@ -35,6 +35,14 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    super.initState();
+    // A backup may have been loaded before this tab was first built.
+    final loaded = ref.read(qualitativeCalculatorProvider).loadedRows;
+    if (loaded != null) _entries.replaceRows(loaded);
+  }
+
+  @override
   void dispose() {
     _entries.dispose();
     super.dispose();
@@ -94,6 +102,9 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    ref.listen(qualitativeCalculatorProvider.select((state) => state.loadCount), (_, _) {
+      setState(() => _entries.replaceRows(ref.read(qualitativeCalculatorProvider).loadedRows!));
+    });
     final state = ref.watch(qualitativeCalculatorProvider);
     final notifier = ref.read(qualitativeCalculatorProvider.notifier);
     final result = state.result;

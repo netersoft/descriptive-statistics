@@ -101,6 +101,7 @@
   "safeguardDone": "Concluído!",
   "exportBackupsAction": "Exportar dados",
   "importBackupsAction": "Importar dados",
+  "loadBackupAction": "Abrir na calculadora",
   "backupsImported": "Dados importados com sucesso!",
   "backupsImportInvalidFormat": "Arquivo inválido: não foi possível importar esses dados.",
   "meanSectionTitle": "MÉDIAS",
