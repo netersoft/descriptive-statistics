@@ -6,6 +6,7 @@ import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/providers/calculators/continuous_provider.dart';
 import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../../core/stats/raw_series.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
@@ -13,6 +14,7 @@ import '../../components/calculators/calculator_actions.dart';
 import '../../components/calculators/calculator_form.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/calculators/continuous_explanation.dart';
+import '../../components/calculators/raw_series_dialog.dart';
 import '../../components/calculators/share_text.dart';
 import '../../components/calculators/stats_table.dart';
 
@@ -52,6 +54,33 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
   Future<void> _bulkImport() async {
     final rows = await showBulkImportDialog(context: context, fieldLabels: const ['L1', 'L2', 'Ni']);
     if (rows != null) setState(() => _entries.importRows(rows));
+  }
+
+  /// The last raw series grouped into classes, to reopen the dialog with --
+  /// so trying another class width doesn't mean pasting the series again.
+  RawSeriesInput? _lastRawSeries;
+
+  Future<void> _rawSeries() async {
+    final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
+    String fmt(double value) => noZero(value, decimalSeparator: separator);
+
+    final result = await showRawSeriesDialog(
+      context: context,
+      hint: context.t.rawSeriesContinuousHint,
+      extraFields: [context.t.rawSeriesClassStart, context.t.rawSeriesClassWidth],
+      initial: _lastRawSeries,
+      toRows: (text, extras) => [
+        for (final (:lower, :upper, :count) in groupContinuousSeries(text, start: extras[0], width: extras[1]))
+          [fmt(lower), fmt(upper), '$count'],
+      ],
+    );
+    if (result == null) return;
+
+    _lastRawSeries = result.input;
+    // Unlike the discrete/qualitative tallies, new classes can't sit next
+    // to the old ones (they'd overlap), so they replace them.
+    setState(() => _entries.replaceRows(result.rows));
+    ref.read(continuousCalculatorProvider.notifier).setHasEntries(_entries.hasText);
   }
 
   void _calculate() => showCalculationError(
@@ -112,6 +141,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
               onAdd: () => setState(_entries.add),
               onRemove: (i) => setState(() => _entries.removeAt(i)),
               onBulkImport: _bulkImport,
+              onRawSeries: _rawSeries,
             ),
             const SizedBox(height: 12),
             StatOptionsChecklist<StatOption>(

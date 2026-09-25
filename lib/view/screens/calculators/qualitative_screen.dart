@@ -60,14 +60,14 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
   }
 
   Future<void> _rawSeries() async {
-    final rows = await showRawSeriesDialog(
+    final result = await showRawSeriesDialog(
       context: context,
       hint: context.t.rawSeriesQualitativeHint,
-      toRows: (text) => [
+      toRows: (text, _) => [
         for (final (:value, :count) in tallyQualitativeSeries(text)) [value, '$count'],
       ],
     );
-    if (rows != null) setState(() => _entries.importRows(rows));
+    if (result != null) setState(() => _entries.importRows(result.rows));
   }
 
   void _calculate() => showCalculationError(

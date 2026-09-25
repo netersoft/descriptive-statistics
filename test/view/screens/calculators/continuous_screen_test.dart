@@ -225,6 +225,71 @@ void main() {
       return [for (final group in tester.widget<BarChart>(find.byType(BarChart)).data.barGroups) group.barRods.single.toY];
     }
 
+    group('raw series', () {
+      List<String> fieldTexts(WidgetTester tester) => [
+        for (final field in tester.widgetList<TextField>(find.byType(TextField))) field.controller!.text,
+      ];
+
+      Finder dialogField(int index) => find.descendant(of: find.byType(AlertDialog), matching: find.byType(TextField)).at(index);
+      // In the dialog: the class start and width, then the series.
+      final startField = dialogField(0);
+      final widthField = dialogField(1);
+      final seriesField = dialogField(2);
+
+      testWidgets('groups the values into classes, replacing the rows, and reopens with the last input', (tester) async {
+        await pumpScreen(tester);
+        await addRow(tester);
+        await tester.enterText(find.byType(TextField).first, '99');
+
+        await tester.tap(find.text('Série brute'));
+        await tester.pumpAndSettle();
+        await tester.enterText(seriesField, '0 5 9,9 10 12 20');
+        await tester.enterText(startField, '0');
+        await tester.enterText(widthField, '10');
+        await tester.tap(find.text('Compter'));
+        await tester.pumpAndSettle();
+
+        expect(fieldTexts(tester), ['0', '10', '3', '10', '20', '2', '20', '30', '1']);
+
+        await tester.tap(find.text('Série brute'));
+        await tester.pumpAndSettle();
+        expect(tester.widget<TextField>(seriesField).controller!.text, '0 5 9,9 10 12 20');
+        expect(tester.widget<TextField>(widthField).controller!.text, '10');
+
+        await tester.enterText(widthField, '12,5');
+        await tester.tap(find.text('Compter'));
+        await tester.pumpAndSettle();
+        expect(fieldTexts(tester), ['0', '12,5', '5', '12,5', '25', '1']);
+      });
+
+      testWidgets('chooses the classes when the start and width are left blank', (tester) async {
+        await pumpScreen(tester);
+
+        await tester.tap(find.text('Série brute'));
+        await tester.pumpAndSettle();
+        expect(find.text('Auto'), findsNWidgets(2));
+        await tester.enterText(seriesField, '3 7 12 15 18 22 25 29 33 38 41 47');
+        await tester.tap(find.text('Compter'));
+        await tester.pumpAndSettle();
+
+        expect(fieldTexts(tester), ['0', '10', '2', '10', '20', '3', '20', '30', '3', '30', '40', '2', '40', '50', '2']);
+      });
+
+      testWidgets('explains a start above the smallest value', (tester) async {
+        await pumpScreen(tester);
+
+        await tester.tap(find.text('Série brute'));
+        await tester.pumpAndSettle();
+        await tester.enterText(seriesField, '5 2,5 8');
+        await tester.enterText(startField, '3');
+        await tester.tap(find.text('Compter'));
+        await tester.pumpAndSettle();
+
+        expect(find.textContaining('plus petite valeur (2,5)'), findsOneWidget);
+        expect(find.text('Compter'), findsOneWidget);
+      });
+    });
+
     testWidgets('plots densities, and says so, when class widths differ', (tester) async {
       // [0,10) is 10 wide with ni 10, [10,30) is 20 wide with ni 16:
       // densities 1 and 0.8.

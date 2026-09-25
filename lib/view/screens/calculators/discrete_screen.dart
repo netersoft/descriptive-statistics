@@ -58,14 +58,14 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
 
   Future<void> _rawSeries() async {
     final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
-    final rows = await showRawSeriesDialog(
+    final result = await showRawSeriesDialog(
       context: context,
       hint: context.t.rawSeriesNumericHint,
-      toRows: (text) => [
+      toRows: (text, _) => [
         for (final (:value, :count) in tallyNumericSeries(text)) [noZero(value, decimalSeparator: separator), '$count'],
       ],
     );
-    if (rows != null) setState(() => _entries.importRows(rows));
+    if (result != null) setState(() => _entries.importRows(result.rows));
   }
 
   void _calculate() => showCalculationError(
