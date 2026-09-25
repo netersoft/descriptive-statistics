@@ -19,24 +19,31 @@ class QualitativeCalculatorState {
   final List<List<String>>? loadedRows;
   final int loadCount;
 
+  /// Whether the screen's entry rows hold any text, as it last reported --
+  /// loading a backup over them asks for confirmation first.
+  final bool hasEntries;
+
   const QualitativeCalculatorState({
     required this.selectedStats,
     this.showCalculations = false,
     this.result,
     this.loadedRows,
     this.loadCount = 0,
+    this.hasEntries = false,
   });
 
   QualitativeCalculatorState copyWith({
     Set<QualitativeStatOption>? selectedStats,
     bool? showCalculations,
     QualitativeStatsResult? result,
+    bool? hasEntries,
   }) => QualitativeCalculatorState(
     selectedStats: selectedStats ?? this.selectedStats,
     showCalculations: showCalculations ?? this.showCalculations,
     result: result ?? this.result,
     loadedRows: loadedRows,
     loadCount: loadCount,
+    hasEntries: hasEntries ?? this.hasEntries,
   );
 }
 
@@ -65,6 +72,10 @@ class QualitativeCalculator extends _$QualitativeCalculator {
     state = state.copyWith(showCalculations: !state.showCalculations);
   }
 
+  void setHasEntries(bool hasEntries) {
+    if (hasEntries != state.hasEntries) state = state.copyWith(hasEntries: hasEntries);
+  }
+
   /// Fills the calculator with a saved backup's [rows] (one list of field
   /// texts per entry) and [selectedStats], then computes them as if the user
   /// had typed them and tapped Calculate. Returns the failure reason, if any.
@@ -74,6 +85,7 @@ class QualitativeCalculator extends _$QualitativeCalculator {
       showCalculations: state.showCalculations,
       loadedRows: rows,
       loadCount: state.loadCount + 1,
+      hasEntries: rows.isNotEmpty,
     );
     return calculate(rows.map((row) => row[0]).toList(), rows.map((row) => row[1]).toList());
   }

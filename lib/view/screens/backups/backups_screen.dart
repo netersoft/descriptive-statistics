@@ -187,7 +187,7 @@ class _BackupsScreenState extends ConsumerState<BackupsScreen> {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: TextButton.icon(
-                                  onPressed: () => loadBackupIntoCalculator(ref, data),
+                                  onPressed: () => loadBackupIntoCalculator(context, ref, data),
                                   icon: const Icon(Icons.calculate_outlined),
                                   label: Text(context.t.loadBackupAction),
                                 ),

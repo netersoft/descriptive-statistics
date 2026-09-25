@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/data/backups/backup_data.dart';
@@ -16,8 +17,16 @@ import '../../../core/tools/functions/number_parsing.dart';
 ///
 /// The values are written the way the user would type them in the current
 /// language (decimal comma or point), and recomputed with the current
-/// decimal precision setting, like any other calculation.
-void loadBackupIntoCalculator(WidgetRef ref, BackupData data) {
+/// decimal precision setting, like any other calculation. When that
+/// calculator's rows already hold something, the user confirms first.
+Future<void> loadBackupIntoCalculator(BuildContext context, WidgetRef ref, BackupData data) async {
+  final hasEntries = switch (data.kind) {
+    BackupKind.discrete => ref.read(discreteCalculatorProvider).hasEntries,
+    BackupKind.continuous => ref.read(continuousCalculatorProvider).hasEntries,
+    BackupKind.qualitative => ref.read(qualitativeCalculatorProvider).hasEntries,
+  };
+  if (hasEntries && !await _confirmReplace(context)) return;
+
   final separator = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
   // Modalities are stored as strings, every other column as numbers.
   String cell(Object value) => value is num ? noZero(value.toDouble(), decimalSeparator: separator) : value as String;
@@ -43,4 +52,19 @@ void loadBackupIntoCalculator(WidgetRef ref, BackupData data) {
       });
       ref.read(homeProvider.notifier).tabIndex = HomeTab.qualitative;
   }
+}
+
+Future<bool> _confirmReplace(BuildContext context) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text(context.t.replaceEntriesTitle),
+      content: Text(context.t.replaceEntriesMsg),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(dialogContext).pop(false), child: Text(context.t.cancel)),
+        TextButton(onPressed: () => Navigator.of(dialogContext).pop(true), child: Text(context.t.replaceAction)),
+      ],
+    ),
+  );
+  return confirmed ?? false;
 }

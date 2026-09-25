@@ -11,21 +11,38 @@ const numericKeyboard = TextInputType.numberWithOptions(decimal: true, signed: t
 /// The text controllers behind a calculator's data-entry rows, [fieldCount]
 /// per row (Xi/Ni, L1/L2/Ni, modality/value). Owned by the screen's State,
 /// which must call [dispose].
+///
+/// [onChanged] fires whenever the user edits a field or adds, removes or
+/// imports rows -- not on [replaceRows], whose caller already knows.
 class EntryRows {
   final int fieldCount;
+  final VoidCallback? onChanged;
   final List<List<TextEditingController>> _rows = [];
 
-  EntryRows(this.fieldCount);
+  EntryRows(this.fieldCount, {this.onChanged});
 
   int get length => _rows.length;
 
   List<TextEditingController> operator [](int index) => _rows[index];
 
-  void add([List<String>? values]) => _rows.add([
-    for (var field = 0; field < fieldCount; field++) TextEditingController(text: values?[field] ?? ''),
-  ]);
+  /// Whether any field holds something other than blanks.
+  bool get hasText => _rows.any((row) => row.any((controller) => controller.text.trim().isNotEmpty));
+
+  void add([List<String>? values]) {
+    _add(values);
+    onChanged?.call();
+  }
 
   void removeAt(int index) {
+    _removeAt(index);
+    onChanged?.call();
+  }
+
+  void _add(List<String>? values) => _rows.add([
+    for (var field = 0; field < fieldCount; field++) TextEditingController(text: values?[field] ?? '')..addListener(() => onChanged?.call()),
+  ]);
+
+  void _removeAt(int index) {
     for (final controller in _rows.removeAt(index)) {
       controller.dispose();
     }
@@ -35,17 +52,18 @@ class EntryRows {
   /// blank so they don't sit empty above the imported data.
   void importRows(List<List<String>> rows) {
     for (var i = _rows.length - 1; i >= 0; i--) {
-      if (_rows[i].every((controller) => controller.text.trim().isEmpty)) removeAt(i);
+      if (_rows[i].every((controller) => controller.text.trim().isEmpty)) _removeAt(i);
     }
-    rows.forEach(add);
+    rows.forEach(_add);
+    onChanged?.call();
   }
 
   /// Swaps every current row for [rows] -- used when a backup is loaded.
   void replaceRows(List<List<String>> rows) {
     for (var i = _rows.length - 1; i >= 0; i--) {
-      removeAt(i);
+      _removeAt(i);
     }
-    rows.forEach(add);
+    rows.forEach(_add);
   }
 
   /// The text of [field] in every row, top to bottom.

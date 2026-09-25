@@ -27,7 +27,10 @@ class DiscreteScreen extends ConsumerStatefulWidget {
 
 class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticKeepAliveClientMixin {
   // Xi, Ni.
-  final _entries = EntryRows(2);
+  late final EntryRows _entries = EntryRows(
+    2,
+    onChanged: () => ref.read(discreteCalculatorProvider.notifier).setHasEntries(_entries.hasText),
+  );
 
   // Without this, the TabBarView disposes this screen (and its in-progress
   // entry rows) whenever the user switches to another tab and back.

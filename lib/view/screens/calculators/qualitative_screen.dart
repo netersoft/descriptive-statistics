@@ -27,7 +27,10 @@ class QualitativeScreen extends ConsumerStatefulWidget {
 
 class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with AutomaticKeepAliveClientMixin {
   // Modality, value.
-  final _entries = EntryRows(2);
+  late final EntryRows _entries = EntryRows(
+    2,
+    onChanged: () => ref.read(qualitativeCalculatorProvider.notifier).setHasEntries(_entries.hasText),
+  );
 
   // Without this, the TabBarView disposes this screen (and its in-progress
   // entry rows) whenever the user switches to another tab and back.
