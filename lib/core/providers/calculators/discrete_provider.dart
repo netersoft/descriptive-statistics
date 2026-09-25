@@ -13,20 +13,37 @@ class DiscreteCalculatorState {
   final bool showCalculations;
   final DiscreteStatsResult? result;
 
+  /// The rows a backup last filled the calculator with (see `load`), for
+  /// the screen to copy into its entry fields; [loadCount] bumps on every
+  /// load so the screen can tell a new one from one it already applied.
+  final List<List<String>>? loadedRows;
+  final int loadCount;
+
+  /// Whether the screen's entry rows hold any text, as it last reported --
+  /// loading a backup over them asks for confirmation first.
+  final bool hasEntries;
+
   const DiscreteCalculatorState({
     required this.selectedStats,
     this.showCalculations = false,
     this.result,
+    this.loadedRows,
+    this.loadCount = 0,
+    this.hasEntries = false,
   });
 
   DiscreteCalculatorState copyWith({
     Set<StatOption>? selectedStats,
     bool? showCalculations,
     DiscreteStatsResult? result,
+    bool? hasEntries,
   }) => DiscreteCalculatorState(
     selectedStats: selectedStats ?? this.selectedStats,
     showCalculations: showCalculations ?? this.showCalculations,
     result: result ?? this.result,
+    loadedRows: loadedRows,
+    loadCount: loadCount,
+    hasEntries: hasEntries ?? this.hasEntries,
   );
 }
 
@@ -51,6 +68,24 @@ class DiscreteCalculator extends _$DiscreteCalculator {
 
   void toggleShowCalculations() {
     state = state.copyWith(showCalculations: !state.showCalculations);
+  }
+
+  void setHasEntries(bool hasEntries) {
+    if (hasEntries != state.hasEntries) state = state.copyWith(hasEntries: hasEntries);
+  }
+
+  /// Fills the calculator with a saved backup's [rows] (one list of field
+  /// texts per entry) and [selectedStats], then computes them as if the user
+  /// had typed them and tapped Calculate. Returns the failure reason, if any.
+  CalculationError? load(List<List<String>> rows, Set<StatOption> selectedStats) {
+    state = DiscreteCalculatorState(
+      selectedStats: selectedStats,
+      showCalculations: state.showCalculations,
+      loadedRows: rows,
+      loadCount: state.loadCount + 1,
+      hasEntries: rows.isNotEmpty,
+    );
+    return calculate(rows.map((row) => row[0]).toList(), rows.map((row) => row[1]).toList());
   }
 
   /// Parses [xiText]/[niText] (one entry per row) and computes the stats,

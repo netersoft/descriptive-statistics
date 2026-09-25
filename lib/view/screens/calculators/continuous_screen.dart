@@ -25,12 +25,23 @@ class ContinuousScreen extends ConsumerStatefulWidget {
 
 class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with AutomaticKeepAliveClientMixin {
   // L1, L2, Ni.
-  final _entries = EntryRows(3);
+  late final EntryRows _entries = EntryRows(
+    3,
+    onChanged: () => ref.read(continuousCalculatorProvider.notifier).setHasEntries(_entries.hasText),
+  );
 
   // Without this, the TabBarView disposes this screen (and its in-progress
   // entry rows) whenever the user switches to another tab and back.
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    // A backup may have been loaded before this tab was first built.
+    final loaded = ref.read(continuousCalculatorProvider).loadedRows;
+    if (loaded != null) _entries.replaceRows(loaded);
+  }
 
   @override
   void dispose() {
@@ -78,6 +89,9 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    ref.listen(continuousCalculatorProvider.select((state) => state.loadCount), (_, _) {
+      setState(() => _entries.replaceRows(ref.read(continuousCalculatorProvider).loadedRows!));
+    });
     final state = ref.watch(continuousCalculatorProvider);
     final notifier = ref.read(continuousCalculatorProvider.notifier);
     final result = state.result;

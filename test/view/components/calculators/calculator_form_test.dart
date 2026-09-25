@@ -49,6 +49,40 @@ void main() {
     });
   });
 
+  group('EntryRows change tracking', () {
+    test('hasText ignores rows holding only blanks', () {
+      final rows = EntryRows(2)..add(['', ' ']);
+      addTearDown(rows.dispose);
+
+      expect(rows.hasText, isFalse);
+      rows[0][1].text = '3';
+      expect(rows.hasText, isTrue);
+    });
+
+    test('reports user changes, but not replaceRows', () {
+      var changes = 0;
+      final rows = EntryRows(2, onChanged: () => changes++);
+      addTearDown(rows.dispose);
+
+      rows.add();
+      expect(changes, 1);
+      rows[0][0].text = '1';
+      expect(changes, 2);
+      rows.importRows([
+        ['2', '3'],
+      ]);
+      expect(changes, 3);
+      rows.removeAt(0);
+      expect(changes, 4);
+
+      rows.replaceRows([
+        ['4', '5'],
+      ]);
+      expect(changes, 4);
+      expect(rows.column(0), ['4']);
+    });
+  });
+
   group('StatOptionsChecklist', () {
     Future<void> pump(WidgetTester tester, Set<QualitativeStatOption> selected, {void Function(bool)? onToggleAll}) => tester.pumpWidget(
       TranslationProvider(

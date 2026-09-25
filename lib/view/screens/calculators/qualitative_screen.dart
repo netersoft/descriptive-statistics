@@ -27,12 +27,23 @@ class QualitativeScreen extends ConsumerStatefulWidget {
 
 class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with AutomaticKeepAliveClientMixin {
   // Modality, value.
-  final _entries = EntryRows(2);
+  late final EntryRows _entries = EntryRows(
+    2,
+    onChanged: () => ref.read(qualitativeCalculatorProvider.notifier).setHasEntries(_entries.hasText),
+  );
 
   // Without this, the TabBarView disposes this screen (and its in-progress
   // entry rows) whenever the user switches to another tab and back.
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    // A backup may have been loaded before this tab was first built.
+    final loaded = ref.read(qualitativeCalculatorProvider).loadedRows;
+    if (loaded != null) _entries.replaceRows(loaded);
+  }
 
   @override
   void dispose() {
@@ -94,6 +105,9 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    ref.listen(qualitativeCalculatorProvider.select((state) => state.loadCount), (_, _) {
+      setState(() => _entries.replaceRows(ref.read(qualitativeCalculatorProvider).loadedRows!));
+    });
     final state = ref.watch(qualitativeCalculatorProvider);
     final notifier = ref.read(qualitativeCalculatorProvider.notifier);
     final result = state.result;

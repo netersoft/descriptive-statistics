@@ -45,6 +45,10 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
         ref.read(homeProvider.notifier).tabIndex = tabController.index;
       }
     });
+    // Lets other screens switch tabs (e.g. Backups opening a calculator).
+    ref.listenManual(homeProvider, (_, index) {
+      if (tabController.index != index) tabController.animateTo(index);
+    });
   }
 
   @override
@@ -148,32 +152,32 @@ class _CentralContainerState extends ConsumerState<CentralContainer> with Single
           ListTile(
             leading: const Icon(Icons.menu_book),
             title: Text(context.t.documentation),
-            onTap: () => _goToTab(0),
+            onTap: () => _goToTab(HomeTab.documentation),
           ),
           ListTile(
             leading: const Icon(Icons.pin),
             title: Text(context.t.discreteVariables),
-            onTap: () => _goToTab(1),
+            onTap: () => _goToTab(HomeTab.discrete),
           ),
           ListTile(
             leading: const Icon(Icons.show_chart),
             title: Text(context.t.continuousVariables),
-            onTap: () => _goToTab(2),
+            onTap: () => _goToTab(HomeTab.continuous),
           ),
           ListTile(
             leading: const Icon(Icons.category),
             title: Text(context.t.qualitativeVariables),
-            onTap: () => _goToTab(3),
+            onTap: () => _goToTab(HomeTab.qualitative),
           ),
           ListTile(
             leading: const Icon(Icons.save),
             title: Text(context.t.safeguards),
-            onTap: () => _goToTab(4),
+            onTap: () => _goToTab(HomeTab.backups),
           ),
           ListTile(
             leading: const Icon(Icons.school),
             title: Text(context.t.tutorial),
-            onTap: () => _goToTab(5),
+            onTap: () => _goToTab(HomeTab.tutorial),
           ),
           const Divider(),
           ListTile(
