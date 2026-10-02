@@ -50,6 +50,26 @@ void main() {
     expect(find.text('Chart A'), findsOneWidget);
   });
 
+  testWidgets("labels the bar chart's value axis with the locale's decimal separator", (tester) async {
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              height: 300,
+              child: qualitativeBarChart(labels: const ['a', 'b', 'c'], values: const [3, 2, 1]),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // fl_chart steps this axis by 0.5.
+    expect(find.text('2,5'), findsOneWidget);
+    expect(find.text('2.5'), findsNothing);
+  });
+
   testWidgets('box plot lists its five values', (tester) async {
     await tester.pumpWidget(
       TranslationProvider(
