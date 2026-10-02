@@ -141,7 +141,7 @@ Widget qualitativeBarChart({required List<String> labels, required List<double> 
       barTouchData: const BarTouchData(enabled: false),
       titlesData: FlTitlesData(
         bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28)),
-        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
+        leftTitles: _valueAxisTitles,
         topTitles: const AxisTitles(),
         rightTitles: const AxisTitles(),
       ),
@@ -154,6 +154,22 @@ Widget qualitativeBarChart({required List<String> labels, required List<double> 
           ),
       ],
     ),
+  ),
+);
+
+/// Value axis labels with the app's decimal separator ("2,5" in French):
+/// fl_chart's own labels always use a point. Its formatted value is kept
+/// otherwise, since it already rounds away the floating-point noise of
+/// the axis steps (0.30000000000000004).
+const _valueAxisTitles = AxisTitles(
+  sideTitles: SideTitles(showTitles: true, reservedSize: 32, getTitlesWidget: _leftLabel),
+);
+
+Widget _leftLabel(double value, TitleMeta meta) => SideTitleWidget(
+  meta: meta,
+  child: Text(
+    meta.formattedValue.replaceAll('.', decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode)),
+    style: const TextStyle(fontSize: 11),
   ),
 );
 
@@ -170,7 +186,7 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: true, interval: 1, getTitlesWidget: (v, m) => _bottomLabel(labels, v, m), reservedSize: 28),
           ),
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 32)),
+          leftTitles: _valueAxisTitles,
           topTitles: const AxisTitles(),
           rightTitles: const AxisTitles(),
         ),
