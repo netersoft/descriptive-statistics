@@ -33,8 +33,8 @@ String buildQualitativeExplanationHtml(QualitativeStatsResult r, Set<Qualitative
 <b>${t.qltTabTitle4}</b> : ${t.tableCEffectifs}<br>
 <b>${t.qltTabTitle5}</b> : ${t.tableCFrequencies}<br><br>
 <b><font color='blue'><u>${t.effectifTotal}</u></font></b><br><br>
-<b>E = &sum;Ni</b><br>
-<font color='red'><b><u>E = ${fmt(r.total)}</u></b></font><br><br>
+<b>${t.qltTabTitle2} = &sum;Ni</b><br>
+<font color='red'><b><u>${t.qltTabTitle2} = ${fmt(r.total)}</u></b></font><br><br>
 ''');
 
   if (selected.contains(QualitativeStatOption.mean)) {
