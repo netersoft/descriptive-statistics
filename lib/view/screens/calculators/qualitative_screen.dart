@@ -9,6 +9,7 @@ import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/raw_series.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
+import '../../components/backups/backup_presentation.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
 import '../../components/calculators/calculator_actions.dart';
 import '../../components/calculators/calculator_form.dart';
@@ -17,6 +18,7 @@ import '../../components/calculators/qualitative_explanation.dart';
 import '../../components/calculators/raw_series_dialog.dart';
 import '../../components/calculators/share_text.dart';
 import '../../components/calculators/stats_table.dart';
+import '../../components/pdf/calculation_pdf.dart';
 
 class QualitativeScreen extends ConsumerStatefulWidget {
   const QualitativeScreen({super.key});
@@ -82,15 +84,35 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
 
     await saveCalculationBackup(
       context,
-      data: BackupData(
-        kind: BackupKind.qualitative,
-        columns: [result.modalities, result.effectifs],
-        selectedStats: [for (final option in state.selectedStats) option.name],
-        precision: result.precision,
-      ),
+      data: _backupData(),
       resolutionHtml: buildQualitativeExplanationHtml(result, state.selectedStats),
       xi: List<int>.generate(result.modalities.length, (i) => i).join('_'),
       ni: result.effectifs.join('_'),
+    );
+  }
+
+  /// The current result as a backup's data; call only once there is one.
+  BackupData _backupData() {
+    final state = ref.read(qualitativeCalculatorProvider);
+    final result = state.result!;
+    return BackupData(
+      kind: BackupKind.qualitative,
+      columns: [result.modalities, result.effectifs],
+      selectedStats: [for (final option in state.selectedStats) option.name],
+      precision: result.precision,
+    );
+  }
+
+  Future<void> _exportPdf() async {
+    if (ref.read(qualitativeCalculatorProvider).result == null) return;
+
+    await shareCalculationPdf(
+      context,
+      title: context.t.appNameAlt,
+      dateLabel: dateTimeLabel(DateTime.now(), LocaleSettings.currentLocale.languageCode),
+      data: _backupData(),
+      fallbackHtml: '',
+      chartTypes: pdfChartTypes(ref.read(settingsProvider)),
     );
   }
 
@@ -187,7 +209,7 @@ class _QualitativeScreenState extends ConsumerState<QualitativeScreen> with Auto
               const SizedBox(height: 16),
               QualitativeExplanation(result: result, selectedStats: state.selectedStats),
               const SizedBox(height: 16),
-              ResultActions(onSave: _save, onShare: _share),
+              ResultActions(onSave: _save, onShare: _share, onExportPdf: _exportPdf),
             ],
             const SizedBox(height: 80),
           ],

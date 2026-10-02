@@ -71,12 +71,16 @@ String backupExplanationHtml(Backup backup) {
 /// recorded its save time, else the date string stored with it.
 String backupDateLabel(Backup backup, String languageCode) {
   final createdAt = backup.createdAt;
-  if (createdAt == null) return backup.date;
+  return createdAt == null ? backup.date : dateTimeLabel(createdAt, languageCode);
+}
+
+/// [date] in [languageCode]'s own date format, with the time.
+String dateTimeLabel(DateTime date, String languageCode) {
   try {
-    return DateFormat.yMd(languageCode).add_Hm().format(createdAt);
+    return DateFormat.yMd(languageCode).add_Hm().format(date);
   } on Exception {
     // Locale date symbols not loaded (they are once MaterialApp's
     // localization delegates have run).
-    return formatBackupDate(createdAt);
+    return formatBackupDate(date);
   }
 }

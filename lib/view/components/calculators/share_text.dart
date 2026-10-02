@@ -9,59 +9,62 @@ import '../../../core/tools/functions/number_parsing.dart';
 /// Plain-text summaries of a calculation result, gated by which stats were
 /// selected -- for sharing outside the app (e.g. to a teacher), unlike the
 /// HTML explanation panels which are only ever rendered on-screen.
-String buildDiscreteShareText(DiscreteStatsResult r, Set<StatOption> selected) {
-  final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
-  String fmt(double v) => noZero(v, decimalSeparator: sep);
+String buildDiscreteShareText(DiscreteStatsResult r, Set<StatOption> selected) => [
+  t.appNameAlt,
+  '',
+  'Xi: ${r.xi.map(_fmt).join(', ')}',
+  'Ni: ${r.ni.map(_fmt).join(', ')}',
+  '',
+  ...discreteResultLines(r, selected),
+].join('\n');
 
-  final buffer = StringBuffer()
-    ..writeln(t.appNameAlt)
-    ..writeln()
-    ..writeln('Xi: ${r.xi.map(fmt).join(', ')}')
-    ..writeln('Ni: ${r.ni.map(fmt).join(', ')}')
-    ..writeln();
+/// One line per selected result ("MOYENNE: X = 3"), shared by the text
+/// summary and the PDF export.
+List<String> discreteResultLines(DiscreteStatsResult r, Set<StatOption> selected) {
+  final lines = <String>[];
 
   if (selected.contains(StatOption.mean)) {
-    buffer.writeln('${t.meanSectionTitle}: X = ${fmt(r.weightedMean)}');
+    lines.add('${t.meanSectionTitle}: X = ${_fmt(r.weightedMean)}');
   }
   if (selected.contains(StatOption.mode)) {
-    final modeText = r.isModeUnique ? fmt(r.mode) : r.modes.map(fmt).join(', ');
-    buffer.writeln('${t.modeSectionTitle}: Mo = $modeText${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
+    final modeText = r.isModeUnique ? _fmt(r.mode) : r.modes.map(_fmt).join(', ');
+    lines.add('${t.modeSectionTitle}: Mo = $modeText${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
   }
   if (selected.contains(StatOption.median)) {
-    buffer.writeln('${t.medianSectionTitle}: Me = ${fmt(r.median)}');
+    lines.add('${t.medianSectionTitle}: Me = ${_fmt(r.median)}');
   }
   if (selected.contains(StatOption.quartiles)) {
-    buffer
-      ..writeln(
-        '${t.quartilesSectionTitle}: Q1 = ${fmt(r.firstQuartile)}, Q3 = ${fmt(r.thirdQuartile)}, '
-        '${t.interQuartLabel} = ${fmt(r.interquartileRange)}',
+    lines
+      ..add(
+        '${t.quartilesSectionTitle}: Q1 = ${_fmt(r.firstQuartile)}, Q3 = ${_fmt(r.thirdQuartile)}, '
+        '${t.interQuartLabel} = ${_fmt(r.interquartileRange)}',
       )
-      ..writeln('${t.decilesSectionTitle}: D1 = ${fmt(r.firstDecile)}, D9 = ${fmt(r.ninthDecile)}');
+      ..add('${t.decilesSectionTitle}: D1 = ${_fmt(r.firstDecile)}, D9 = ${_fmt(r.ninthDecile)}');
   }
   if (selected.contains(StatOption.variance)) {
-    buffer.writeln('${t.varianceSectionTitle}: ${fmt(r.variance)}');
+    lines.add('${t.varianceSectionTitle}: ${_fmt(r.variance)}');
   }
   if (selected.contains(StatOption.covariance)) {
-    buffer
-      ..writeln('${t.covarianceSectionTitle}: ${fmt(r.covariance)}')
-      ..writeln('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}');
+    lines
+      ..add('${t.covarianceSectionTitle}: ${_fmt(r.covariance)}')
+      ..add('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? _fmt(r.correlation) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.standardDeviation)) {
-    buffer
-      ..writeln('${t.standardDeviationSectionTitle}: ${fmt(r.standardDeviation)}')
-      ..writeln('${t.standardErrorSectionTitle}: ${fmt(r.standardError)}');
+    lines
+      ..add('${t.standardDeviationSectionTitle}: ${_fmt(r.standardDeviation)}')
+      ..add('${t.standardErrorSectionTitle}: ${_fmt(r.standardError)}');
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
-    buffer.writeln(
+    lines.add(
       r.isCoefficientOfVariationDefined
-          ? '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
+          ? '${t.coefficientOfVariationSectionTitle}: ${_fmt(r.coefficientOfVariation)}% '
                 '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})'
           : '${t.coefficientOfVariationSectionTitle}: ${t.undefinedValue}',
     );
   }
-  buffer.write('${t.rangeSectionTitle}: ${fmt(r.range)}');
+  lines.add('${t.rangeSectionTitle}: ${_fmt(r.range)}');
 
-  return buffer.toString();
+  return lines;
 }
 
 String buildContinuousShareText(
@@ -69,80 +72,86 @@ String buildContinuousShareText(
   List<double> l1,
   List<double> l2,
   Set<StatOption> selected,
-) {
-  final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
-  String fmt(double v) => noZero(v, decimalSeparator: sep);
+) => [
+  t.appNameAlt,
+  '',
+  'L1: ${l1.map(_fmt).join(', ')}',
+  'L2: ${l2.map(_fmt).join(', ')}',
+  'Ni: ${r.ni.map(_fmt).join(', ')}',
+  '',
+  ...continuousResultLines(r, selected),
+].join('\n');
 
-  final buffer = StringBuffer()
-    ..writeln(t.appNameAlt)
-    ..writeln()
-    ..writeln('L1: ${l1.map(fmt).join(', ')}')
-    ..writeln('L2: ${l2.map(fmt).join(', ')}')
-    ..writeln('Ni: ${r.ni.map(fmt).join(', ')}')
-    ..writeln();
+/// See [discreteResultLines].
+List<String> continuousResultLines(ContinuousStatsResult r, Set<StatOption> selected) {
+  final lines = <String>[];
 
   if (selected.contains(StatOption.mean)) {
-    buffer.writeln('${t.meanSectionTitle}: X = ${fmt(r.weightedMean)}');
+    lines.add('${t.meanSectionTitle}: X = ${_fmt(r.weightedMean)}');
   }
   if (selected.contains(StatOption.mode)) {
-    buffer.writeln('${t.modeSectionTitle}: Mo = ${fmt(r.mode)}${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
+    lines.add('${t.modeSectionTitle}: Mo = ${_fmt(r.mode)}${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
   }
   if (selected.contains(StatOption.median)) {
-    buffer.writeln('${t.medianSectionTitle}: Me = ${fmt(r.median)}');
+    lines.add('${t.medianSectionTitle}: Me = ${_fmt(r.median)}');
   }
   if (selected.contains(StatOption.quartiles)) {
-    buffer
-      ..writeln(
-        '${t.quartilesSectionTitle}: Q1 = ${fmt(r.firstQuartile)}, Q3 = ${fmt(r.thirdQuartile)}, '
-        '${t.interQuartLabel} = ${fmt(r.interquartileRange)}',
+    lines
+      ..add(
+        '${t.quartilesSectionTitle}: Q1 = ${_fmt(r.firstQuartile)}, Q3 = ${_fmt(r.thirdQuartile)}, '
+        '${t.interQuartLabel} = ${_fmt(r.interquartileRange)}',
       )
-      ..writeln('${t.decilesSectionTitle}: D1 = ${fmt(r.firstDecile)}, D9 = ${fmt(r.ninthDecile)}');
+      ..add('${t.decilesSectionTitle}: D1 = ${_fmt(r.firstDecile)}, D9 = ${_fmt(r.ninthDecile)}');
   }
   if (selected.contains(StatOption.variance)) {
-    buffer.writeln('${t.varianceSectionTitle}: ${fmt(r.variance)}');
+    lines.add('${t.varianceSectionTitle}: ${_fmt(r.variance)}');
   }
   if (selected.contains(StatOption.covariance)) {
-    buffer
-      ..writeln('${t.covarianceSectionTitle}: ${fmt(r.covariance)}')
-      ..writeln('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? fmt(r.correlation) : t.undefinedValue}');
+    lines
+      ..add('${t.covarianceSectionTitle}: ${_fmt(r.covariance)}')
+      ..add('${t.correlationSectionTitle}: ${r.isCorrelationDefined ? _fmt(r.correlation) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.standardDeviation)) {
-    buffer
-      ..writeln('${t.standardDeviationSectionTitle}: ${fmt(r.standardDeviation)}')
-      ..writeln('${t.standardErrorSectionTitle}: ${fmt(r.standardError)}');
+    lines
+      ..add('${t.standardDeviationSectionTitle}: ${_fmt(r.standardDeviation)}')
+      ..add('${t.standardErrorSectionTitle}: ${_fmt(r.standardError)}');
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
-    buffer.writeln(
+    lines.add(
       r.isCoefficientOfVariationDefined
-          ? '${t.coefficientOfVariationSectionTitle}: ${fmt(r.coefficientOfVariation)}% '
+          ? '${t.coefficientOfVariationSectionTitle}: ${_fmt(r.coefficientOfVariation)}% '
                 '(${r.isHomogeneous ? t.distribHomo : t.distribHetero})'
           : '${t.coefficientOfVariationSectionTitle}: ${t.undefinedValue}',
     );
   }
-  buffer.write('${t.rangeSectionTitle}: ${fmt(r.range)}');
+  lines.add('${t.rangeSectionTitle}: ${_fmt(r.range)}');
 
-  return buffer.toString();
+  return lines;
 }
 
-String buildQualitativeShareText(QualitativeStatsResult r, Set<QualitativeStatOption> selected) {
-  final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
-  String fmt(double v) => noZero(v, decimalSeparator: sep);
+String buildQualitativeShareText(QualitativeStatsResult r, Set<QualitativeStatOption> selected) => [
+  t.appNameAlt,
+  '',
+  '${t.tableModalities}: ${r.modalities.join(', ')}',
+  '${t.tableEffectifs}: ${r.effectifs.map(_fmt).join(', ')}',
+  '${t.effectifTotal}: ${_fmt(r.total)}',
+  '',
+  ...qualitativeResultLines(r, selected),
+].join('\n');
 
-  final buffer = StringBuffer()
-    ..writeln(t.appNameAlt)
-    ..writeln()
-    ..writeln('${t.tableModalities}: ${r.modalities.join(', ')}')
-    ..writeln('${t.tableEffectifs}: ${r.effectifs.map(fmt).join(', ')}')
-    ..writeln('${t.effectifTotal}: ${fmt(r.total)}')
-    ..writeln();
+/// See [discreteResultLines].
+List<String> qualitativeResultLines(QualitativeStatsResult r, Set<QualitativeStatOption> selected) {
+  final lines = <String>[];
 
   if (selected.contains(QualitativeStatOption.mean)) {
-    buffer.writeln('${t.meanSectionTitle}: X = ${fmt(r.mean)}');
+    lines.add('${t.meanSectionTitle}: X = ${_fmt(r.mean)}');
   }
   if (selected.contains(QualitativeStatOption.mode)) {
     final modeText = r.isModeUnique ? r.modeModality : r.modeModalities.join(', ');
-    buffer.writeln('${t.modeSectionTitle}: Mo = $modeText${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
+    lines.add('${t.modeSectionTitle}: Mo = $modeText${r.isModeUnique ? '' : ' (${t.multipleModesNote})'}');
   }
 
-  return buffer.toString();
+  return lines;
 }
+
+String _fmt(double v) => noZero(v, decimalSeparator: decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode));

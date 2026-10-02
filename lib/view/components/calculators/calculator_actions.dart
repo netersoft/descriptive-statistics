@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -7,6 +9,7 @@ import '../../../core/models/backup_model.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../pdf/calculation_pdf.dart';
 
 /// Shows why a calculation failed in a snackbar, when [error] is set.
 void showCalculationError(BuildContext context, CalculationError? error) {
@@ -121,4 +124,42 @@ Future<void> shareCalculationText(BuildContext context, String text) async {
       sharePositionOrigin: box == null ? null : box.localToGlobal(Offset.zero) & box.size,
     ),
   );
+}
+
+/// Builds the calculation's PDF (see [buildCalculationPdf]) and opens the
+/// system share sheet with it, named after [title].
+Future<void> shareCalculationPdf(
+  BuildContext context, {
+  required String title,
+  required String dateLabel,
+  required BackupData? data,
+  required String fallbackHtml,
+  required PdfChartTypes chartTypes,
+}) async {
+  final bytes = await buildCalculationPdf(
+    title: title,
+    dateLabel: dateLabel,
+    data: data,
+    fallbackHtml: fallbackHtml,
+    chartTypes: chartTypes,
+  );
+  final dir = await Directory.systemTemp.createTemp('statistique_descriptive_pdf');
+  final file = File('${dir.path}/${pdfFileName(title)}');
+  await file.writeAsBytes(bytes);
+  if (!context.mounted) return;
+
+  final box = context.findRenderObject() as RenderBox?;
+  await SharePlus.instance.share(
+    ShareParams(
+      files: [XFile(file.path, mimeType: 'application/pdf')],
+      sharePositionOrigin: box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+    ),
+  );
+}
+
+/// [title] as a file name: characters that file systems or share targets
+/// may reject become "_".
+String pdfFileName(String title) {
+  final safe = title.trim().replaceAll(RegExp(r'[\\/:*?"<>|\x00-\x1F]'), '_');
+  return '${safe.isEmpty ? 'statistique_descriptive' : safe}.pdf';
 }
