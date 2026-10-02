@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/tools/functions/number_parsing.dart';
+import 'package:descriptive_statistics/core/tools/functions/number_parsing.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

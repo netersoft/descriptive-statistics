@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:flutter_starter/core/providers/calculators/calculator_types.dart';
-import 'package:flutter_starter/core/stats/discrete_stats.dart';
-import 'package:flutter_starter/core/stats/rounding.dart';
-import 'package:flutter_starter/view/components/calculators/discrete_explanation.dart';
+import 'package:descriptive_statistics/core/providers/calculators/calculator_types.dart';
+import 'package:descriptive_statistics/core/stats/discrete_stats.dart';
+import 'package:descriptive_statistics/core/stats/rounding.dart';
+import 'package:descriptive_statistics/view/components/calculators/discrete_explanation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

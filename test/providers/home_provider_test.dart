@@ -1,5 +1,5 @@
+import 'package:descriptive_statistics/core/providers/main/home_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/providers/main/home_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

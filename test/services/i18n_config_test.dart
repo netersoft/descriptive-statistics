@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/services/i18n/config.dart';
+import 'package:descriptive_statistics/core/services/i18n/config.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

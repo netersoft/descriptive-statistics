@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter_starter/core/extensions/color_extension.dart';
+import 'package:descriptive_statistics/core/extensions/color_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

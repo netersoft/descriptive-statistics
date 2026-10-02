@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/stats/rounding.dart';
+import 'package:descriptive_statistics/core/stats/rounding.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

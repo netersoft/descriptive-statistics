@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:descriptive_statistics/core/data/backups/backups_repository.dart';
+import 'package:descriptive_statistics/core/models/backup_model.dart';
+import 'package:descriptive_statistics/core/services/di/locator.dart';
+import 'package:descriptive_statistics/core/services/hive/service.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/view/screens/backups/backups_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_starter/core/data/backups/backups_repository.dart';
-import 'package:flutter_starter/core/models/backup_model.dart';
-import 'package:flutter_starter/core/services/di/locator.dart';
-import 'package:flutter_starter/core/services/hive/service.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/view/screens/backups/backups_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 

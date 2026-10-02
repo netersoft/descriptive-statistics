@@ -1,7 +1,7 @@
-import 'package:flutter_starter/core/data/backups/backup_data.dart';
-import 'package:flutter_starter/core/models/backup_model.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/view/components/backups/backup_presentation.dart';
+import 'package:descriptive_statistics/core/data/backups/backup_data.dart';
+import 'package:descriptive_statistics/core/models/backup_model.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/view/components/backups/backup_presentation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

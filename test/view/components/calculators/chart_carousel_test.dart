@@ -1,7 +1,7 @@
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/view/components/calculators/chart_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

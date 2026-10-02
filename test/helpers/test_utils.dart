@@ -1,7 +1,7 @@
+import 'package:descriptive_statistics/core/helpers/router/navigation_helper.dart';
+import 'package:descriptive_statistics/core/services/di/locator.dart';
+import 'package:descriptive_statistics/core/services/shared_preferences/service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_starter/core/helpers/router/navigation_helper.dart';
-import 'package:flutter_starter/core/services/di/locator.dart';
-import 'package:flutter_starter/core/services/shared_preferences/service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockSharedPreferencesService extends Mock implements SharedPreferencesService {}

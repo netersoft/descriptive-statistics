@@ -1,8 +1,8 @@
+import 'package:descriptive_statistics/core/providers/calculators/calculator_types.dart';
+import 'package:descriptive_statistics/core/providers/calculators/continuous_provider.dart';
+import 'package:descriptive_statistics/core/providers/calculators/discrete_provider.dart';
+import 'package:descriptive_statistics/core/providers/calculators/qualitative_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/providers/calculators/calculator_types.dart';
-import 'package:flutter_starter/core/providers/calculators/continuous_provider.dart';
-import 'package:flutter_starter/core/providers/calculators/discrete_provider.dart';
-import 'package:flutter_starter/core/providers/calculators/qualitative_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

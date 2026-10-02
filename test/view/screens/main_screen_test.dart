@@ -1,8 +1,8 @@
+import 'package:descriptive_statistics/core/providers/main/home_provider.dart';
+import 'package:descriptive_statistics/core/routes/router.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/providers/main/home_provider.dart';
-import 'package:flutter_starter/core/routes/router.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

@@ -1,72 +1,66 @@
-# Flutter Starter - Agent Guide
+# Statistique Descriptive - Agent Guide
+
+Descriptive statistics calculator (discrete, continuous and qualitative variables), published
+on the Play Store as `com.neteru.tixtat`. The Dart package is `descriptive_statistics`.
+See README.md for the feature list.
 
 ## Project Setup
 
 ```bash
-# Install dependencies
+cp .env.example .env
 flutter pub get
-
-# Generate Slang translations
-dart run slang
-
-# Run codegen (Riverpod, JSON serializable, Hive)
-dart run build_runner build
-
-# Run app
+dart run slang                                            # translations
+dart run build_runner build --delete-conflicting-outputs  # Riverpod, Hive, injectable
 flutter run
 ```
 
-## Essential Commands
-
-```bash
-# Rename app (all displays)
-dart run rename_app:main all="My App Name"
-
-# Change Android/iOS package name
-dart run change_app_package_name:main com.new.package.name
-
-# Generate launcher icons (from assets/images/launcher/icon.png)
-dart run icons_launcher:create
-
-# Generate splash screen
-dart run flutter_native_splash:create
-
-# Remove default splash
-dart run flutter_native_splash:remove
-```
+Generated files (`*.g.dart`, `locator.config.dart`) are not committed: rerun the two
+generators after changing translations, providers, Hive types or injectable services.
 
 ## Code Quality
 
 ```bash
-# Lint + static analysis
-flutter analyze
-dart analyze
-
-# Format
 dart format .
+flutter analyze
+flutter test
 ```
+
+CI fails on unformatted code, analyzer issues, failing tests, or hand-written line
+coverage under 10%.
 
 ## Architecture
 
-- **Entry point**: `lib/main.dart`
-- **Core layer** (`lib/core/`): providers, services, models, routes, helpers, data
-- **View layer** (`lib/view/`): screens, components, layouts, themes
-- **State management**: Riverpod with code generation (`riverpod_generator`)
-- **Routing**: go_router
-- **Local storage**: Hive CE + SharedPreferences
-- **API**: REST with json_serializable
+- **Calculations** (`lib/core/stats/`): pure Dart functions returning immutable result
+  objects. Every value is rounded with `arrondi` to the user's precision, which the result
+  carries along.
+- **State** (`lib/core/providers/`): Riverpod with code generation.
+- **Views** (`lib/view/`): screens and components. Calculator UI pieces are in
+  `lib/view/components/calculators/`.
+- **Storage**: Hive CE for backups (`lib/core/data/backups/`), SharedPreferences for
+  settings.
+- **Routing**: go_router. **DI**: GetIt + injectable for infrastructure singletons.
+- **i18n**: Slang. Sources are in `assets/i18n/*.i18n.json`, French is the base locale, and
+  every key must exist in fr, en, de, es and pt. Use `context.t` in widgets.
 
-## Environment
+## Statistics conventions
 
-- Copy `.env.example` to `.env` before running
-- SDK: `>=3.8.0 <4.0.0`
+- Continuous classes are [L1 ; L2[. Default classes follow the Sturges rule, with widths
+  rounded to 1, 2, 2.5 or 5 ×10^k.
+- The legacy Android app (`.legacy/`) is the reference for formulas and wording. When the
+  new app deliberately differs, a comment explains why.
 
 ## Testing
 
-Unit tests live under `test/` (`api/`, `helpers/`, `providers/`), using `mocktail` with a
-GetIt test-locator override (`test/helpers/test_utils.dart`) to mock infrastructure
-singletons. There are no widget, golden, or integration tests yet.
+Unit and widget tests live under `test/`, mirroring `lib/`. Infrastructure singletons are
+mocked with `mocktail` through a GetIt test-locator override (`test/helpers/test_utils.dart`).
+Widget tests run in French, so finders use the French strings.
 
 ```bash
 flutter test
 ```
+
+## Release
+
+Bump `version` in `pubspec.yaml`, then
+`flutter build appbundle --release --flavor prod` with `android/key.properties` present.
+Never commit `key.properties`, `*.jks` or `*.keystore`.
