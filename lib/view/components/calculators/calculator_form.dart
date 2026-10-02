@@ -201,7 +201,7 @@ class StatOptionsChecklist<T> extends StatelessWidget {
   );
 }
 
-/// The Save / Share buttons shown under a calculation's result.
+/// The Save / Share / PDF buttons shown under a calculation's result.
 class ResultActions extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onShare;
@@ -211,30 +211,39 @@ class ResultActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
+    spacing: 8,
     children: [
-      Expanded(
-        child: OutlinedButton.icon(
-          onPressed: onSave,
-          icon: const Icon(Icons.save_outlined),
-          label: Text(context.t.save),
-        ),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: OutlinedButton.icon(
-          onPressed: onShare,
-          icon: const Icon(Icons.share_outlined),
-          label: Text(context.t.share),
-        ),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: OutlinedButton.icon(
-          onPressed: onExportPdf,
-          icon: const Icon(Icons.picture_as_pdf_outlined),
-          label: Text(context.t.exportPdf),
-        ),
-      ),
+      _ResultAction(onPressed: onSave, icon: Icons.save_outlined, label: context.t.save),
+      _ResultAction(onPressed: onShare, icon: Icons.share_outlined, label: context.t.share),
+      _ResultAction(onPressed: onExportPdf, icon: Icons.picture_as_pdf_outlined, label: context.t.exportPdf),
     ],
+  );
+}
+
+/// Icon above its label: three buttons with the icon beside the label
+/// don't fit a phone's width, and labels like "Enregistrer" or
+/// "Compartilhar" broke mid-word. A label still too long for its button
+/// is scaled down rather than wrapped.
+class _ResultAction extends StatelessWidget {
+  final VoidCallback onPressed;
+  final IconData icon;
+  final String label;
+
+  const _ResultAction({required this.onPressed, required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10)),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon),
+          const SizedBox(height: 4),
+          FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1)),
+        ],
+      ),
+    ),
   );
 }
