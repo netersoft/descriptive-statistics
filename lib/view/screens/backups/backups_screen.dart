@@ -11,12 +11,15 @@ import '../../../core/data/backups/backup_data.dart';
 import '../../../core/data/backups/backups_json.dart';
 import '../../../core/data/backups/backups_repository.dart';
 import '../../../core/models/backup_model.dart';
+import '../../../core/providers/settings/settings_provider.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
 import '../../components/backups/backup_presentation.dart';
 import '../../components/backups/load_backup.dart';
+import '../../components/calculators/calculator_actions.dart';
 import '../../components/calculators/chart_carousel.dart';
 import '../../components/misc/themed_html.dart';
+import '../../components/pdf/calculation_pdf.dart';
 
 /// Lists saved calculation results (from the Discrete/Continuous/
 /// Qualitative screens' Save action), expandable to show the stored
@@ -104,6 +107,17 @@ class _BackupsScreenState extends ConsumerState<BackupsScreen> {
     }
   }
 
+  /// Shares the backup as a PDF; one saved before 1.6 only has its
+  /// explanation (see [buildCalculationPdf]).
+  Future<void> _exportPdf(Backup backup) => shareCalculationPdf(
+    context,
+    title: backup.name,
+    dateLabel: backupDateLabel(backup, LocaleSettings.currentLocale.languageCode),
+    data: BackupData.decode(backup.kind, backup.data),
+    fallbackHtml: backup.resolutionHtml,
+    chartTypes: pdfChartTypes(ref.read(settingsProvider)),
+  );
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Column(
@@ -179,20 +193,27 @@ class _BackupsScreenState extends ConsumerState<BackupsScreen> {
                               child: ThemedHtml(backupExplanationHtml(backup)),
                             ),
                           ),
-                          // Backups saved before 1.6 only kept their HTML,
-                          // not the values needed to reload them.
-                          if (BackupData.decode(backup.kind, backup.data) case final data?)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton.icon(
-                                  onPressed: () => loadBackupIntoCalculator(context, ref, data),
-                                  icon: const Icon(Icons.calculate_outlined),
-                                  label: Text(context.t.loadBackupAction),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            child: Wrap(
+                              alignment: WrapAlignment.end,
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () => _exportPdf(backup),
+                                  icon: const Icon(Icons.picture_as_pdf_outlined),
+                                  label: Text(context.t.exportPdf),
                                 ),
-                              ),
+                                // Backups saved before 1.6 only kept their
+                                // HTML, not the values needed to reload them.
+                                if (BackupData.decode(backup.kind, backup.data) case final data?)
+                                  TextButton.icon(
+                                    onPressed: () => loadBackupIntoCalculator(context, ref, data),
+                                    icon: const Icon(Icons.calculate_outlined),
+                                    label: Text(context.t.loadBackupAction),
+                                  ),
+                              ],
                             ),
+                          ),
                         ],
                       ],
                     ),

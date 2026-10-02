@@ -9,6 +9,7 @@ import '../../../core/services/i18n/translations.g.dart';
 import '../../../core/stats/raw_series.dart';
 import '../../../core/stats/rounding.dart';
 import '../../../core/tools/functions/number_parsing.dart';
+import '../../components/backups/backup_presentation.dart';
 import '../../components/calculators/bulk_import_dialog.dart';
 import '../../components/calculators/calculator_actions.dart';
 import '../../components/calculators/calculator_form.dart';
@@ -17,6 +18,7 @@ import '../../components/calculators/continuous_explanation.dart';
 import '../../components/calculators/raw_series_dialog.dart';
 import '../../components/calculators/share_text.dart';
 import '../../components/calculators/stats_table.dart';
+import '../../components/pdf/calculation_pdf.dart';
 
 class ContinuousScreen extends ConsumerStatefulWidget {
   const ContinuousScreen({super.key});
@@ -94,15 +96,35 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
 
     await saveCalculationBackup(
       context,
-      data: BackupData(
-        kind: BackupKind.continuous,
-        columns: [state.l1, state.l2, result.ni],
-        selectedStats: [for (final option in state.selectedStats) option.name],
-        precision: result.precision,
-      ),
+      data: _backupData(),
       resolutionHtml: buildContinuousExplanationHtml(result, state.l1, state.l2, state.selectedStats),
       xi: result.xi.join('_'),
       ni: result.ni.join('_'),
+    );
+  }
+
+  /// The current result as a backup's data; call only once there is one.
+  BackupData _backupData() {
+    final state = ref.read(continuousCalculatorProvider);
+    final result = state.result!;
+    return BackupData(
+      kind: BackupKind.continuous,
+      columns: [state.l1, state.l2, result.ni],
+      selectedStats: [for (final option in state.selectedStats) option.name],
+      precision: result.precision,
+    );
+  }
+
+  Future<void> _exportPdf() async {
+    if (ref.read(continuousCalculatorProvider).result == null) return;
+
+    await shareCalculationPdf(
+      context,
+      title: context.t.appNameAlt,
+      dateLabel: dateTimeLabel(DateTime.now(), LocaleSettings.currentLocale.languageCode),
+      data: _backupData(),
+      fallbackHtml: '',
+      chartTypes: pdfChartTypes(ref.read(settingsProvider)),
     );
   }
 
@@ -219,7 +241,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                 selectedStats: state.selectedStats,
               ),
               const SizedBox(height: 16),
-              ResultActions(onSave: _save, onShare: _share),
+              ResultActions(onSave: _save, onShare: _share, onExportPdf: _exportPdf),
             ],
             const SizedBox(height: 80),
           ],

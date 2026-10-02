@@ -205,8 +205,9 @@ class StatOptionsChecklist<T> extends StatelessWidget {
 class ResultActions extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onShare;
+  final VoidCallback onExportPdf;
 
-  const ResultActions({required this.onSave, required this.onShare, super.key});
+  const ResultActions({required this.onSave, required this.onShare, required this.onExportPdf, super.key});
 
   @override
   Widget build(BuildContext context) => Row(
@@ -224,6 +225,14 @@ class ResultActions extends StatelessWidget {
           onPressed: onShare,
           icon: const Icon(Icons.share_outlined),
           label: Text(context.t.share),
+        ),
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: OutlinedButton.icon(
+          onPressed: onExportPdf,
+          icon: const Icon(Icons.picture_as_pdf_outlined),
+          label: Text(context.t.exportPdf),
         ),
       ),
     ],
