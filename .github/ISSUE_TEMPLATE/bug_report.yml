@@ -32,7 +32,7 @@ body:
     id: environment
     attributes:
       label: Environment
-      placeholder: "e.g. staging, production, local — browser/OS/device if relevant"
+      placeholder: "e.g. app 1.7.0, Android 15, Pixel 8"
     validations:
       required: false
 

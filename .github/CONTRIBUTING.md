@@ -1,20 +1,16 @@
-# Contributing to edpage-hq projects
-
-This guide applies to every repository in the organization. For the full project canvas (README template, Definition of Done, ADRs...), see [project-guidelines](https://github.com/edpage-hq/project-guidelines).
+# Contributing to Statistique Descriptive
 
 ## Git workflow
 
-edpage-hq projects follow **GitHub Flow**: `master` is the only long-lived
-branch and is always deployable. There's no `develop`, `release`, or
-long-lived environment branch.
+This repo follows **GitHub Flow**: `master` is the only long-lived branch and is always
+releasable. There's no `develop`, `release`, or long-lived environment branch.
 
 1. Branch from `master` (see naming convention below).
-2. Keep branches short-lived — open a PR as soon as there's something
-   reviewable rather than letting a branch accumulate a large diff.
-3. Merge back into `master` via PR once CI is green and approved.
+2. Keep branches short-lived — open a PR as soon as there's something reviewable rather
+   than letting a branch accumulate a large diff.
+3. Merge back into `master` via PR once CI is green and approved. Never push directly to
+   `master`.
 4. Hotfixes follow the exact same path — branch from `master`, PR, merge.
-   There's no separate hotfix process; urgency is handled through review
-   priority, not by skipping CI or review.
 5. Delete the branch once merged.
 
 ## Branches
@@ -25,32 +21,40 @@ long-lived environment branch.
 
 ## Commits
 
-Short, explicit, type + description:
+One short sentence in the imperative mood, saying what the change does:
 
 ```text
-feat: add login screen
-fix: correct pagination on the orders list
-chore: bump dependencies
+Add a box plot chart to the discrete and continuous calculators
+Fix the median class when two classes tie
 ```
 
-## Package manager
+PRs are squash-merged, so the PR title becomes the commit on `master`: write it the same
+way.
 
-JS/TS dependencies are managed with **pnpm** — do not use `npm install` or `yarn add`, and don't commit `package-lock.json`/`yarn.lock`.
+## Code quality
 
-## Code style
+CI must pass before merge. Run the same checks locally:
 
-- PHP (Laravel): [Pint](https://laravel.com/docs/pint) must pass before merge
-- JS/TS (AdonisJS, Vue, React): ESLint + Prettier must pass before merge
-- Dart (Flutter): `flutter analyze` and `dart format` must pass before merge
+```bash
+dart format .
+flutter analyze
+flutter test
+```
+
+CI also fails when hand-written line coverage drops under its floor (see
+`.github/workflows/flutter.yml`): add tests with the code they cover.
+
+Every user-visible string goes through Slang (`assets/i18n/*.i18n.json`) and must exist in
+all five languages (fr, en, de, es, pt).
 
 ## Opening a Pull Request
 
 1. Branch from `master` following the naming convention above.
 2. Fill in the PR template — do not delete sections, mark items not applicable as N/A.
 3. Make sure CI is green before requesting a review.
-4. At least one approval is required before merging (see branch protection rules).
-5. Squash-merge once approved, unless the repo's README says otherwise.
+4. Squash-merge once approved.
 
 ## Reporting a bug / requesting a feature
 
-Use the issue templates — they ask for the information reviewers need to act quickly. Issues without enough context to reproduce or evaluate may be closed and asked to use the template.
+Use the issue templates — they ask for the information needed to reproduce or evaluate the
+request.

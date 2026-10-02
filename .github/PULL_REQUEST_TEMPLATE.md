@@ -15,6 +15,6 @@ Closes #
 - [ ] Code follows the project's lint/format rules
 - [ ] Relevant tests were added or updated, and pass
 - [ ] Self-reviewed the diff
-- [ ] Documentation updated if needed (README, comments, ADR)
-- [ ] If this changes business logic, architecture, or the API — `<project>-docs` is updated in this same review
-- [ ] Verified in a staging/local environment
+- [ ] Documentation updated if needed (README, AGENTS.md, comments)
+- [ ] New strings translated in all five languages (fr, en, de, es, pt)
+- [ ] Verified in the app on a device or emulator

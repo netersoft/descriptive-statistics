@@ -51,15 +51,17 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
           flutter test --coverage
 
-      # Generated files (*.g.dart, *.config.dart, firebase_options.dart) are
-      # excluded from the count -- they're regenerated glue, not code this
-      # repo's tests are meant to exercise. 10% is a floor below current
-      # hand-written coverage (~14%), meant to catch regressions; raise it
-      # as more tests are added rather than treating it as a target.
+      # Generated files (*.g.dart, *.config.dart) are excluded from the
+      # count -- they're regenerated glue, not code this repo's tests are
+      # meant to exercise. Files no test imports (main.dart, app.dart,
+      # constants) don't appear in lcov.info at all, so they don't count
+      # either. 75% is a floor a few points below current hand-written
+      # coverage (~80%), meant to catch regressions; raise it as more tests
+      # are added rather than treating it as a target.
       - name: Enforce coverage floor
         run: |
-          awk -v thresh=10 '
-            /^SF:/ { file=$0; sub("^SF:", "", file); skip = (file ~ /\.g\.dart$/ || file ~ /\.config\.dart$/ || file ~ /firebase_options\.dart$/) }
+          awk -v thresh=75 '
+            /^SF:/ { file=$0; sub("^SF:", "", file); skip = (file ~ /\.g\.dart$/ || file ~ /\.config\.dart$/) }
             /^LF:/ { n=$0; sub("^LF:", "", n); if (!skip) lf += n }
             /^LH:/ { n=$0; sub("^LH:", "", n); if (!skip) lh += n }
             END {
