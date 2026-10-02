@@ -65,6 +65,11 @@ void main() {
       expect(result.isHomogeneous, false);
     });
 
+    test('gives the lowest and highest class bounds for the box plot whiskers', () {
+      expect(result.minimum, 0);
+      expect(result.maximum, 40);
+    });
+
     test('handles a modal class at the first index without crashing', () {
       final edgeResult = computeContinuousStats(
         [0, 10, 20],

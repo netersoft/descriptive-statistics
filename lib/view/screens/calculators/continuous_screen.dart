@@ -70,8 +70,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
       extraFields: [context.t.rawSeriesClassStart, context.t.rawSeriesClassWidth],
       initial: _lastRawSeries,
       toRows: (text, extras) => [
-        for (final (:lower, :upper, :count) in groupContinuousSeries(text, start: extras[0], width: extras[1]))
-          [fmt(lower), fmt(upper), '$count'],
+        for (final (:lower, :upper, :count) in groupContinuousSeries(text, start: extras[0], width: extras[1])) [fmt(lower), fmt(upper), '$count'],
       ],
     );
     if (result == null) return;
@@ -197,6 +196,13 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
                     // Bar heights only compare fairly between equally wide
                     // classes; otherwise plot densities, like the mode does.
                     ni: result.usesDensities ? result.modeWeights : result.ni,
+                    summary: (
+                      min: result.minimum,
+                      q1: result.firstQuartile,
+                      median: result.median,
+                      q3: result.thirdQuartile,
+                      max: result.maximum,
+                    ),
                     types: ref.watch(settingsProvider).continuousChartTypes,
                   ),
                 ),
