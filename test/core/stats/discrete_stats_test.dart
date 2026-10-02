@@ -52,6 +52,12 @@ void main() {
       expect(result.range, 4);
     });
 
+    test('gives the smallest and largest Xi for the box plot whiskers', () {
+      final unordered = computeDiscreteStats([7, -2, 3], [1, 1, 1]);
+      expect(unordered.minimum, -2);
+      expect(unordered.maximum, 7);
+    });
+
     test('covariance and correlation are 0 for this symmetric distribution', () {
       expect(result.covariance, closeTo(0.0, 1e-9));
       expect(result.correlation, closeTo(0.0, 1e-9));

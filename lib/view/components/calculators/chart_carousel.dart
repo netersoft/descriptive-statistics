@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -92,16 +94,21 @@ class _ChartCarouselState extends State<ChartCarousel> {
   }
 }
 
+/// The five values a box plot is drawn from.
+typedef FiveNumberSummary = ({double min, double q1, double median, double q3, double max});
+
 /// Builds one chart widget per selected [QuantitativeChartType], from a
-/// discrete/continuous result's `xi`/`ni` arrays -- shared by the Discrete
-/// and Continuous screens.
+/// discrete/continuous result's `xi`/`ni` arrays and its [summary] for the
+/// box plot -- shared by the Discrete and Continuous screens.
 List<Widget> buildQuantitativeCharts({
   required List<double> xi,
   required List<double> ni,
+  required FiveNumberSummary summary,
   required Set<QuantitativeChartType> types,
 }) => [
   if (types.contains(QuantitativeChartType.bar)) _quantitativeBarChart(xi: xi, ni: ni),
   if (types.contains(QuantitativeChartType.line)) _quantitativeLineChart(xi: xi, ni: ni),
+  if (types.contains(QuantitativeChartType.boxPlot)) BoxPlotChart(summary: summary),
 ];
 
 /// Builds one chart widget per selected [QualitativeChartType], from a
@@ -177,6 +184,141 @@ Widget _quantitativeLineChart({required List<double> xi, required List<double> n
       ),
     ),
   );
+}
+
+/// Horizontal box plot: whiskers from the minimum to the maximum, a box
+/// from Q1 to Q3 split at the median, over a value axis. fl_chart has no
+/// box plot, so it is painted directly. The five values are listed under
+/// it, since their labels would overlap on the axis when values are close.
+class BoxPlotChart extends StatelessWidget {
+  final FiveNumberSummary summary;
+
+  const BoxPlotChart({required this.summary, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final labels = [
+      (context.t.boxPlotMin, summary.min),
+      ('Q1', summary.q1),
+      (context.t.boxPlotMedian, summary.median),
+      ('Q3', summary.q3),
+      (context.t.boxPlotMax, summary.max),
+    ];
+    return Column(
+      children: [
+        Expanded(
+          child: CustomPaint(
+            size: Size.infinite,
+            painter: _BoxPlotPainter(
+              summary: summary,
+              boxColor: theme.colorScheme.primary,
+              lineColor: theme.colorScheme.onSurface,
+              labelStyle: theme.textTheme.bodySmall!.copyWith(fontSize: 11),
+              format: _fmt,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 12,
+          runSpacing: 4,
+          children: [
+            for (final (label, value) in labels) Text('$label = ${_fmt(value)}', style: const TextStyle(fontSize: 12)),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _BoxPlotPainter extends CustomPainter {
+  final FiveNumberSummary summary;
+  final Color boxColor;
+  final Color lineColor;
+  final TextStyle labelStyle;
+  final String Function(double) format;
+
+  _BoxPlotPainter({required this.summary, required this.boxColor, required this.lineColor, required this.labelStyle, required this.format});
+
+  static const _sidePadding = 16.0;
+  static const _axisHeight = 24.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final ticks = axisTicks(summary.min, summary.max);
+    final low = ticks.first;
+    final high = ticks.last;
+    final width = size.width - 2 * _sidePadding;
+    double x(double value) => _sidePadding + (high == low ? width / 2 : (value - low) / (high - low) * width);
+
+    final line = Paint()
+      ..color = lineColor
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
+    // Value axis with its ticks.
+    final axisY = size.height - _axisHeight;
+    canvas.drawLine(Offset(x(low), axisY), Offset(x(high), axisY), line);
+    for (final tick in ticks) {
+      canvas.drawLine(Offset(x(tick), axisY), Offset(x(tick), axisY + 4), line);
+      final painter = TextPainter(
+        text: TextSpan(text: format(tick), style: labelStyle),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      painter.paint(canvas, Offset(x(tick) - painter.width / 2, axisY + 6));
+    }
+
+    // Box and whiskers, vertically centered above the axis.
+    final centerY = axisY / 2;
+    final boxHalf = (axisY * 0.25).clamp(12.0, 40.0);
+    final box = Rect.fromLTRB(x(summary.q1), centerY - boxHalf, x(summary.q3), centerY + boxHalf);
+    for (final end in [summary.min, summary.max]) {
+      canvas.drawLine(Offset(x(end), centerY - boxHalf / 2), Offset(x(end), centerY + boxHalf / 2), line);
+    }
+    canvas
+      ..drawLine(Offset(x(summary.min), centerY), Offset(x(summary.q1), centerY), line)
+      ..drawLine(Offset(x(summary.q3), centerY), Offset(x(summary.max), centerY), line)
+      ..drawRect(box, Paint()..color = boxColor.withValues(alpha: 0.35))
+      ..drawRect(box, line)
+      ..drawLine(
+        Offset(x(summary.median), centerY - boxHalf),
+        Offset(x(summary.median), centerY + boxHalf),
+        Paint()
+          ..color = boxColor
+          ..strokeWidth = 3,
+      );
+  }
+
+  @override
+  bool shouldRepaint(_BoxPlotPainter oldDelegate) =>
+      oldDelegate.summary != summary || oldDelegate.boxColor != boxColor || oldDelegate.lineColor != lineColor || oldDelegate.labelStyle != labelStyle;
+}
+
+/// Evenly spaced axis ticks covering [min]..[max], with a step of 1, 2 or
+/// 5 ×10^k chosen for about five intervals. A single tick when [min] and
+/// [max] are equal.
+List<double> axisTicks(double min, double max) {
+  if (max <= min) return [min];
+  final rough = (max - min) / 5;
+  var exponent = (math.log(rough) / math.ln10).floor();
+  var multiple = [1, 2, 5, 10].firstWhere((m) => m * math.pow(10, exponent) >= rough);
+  if (multiple == 10) {
+    multiple = 1;
+    exponent++;
+  }
+  // Ticks are i × multiple × 10^exponent. With a negative exponent,
+  // dividing by the exact power of ten (rather than multiplying by an
+  // inexact 0.1 or 0.01) keeps floating-point drift out of the values.
+  final scale = math.pow(10, exponent.abs()).toDouble();
+  double tick(int i) => exponent < 0 ? i * multiple / scale : i * multiple * scale;
+  final step = tick(1);
+  // The epsilon keeps a value that lands on a tick, give or take a
+  // rounding error from the division, from adding a tick beyond it.
+  final first = (min / step + 1e-9).floor();
+  final last = (max / step - 1e-9).ceil();
+  return [for (var i = first; i <= last; i++) tick(i)];
 }
 
 /// Pie slices are colored from a fixed palette with no other visual

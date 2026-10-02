@@ -81,6 +81,11 @@ class ContinuousStatsResult {
   final double coefficientOfVariation;
   final double range;
 
+  /// Smallest and largest value of the series (the lowest class lower
+  /// bound and highest upper bound), the ends of the box plot's whiskers.
+  final double minimum;
+  final double maximum;
+
   /// Decimal places every value above was rounded to. Carried with the
   /// result so anything rendering it later (explanation, saved backup)
   /// rounds its intermediate values the same way, even if the setting has
@@ -130,6 +135,8 @@ class ContinuousStatsResult {
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
+    required this.minimum,
+    required this.maximum,
     required this.precision,
   });
 }
@@ -340,6 +347,8 @@ ContinuousStatsResult computeContinuousStats(
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,
+    minimum: arrondi(xiMin, precision),
+    maximum: arrondi(xiMax, precision),
     precision: precision,
   );
 }

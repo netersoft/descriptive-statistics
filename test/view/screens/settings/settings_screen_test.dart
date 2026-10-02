@@ -74,12 +74,12 @@ void main() {
     await tester.tap(find.text('Variables quantitatives discrètes'));
     await tester.pumpAndSettle();
 
-    // Both chart types are checked by default (no stored preference).
-    expect(find.byType(CheckboxListTile), findsNWidgets(2));
+    // Every chart type is checked by default (no stored preference).
+    expect(find.byType(CheckboxListTile), findsNWidgets(3));
     await tester.tap(find.widgetWithText(CheckboxListTile, 'Lignes'));
     await tester.pumpAndSettle();
 
-    verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['bar'])).called(1);
+    verify(() => mockPrefs.setStringList(PrefKeys.discreteChartTypes, ['bar', 'boxPlot'])).called(1);
     // The open sheet reflects the new selection immediately.
     expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Lignes')).value, isFalse);
     expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Barres')).value, isTrue);

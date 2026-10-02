@@ -50,6 +50,43 @@ void main() {
     expect(find.text('Chart A'), findsOneWidget);
   });
 
+  testWidgets('box plot lists its five values', (tester) async {
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: const MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              height: 240,
+              child: BoxPlotChart(summary: (min: 1, q1: 2, median: 3.5, q3: 4, max: 6)),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    for (final label in ['Min = 1', 'Q1 = 2', 'Me = 3,5', 'Q3 = 4', 'Max = 6']) {
+      expect(find.text(label), findsOneWidget);
+    }
+  });
+
+  group('axisTicks', () {
+    test('spans the values with a 1, 2 or 5 ×10^k step', () {
+      expect(axisTicks(1, 6), [1, 2, 3, 4, 5, 6]);
+      expect(axisTicks(0, 40), [0, 10, 20, 30, 40]);
+      expect(axisTicks(3, 97), [0, 20, 40, 60, 80, 100]);
+      expect(axisTicks(-2, 7), [-2, 0, 2, 4, 6, 8]);
+    });
+
+    test('keeps decimal steps free of floating-point drift', () {
+      expect(axisTicks(0.1, 0.9), [0, 0.2, 0.4, 0.6, 0.8, 1]);
+      expect(axisTicks(0.03, 0.27), [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]);
+    });
+
+    test('gives a single tick when every value is equal', () {
+      expect(axisTicks(5, 5), [5]);
+    });
+  });
+
   group('roundedPercentages', () {
     test('adds up to exactly 100 where rounding each share separately would not', () {
       // 62.5 % and 37.5 % would each round up to 63 % + 38 % = 101 %.

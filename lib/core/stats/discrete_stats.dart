@@ -64,6 +64,10 @@ class DiscreteStatsResult {
   final double coefficientOfVariation;
   final double range;
 
+  /// Smallest and largest Xi, the ends of the box plot's whiskers.
+  final double minimum;
+  final double maximum;
+
   /// Decimal places every value above was rounded to. Carried with the
   /// result so anything rendering it later (explanation, saved backup)
   /// rounds its intermediate values the same way, even if the setting has
@@ -105,6 +109,8 @@ class DiscreteStatsResult {
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
+    required this.minimum,
+    required this.maximum,
     required this.precision,
     this.medianMidpoint,
     this.firstQuartileMidpoint,
@@ -280,6 +286,8 @@ DiscreteStatsResult computeDiscreteStats(
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,
+    minimum: arrondi(xiMin, precision),
+    maximum: arrondi(xiMax, precision),
     precision: precision,
     medianMidpoint: _midpointOnExactTie(medianOperator, medianIndex, xiR, precision),
     firstQuartileMidpoint: _midpointOnExactTie(firstQuartOperator, firstQuartIndex, xiR, precision),

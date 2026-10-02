@@ -180,6 +180,13 @@ class _DiscreteScreenState extends ConsumerState<DiscreteScreen> with AutomaticK
                   charts: buildQuantitativeCharts(
                     xi: result.xi,
                     ni: result.ni,
+                    summary: (
+                      min: result.minimum,
+                      q1: result.firstQuartile,
+                      median: result.median,
+                      q3: result.thirdQuartile,
+                      max: result.maximum,
+                    ),
                     types: ref.watch(settingsProvider).discreteChartTypes,
                   ),
                 ),
