@@ -46,8 +46,8 @@ coverage under 10%.
 
 - Continuous classes are [L1 ; L2[. Default classes follow the Sturges rule, with widths
   rounded to 1, 2, 2.5 or 5 ×10^k.
-- The legacy Android app (`.legacy/`) is the reference for formulas and wording. When the
-  new app deliberately differs, a comment explains why.
+- Formulas and wording follow the legacy Android app this app rewrites. When the new app
+  deliberately differs, a comment explains why.
 
 ## Testing
 
