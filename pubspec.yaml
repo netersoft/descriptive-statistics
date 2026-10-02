@@ -1,5 +1,5 @@
-name: flutter_starter
-description: 'A reusable Flutter starter with auth, routing, local storage, i18n, REST API helpers, and common UI components.'
+name: descriptive_statistics
+description: 'Descriptive statistics calculator for discrete, continuous and qualitative series, with step-by-step explanations.'
 publish_to: 'none'
 
 ####################################################################################################

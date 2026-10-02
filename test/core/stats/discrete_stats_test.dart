@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/stats/discrete_stats.dart';
-import 'package:flutter_starter/core/stats/stats_exceptions.dart';
+import 'package:descriptive_statistics/core/stats/discrete_stats.dart';
+import 'package:descriptive_statistics/core/stats/stats_exceptions.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

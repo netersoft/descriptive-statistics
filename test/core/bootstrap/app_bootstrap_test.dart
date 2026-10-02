@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/bootstrap/app_bootstrap.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/core/services/shared_preferences/keys.dart';
+import 'package:descriptive_statistics/core/bootstrap/app_bootstrap.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/core/services/shared_preferences/keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

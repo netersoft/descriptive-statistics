@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/data/backups/backups_json.dart';
-import 'package:flutter_starter/core/models/backup_model.dart';
+import 'package:descriptive_statistics/core/data/backups/backups_json.dart';
+import 'package:descriptive_statistics/core/models/backup_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

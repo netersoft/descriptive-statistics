@@ -70,8 +70,7 @@ class _ContinuousScreenState extends ConsumerState<ContinuousScreen> with Automa
       extraFields: [context.t.rawSeriesClassStart, context.t.rawSeriesClassWidth],
       initial: _lastRawSeries,
       toRows: (text, extras) => [
-        for (final (:lower, :upper, :count) in groupContinuousSeries(text, start: extras[0], width: extras[1]))
-          [fmt(lower), fmt(upper), '$count'],
+        for (final (:lower, :upper, :count) in groupContinuousSeries(text, start: extras[0], width: extras[1])) [fmt(lower), fmt(upper), '$count'],
       ],
     );
     if (result == null) return;

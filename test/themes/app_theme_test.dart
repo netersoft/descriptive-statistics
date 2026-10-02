@@ -1,8 +1,8 @@
+import 'package:descriptive_statistics/core/enums/app_brightness.dart';
+import 'package:descriptive_statistics/view/themes/app_colors.dart';
+import 'package:descriptive_statistics/view/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_starter/core/enums/app_brightness.dart';
-import 'package:flutter_starter/view/themes/app_colors.dart';
-import 'package:flutter_starter/view/themes/app_theme.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

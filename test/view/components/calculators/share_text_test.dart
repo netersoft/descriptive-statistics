@@ -1,9 +1,9 @@
-import 'package:flutter_starter/core/providers/calculators/calculator_types.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/core/stats/continuous_stats.dart';
-import 'package:flutter_starter/core/stats/discrete_stats.dart';
-import 'package:flutter_starter/core/stats/qualitative_stats.dart';
-import 'package:flutter_starter/view/components/calculators/share_text.dart';
+import 'package:descriptive_statistics/core/providers/calculators/calculator_types.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/core/stats/continuous_stats.dart';
+import 'package:descriptive_statistics/core/stats/discrete_stats.dart';
+import 'package:descriptive_statistics/core/stats/qualitative_stats.dart';
+import 'package:descriptive_statistics/view/components/calculators/share_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

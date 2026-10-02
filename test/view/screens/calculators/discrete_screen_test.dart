@@ -1,15 +1,15 @@
+import 'package:descriptive_statistics/core/data/backups/backup_data.dart';
+import 'package:descriptive_statistics/core/data/backups/backups_repository.dart';
+import 'package:descriptive_statistics/core/models/backup_model.dart';
+import 'package:descriptive_statistics/core/providers/settings/settings_provider.dart';
+import 'package:descriptive_statistics/core/services/di/locator.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/core/tools/constants/chart_options.dart';
+import 'package:descriptive_statistics/view/components/calculators/chart_carousel.dart';
+import 'package:descriptive_statistics/view/screens/calculators/discrete_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/data/backups/backup_data.dart';
-import 'package:flutter_starter/core/data/backups/backups_repository.dart';
-import 'package:flutter_starter/core/models/backup_model.dart';
-import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
-import 'package:flutter_starter/core/services/di/locator.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/core/tools/constants/chart_options.dart';
-import 'package:flutter_starter/view/components/calculators/chart_carousel.dart';
-import 'package:flutter_starter/view/screens/calculators/discrete_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

@@ -1,14 +1,14 @@
 import 'dart:async';
 
+import 'package:descriptive_statistics/core/data/backups/backup_data.dart';
+import 'package:descriptive_statistics/core/providers/calculators/discrete_provider.dart';
+import 'package:descriptive_statistics/core/providers/main/home_provider.dart';
+import 'package:descriptive_statistics/core/routes/router.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/view/components/backups/load_backup.dart';
+import 'package:descriptive_statistics/view/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/data/backups/backup_data.dart';
-import 'package:flutter_starter/core/providers/calculators/discrete_provider.dart';
-import 'package:flutter_starter/core/providers/main/home_provider.dart';
-import 'package:flutter_starter/core/routes/router.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/view/components/backups/load_backup.dart';
-import 'package:flutter_starter/view/screens/main_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

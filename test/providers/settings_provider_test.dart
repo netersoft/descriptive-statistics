@@ -1,10 +1,10 @@
+import 'package:descriptive_statistics/core/enums/app_brightness.dart';
+import 'package:descriptive_statistics/core/providers/settings/settings_provider.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
+import 'package:descriptive_statistics/core/services/shared_preferences/keys.dart';
+import 'package:descriptive_statistics/core/tools/constants/chart_options.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/enums/app_brightness.dart';
-import 'package:flutter_starter/core/providers/settings/settings_provider.dart';
-import 'package:flutter_starter/core/services/i18n/translations.g.dart';
-import 'package:flutter_starter/core/services/shared_preferences/keys.dart';
-import 'package:flutter_starter/core/tools/constants/chart_options.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

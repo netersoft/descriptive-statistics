@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/data/backups/backup_data.dart';
+import 'package:descriptive_statistics/core/data/backups/backup_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
