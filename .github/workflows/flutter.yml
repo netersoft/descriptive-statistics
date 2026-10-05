@@ -1,8 +1,3 @@
-# Deliberately NOT calling edpage-hq/.github's reusable flutter-test.yml: that
-# workflow only runs `flutter pub get` + analyze/format/test, with no codegen
-# (slang, build_runner) or .env creation step -- both required for this repo
-# to even compile. Switch the `quality` job to call the reusable workflow
-# once it grows optional inputs for a codegen command and an env file secret.
 name: Flutter
 
 on:
