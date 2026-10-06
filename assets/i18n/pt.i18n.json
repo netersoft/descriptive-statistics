@@ -181,5 +181,6 @@
   "tableCEffectifs": "Frequências acumuladas",
   "tableCFrequencies": "Proporções acumuladas",
   "effectifTotal": "FREQUÊNCIA TOTAL",
-  "qltMode": "O modo é a modalidade com o maior número de frequências"
+  "qltMode": "O modo é a modalidade com o maior número de frequências",
+  "licenseNotice": "Software livre sob a GNU GPL v3 (código) e CC BY-SA 4.0 (conteúdos). © 2018-2026 Netersoft"
 }

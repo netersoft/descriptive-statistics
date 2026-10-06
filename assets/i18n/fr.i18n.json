@@ -181,5 +181,6 @@
   "tableCEffectifs": "Effectifs Cumulés",
   "tableCFrequencies": "Fréquences Cumulées",
   "effectifTotal": "EFFECTIF TOTAL",
-  "qltMode": "Le mode est la modalité dont l'effectif est le plus grand"
+  "qltMode": "Le mode est la modalité dont l'effectif est le plus grand",
+  "licenseNotice": "Logiciel libre sous licence GNU GPL v3 (code) et CC BY-SA 4.0 (contenus). © 2018-2026 Netersoft"
 }
