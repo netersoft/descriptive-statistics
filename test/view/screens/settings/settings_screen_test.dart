@@ -1,5 +1,6 @@
 import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:descriptive_statistics/core/services/shared_preferences/keys.dart';
+import 'package:descriptive_statistics/view/screens/settings/privacy_policy_screen.dart';
 import 'package:descriptive_statistics/view/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,5 +84,32 @@ void main() {
     // The open sheet reflects the new selection immediately.
     expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Lignes')).value, isFalse);
     expect(tester.widget<CheckboxListTile>(find.widgetWithText(CheckboxListTile, 'Barres')).value, isTrue);
+  });
+
+  testWidgets('opens the privacy policy', (tester) async {
+    final router = GoRouter(
+      routes: [
+        GoRoute(path: '/', builder: (context, state) => const SettingsScreen()),
+        GoRoute(path: '/main/other/privacy', builder: (context, state) => const PrivacyPolicyScreen()),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        child: TranslationProvider(
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Politique de confidentialité'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Politique de confidentialité'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PrivacyPolicyScreen), findsOneWidget);
+    expect(find.textContaining('Aucune donnée collectée', findRichText: true), findsOneWidget);
   });
 }

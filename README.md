@@ -19,6 +19,7 @@ A descriptive statistics calculator for students, published on the Play Store as
   in Settings.
 - **Backups**: save a result, reopen it in its calculator, share it as text.
 - **Languages**: French (base), English, German, Spanish, Portuguese.
+- **Privacy policy**: bundled with the app, in Settings.
 
 ## Tech stack
 
@@ -86,6 +87,14 @@ Generated files (`*.g.dart`, `locator.config.dart`) are not committed; rebuild t
 dart format .
 flutter analyze
 flutter test
+```
+
+## Privacy policy
+
+The privacy policy ships in the app (`assets/docs/<locale>/privacy_policy.html`, one per app language, opened from Settings). The store listings link to the public copy at https://netersoft.github.io/descriptive-statistics/privacy/ (English: `/en/`), served by GitHub Pages from the public `netersoft/netersoft.github.io` repository. After editing the policy, regenerate the pages and push that repository:
+
+```bash
+python3 tool/build_privacy_pages.py ~/Dev/Projects/Web/netersoft.github.io
 ```
 
 ## Release
