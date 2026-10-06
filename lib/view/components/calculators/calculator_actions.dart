@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import '../../../core/models/backup_model.dart';
 import '../../../core/providers/calculators/calculator_types.dart';
 import '../../../core/services/di/locator.dart';
 import '../../../core/services/i18n/translations.g.dart';
+import '../../../core/services/review/service.dart';
 import '../pdf/calculation_pdf.dart';
 
 /// Shows why a calculation failed in a snackbar, when [error] is set.
@@ -84,7 +86,11 @@ Future<void> saveCalculationBackup(
   if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t.safeguardDone)));
   }
+  if (locator<BackupsRepository>().keys.length >= _savesBeforeReview) unawaited(locator<ReviewService>().requestOnce());
 }
+
+/// Saved calculations after which the in-app review sheet is requested.
+const _savesBeforeReview = 3;
 
 Future<String?> _promptForStudyName(BuildContext context) => showDialog<String>(
   context: context,
