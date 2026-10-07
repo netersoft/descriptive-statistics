@@ -46,9 +46,11 @@ class ContinuousExplanation extends StatelessWidget {
 String buildContinuousExplanationHtml(
   ContinuousStatsResult r,
   List<double> l1,
-  List<double> l2,
+  List<double> typedL2,
   Set<StatOption> selected,
 ) {
+  // Classes typed 10-19, 20-29... are shown as the engine read them.
+  final l2 = closeClassGaps(l1, typedL2);
   final precision = r.precision;
   final sep = decimalSeparatorForLocale(LocaleSettings.currentLocale.languageCode);
   String fmt(double v) => noZero(v, decimalSeparator: sep);
@@ -80,7 +82,8 @@ String buildContinuousExplanationHtml(
   double weightAt(int index) => index >= 0 && index < n ? r.modeWeights[index] : 0;
   double upBefore(int index) => index > 0 ? r.cumulativeAscending[index - 1] : 0;
 
-  final buffer = StringBuffer('''
+  final buffer = StringBuffer(r.classGapsClosed ? '<i>${t.classGapsClosedNote}</i><br><br>' : '')
+    ..write('''
 ${t.modalClassLabel}${fmt(l1[r.modalClassIndex])} - ${fmt(l2[r.modalClassIndex])}[<br>
 ${t.medianClassLabel}${fmt(l1[r.medianClassIndex])} - ${fmt(l2[r.medianClassIndex])}[<br><br>
 ''');
@@ -165,6 +168,7 @@ Vx&sup2; = (${fmt(xi2niSum)} / ${fmt(niSum)}) - ${fmt(r.weightedMean)}&sup2;<br>
   if (selected.contains(StatOption.covariance)) {
     buffer.write('''
 <b><font color='blue'><u>${t.covarianceSectionTitle}</u></font></b><br><br>
+<i>${t.continuousCovarianceNote}</i><br><br>
 <b>Cov(X,Y) = &sum;(Xi - X)(Yi - Y) / (n - 1)</b><br>
 Cov(X,Y) = ${fmt(arrondi(covarianceSum, precision))} / ($n - 1)<br>
 <font color='red'><b><u>Cov(X,Y) = ${fmt(r.covariance)}</u></b></font><br><br>

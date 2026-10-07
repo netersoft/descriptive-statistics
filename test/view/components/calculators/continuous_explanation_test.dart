@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:descriptive_statistics/core/providers/calculators/calculator_types.dart';
+import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:descriptive_statistics/core/stats/continuous_stats.dart';
 import 'package:descriptive_statistics/core/stats/rounding.dart';
 import 'package:descriptive_statistics/view/components/calculators/continuous_explanation.dart';
@@ -88,5 +89,16 @@ void main() {
       // d0 - d1 = 1 - 0 and d0 - d2 = 1 - 0.8.
       expect(html, contains('((1) / ((1)+(0,2)))'));
     });
+  });
+
+  test('says how classes typed with a gap were read, and what the covariance compares', () async {
+    await LocaleSettings.setLocale(AppLocale.fr);
+    final gaps = computeContinuousStats([10, 20, 30], [19, 29, 39], [5, 8, 7]);
+    final html = buildContinuousExplanationHtml(gaps, [10, 20, 30], closeClassGaps([10, 20, 30], [19, 29, 39]), {StatOption.covariance});
+    expect(html, contains('écart constant'));
+    expect(html, contains('20['));
+    expect(html, contains('centres de classe Xi'));
+    final touching = computeContinuousStats([10, 20, 30], [20, 30, 40], [5, 8, 7]);
+    expect(buildContinuousExplanationHtml(touching, [10, 20, 30], [20, 30, 40], {StatOption.mean}), isNot(contains('écart constant')));
   });
 }

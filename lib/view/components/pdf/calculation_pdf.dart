@@ -224,8 +224,10 @@ _Report? _report(BackupData data, PdfChartTypes chartTypes) {
 
       case BackupKind.continuous:
         final l1 = data.numbers(0);
-        final l2 = data.numbers(1);
-        final r = computeContinuousStats(l1, l2, data.numbers(2), precision: data.precision);
+        // The engine reads the bounds as typed (it reports whether it closed
+        // gaps); the class labels show the bounds it computed with.
+        final r = computeContinuousStats(l1, data.numbers(1), data.numbers(2), precision: data.precision);
+        final l2 = closeClassGaps(l1, data.numbers(1));
         final selected = {for (final name in data.selectedStats) StatOption.values.byName(name)};
         final showCharts = selected.contains(StatOption.charts) && chartTypes.continuous.isNotEmpty;
         return (
