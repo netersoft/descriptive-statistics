@@ -63,7 +63,7 @@ android {
         multiDexEnabled true
     }
 
-    // AGP 9 turns resValue off by default; the flavors use it for app_name.
+    // AGP 9 turns resValue off by default; the dev and staging flavors use it for app_name.
     buildFeatures {
         resValues true
     }
@@ -79,16 +79,16 @@ android {
         dev {
             dimension "env"
             applicationIdSuffix ".dev"
-            resValue "string", "app_name", "Statistique Descriptive (Dev)"
+            resValue "string", "app_name", "Descriptive Statistics (Dev)"
         }
         staging {
             dimension "env"
             applicationIdSuffix ".staging"
-            resValue "string", "app_name", "Statistique Descriptive (Staging)"
+            resValue "string", "app_name", "Descriptive Statistics (Staging)"
         }
         prod {
             dimension "env"
-            resValue "string", "app_name", "Statistique Descriptive"
+            // app_name comes from src/prod/res/values*/strings.xml, one per app language.
         }
     }
 
