@@ -43,17 +43,10 @@ class DiscreteStatsResult {
   final double firstDecile;
   final double ninthDecile;
 
-  /// Set only when the ascending cumulative effectif lands *exactly* on the
-  /// threshold (e.g. N+ = ΣNi/2 for the median). This app follows the
-  /// course's "cumulative effectif directly above" rule, which then picks
-  /// the next value; another common convention takes the midpoint between
-  /// the two values instead. These hold that midpoint, so the explanation
-  /// can show it and a user taught the other convention isn't lost.
-  final double? medianMidpoint;
-  final double? firstQuartileMidpoint;
-  final double? thirdQuartileMidpoint;
-  final double? firstDecileMidpoint;
-  final double? ninthDecileMidpoint;
+  /// The two central values the median is the mean of, when the ascending
+  /// cumulative effectif lands exactly on ΣNi/2 (an even total effectif
+  /// split between two values); null otherwise.
+  final (double, double)? medianTieValues;
 
   final double variance;
 
@@ -126,11 +119,7 @@ class DiscreteStatsResult {
     required this.minimum,
     required this.maximum,
     required this.precision,
-    this.medianMidpoint,
-    this.firstQuartileMidpoint,
-    this.thirdQuartileMidpoint,
-    this.firstDecileMidpoint,
-    this.ninthDecileMidpoint,
+    this.medianTieValues,
   });
 }
 
@@ -247,7 +236,18 @@ DiscreteStatsResult computeDiscreteStats(
   final meanEffectif = arrondi(niSum / n, precision);
   final modes = [for (final i in modeIndices) arrondi(xiR[i], precision)];
   final mode = modes.first;
-  final median = arrondi(xiR[medianIndex], precision);
+  // French definition (collège/lycée): the median of an even total
+  // effectif is the mean of the two central values, i.e. when N+ lands
+  // exactly on ΣNi/2, of that value and the next one.
+  // The next value of the series skips rows with a zero effectif.
+  final nextIndex = medianOperator[medianIndex].abs() < _tieTolerance
+      ? [
+          for (var j = medianIndex + 1; j < n; j++)
+            if (niR[j] > 0) j,
+        ].firstOrNull
+      : null;
+  final medianTieValues = nextIndex == null ? null : (xiR[medianIndex], xiR[nextIndex]);
+  final median = arrondi(medianTieValues == null ? xiR[medianIndex] : (medianTieValues.$1 + medianTieValues.$2) / 2, precision);
   final firstQuartile = arrondi(xiR[firstQuartIndex], precision);
   final thirdQuartile = arrondi(xiR[thirdQuartIndex], precision);
   final firstDecile = arrondi(xiR[firstDecileIndex], precision);
@@ -309,39 +309,26 @@ DiscreteStatsResult computeDiscreteStats(
     minimum: arrondi(xiMin, precision),
     maximum: arrondi(xiMax, precision),
     precision: precision,
-    medianMidpoint: _midpointOnExactTie(medianOperator, medianIndex, xiR, precision),
-    firstQuartileMidpoint: _midpointOnExactTie(firstQuartOperator, firstQuartIndex, xiR, precision),
-    thirdQuartileMidpoint: _midpointOnExactTie(thirdQuartOperator, thirdQuartIndex, xiR, precision),
-    firstDecileMidpoint: _midpointOnExactTie(firstDecileOperator, firstDecileIndex, xiR, precision),
-    ninthDecileMidpoint: _midpointOnExactTie(ninthDecileOperator, ninthDecileIndex, xiR, precision),
+    medianTieValues: medianTieValues,
   );
 }
 
-/// Index of the class whose ascending-cumulative-effectif just crosses a
-/// given threshold (half/quarter/tenth of the total effectif for the
-/// median/quartiles/deciles). Since the cumulative effectif is
-/// non-decreasing, `operatorValues` (cumulative minus threshold) is also
-/// non-decreasing, so its first positive entry is also its smallest one --
-/// this is equivalent to (but simpler than) the legacy app's "track the
-/// smallest positive value seen" scan. Defaults to 0 if the data never
-/// crosses the threshold, matching the legacy app's default index.
+/// Cumulative effectifs come from sums of (possibly decimal) Ni; this keeps
+/// one landing exactly on a threshold from missing it by a rounding error.
+const _tieTolerance = 1e-9;
+
+/// Index of the first value whose ascending cumulative effectif reaches the
+/// threshold (half/quarter/tenth of the total effectif for the
+/// median/quartiles/deciles): `operatorValues` is cumulative minus
+/// threshold. This is the French definition -- Q1 is the smallest value
+/// such that at least 25 % of the data are less than or equal to it. The
+/// legacy app required the cumulative effectif to be strictly above the
+/// threshold, which on an exact tie picked the next value (Q1 = 2 for 1, 2,
+/// 3, 4 instead of 1), matching no usual definition. Defaults to 0 if the
+/// data never reaches the threshold.
 int _firstIndexPastThreshold(List<double> operatorValues) {
   for (var i = 0; i < operatorValues.length; i++) {
-    if (operatorValues[i] > 0) return i;
+    if (operatorValues[i] > -_tieTolerance) return i;
   }
   return 0;
-}
-
-/// When some row's cumulative effectif lands exactly on the threshold
-/// (`operatorValues[i] == 0`), the "directly above" rule skips to
-/// [chosenIndex], the next row past it. Returns the midpoint between that
-/// row's Xi and the chosen one -- what the "average the two central values"
-/// convention would give -- or null when no row lands exactly on it.
-double? _midpointOnExactTie(List<double> operatorValues, int chosenIndex, List<double> xi, int precision) {
-  for (var i = 0; i < chosenIndex; i++) {
-    if (operatorValues[i].abs() < 1e-9) {
-      return arrondi((xi[i] + xi[chosenIndex]) / 2, precision);
-    }
-  }
-  return null;
 }

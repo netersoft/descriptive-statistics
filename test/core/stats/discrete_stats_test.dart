@@ -177,14 +177,12 @@ void main() {
       expect(zeroMean.isCoefficientOfVariationDefined, false);
     });
 
-    test('picks the class whose cumulative effectif exceeds N/2 on an exact boundary, not an average', () {
-      // xi 1..4, ni all 1 (total effectif 4, threshold = 2). The cumulative
-      // effectif hits exactly 2 at xi=2 -- matching the app's own course
-      // documentation ("la variable ayant l'effectif cumulé croissant
-      // directement supérieur à 1/2*sum(Ni)"), the median is xi=3 (the first
-      // class *strictly above* the threshold), not the average of 2 and 3.
+    test('averages the two central values when the cumulative effectif lands exactly on N/2', () {
+      // xi 1..4, ni all 1 (total effectif 4, threshold = 2): the French
+      // definition gives (2 + 3) / 2. The legacy app's "strictly above" rule
+      // gave 3.
       final boundary = computeDiscreteStats([1, 2, 3, 4], [1, 1, 1, 1]);
-      expect(boundary.median, 3);
+      expect(boundary.median, 2.5);
     });
   });
 
@@ -227,37 +225,36 @@ void main() {
     }
   });
 
-  group('computeDiscreteStats midpoint on exact tie', () {
-    test('keeps the course rule and exposes the midpoint when N+ hits ΣNi/2 exactly', () {
-      // N+ = 1, 2 and ΣNi/2 = 1: the course's "directly above" rule gives
-      // Me = 2; averaging the two central values would give 1.5.
-      final r = computeDiscreteStats([1, 2], [1, 1]);
-
-      expect(r.median, 2);
-      expect(r.medianMidpoint, 1.5);
+  group('computeDiscreteStats French definition of the median and quantiles', () {
+    test('takes the mean of the two central values for an even total effectif', () {
+      // 1, 2, 3, 4: N+ reaches ΣNi/2 = 2 exactly at Xi = 2.
+      final r = computeDiscreteStats([1, 2, 3, 4], [1, 1, 1, 1]);
+      expect(r.median, 2.5);
+      expect(r.medianTieValues, (2.0, 3.0));
     });
 
-    test('exposes the midpoint for quartiles and deciles too', () {
-      // N+ = 1..10 with ΣNi = 10: ΣNi/4 = 2.5 (no tie), 3ΣNi/4 = 7.5 (no
-      // tie), ΣNi/10 = 1 and 9ΣNi/10 = 9 (both ties).
-      final r = computeDiscreteStats(
-        [for (var i = 1; i <= 10; i++) i.toDouble()],
-        List.filled(10, 1),
-      );
-
-      expect(r.firstQuartileMidpoint, isNull);
-      expect(r.thirdQuartileMidpoint, isNull);
-      expect(r.firstDecile, 2);
-      expect(r.firstDecileMidpoint, 1.5);
-      expect(r.ninthDecile, 10);
-      expect(r.ninthDecileMidpoint, 9.5);
+    test('takes the smallest value reaching the quartile or decile threshold', () {
+      // Q1: at least 25 % of the data <= Q1, so Q1 = 1 for 1, 2, 3, 4.
+      final r = computeDiscreteStats([1, 2, 3, 4], [1, 1, 1, 1]);
+      expect(r.firstQuartile, 1);
+      expect(r.thirdQuartile, 3);
+      final ten = computeDiscreteStats([for (var i = 1; i <= 10; i++) i.toDouble()], List.filled(10, 1));
+      expect(ten.firstDecile, 1);
+      expect(ten.ninthDecile, 9);
+      expect(ten.firstQuartile, 3);
+      expect(ten.thirdQuartile, 8);
     });
 
-    test('is null when no cumulative effectif lands exactly on the threshold', () {
+    test('keeps the central value for an odd total effectif', () {
       final r = computeDiscreteStats([1, 2, 3], [1, 1, 1]);
-
       expect(r.median, 2);
-      expect(r.medianMidpoint, isNull);
+      expect(r.medianTieValues, isNull);
+    });
+
+    test('skips values with a zero effectif when averaging the central values', () {
+      final r = computeDiscreteStats([1, 2, 3], [1, 0, 1]);
+      expect(r.median, 2);
+      expect(r.medianTieValues, (1.0, 3.0));
     });
   });
 }

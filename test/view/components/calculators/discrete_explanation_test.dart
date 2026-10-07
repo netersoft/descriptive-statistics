@@ -53,25 +53,24 @@ void main() {
       expect(html, contains(noZero(xi2niSum, decimalSeparator: ',')));
     });
 
-    test('states the quantile convention once and shows the midpoint alternative on an exact tie', () {
+    test('shows the two central values the median averages on an exact tie', () {
       final tie = computeDiscreteStats([1, 2], [1, 1]);
 
-      final html = buildDiscreteExplanationHtml(tie, {StatOption.median, StatOption.quartiles});
+      final html = buildDiscreteExplanationHtml(tie, {StatOption.median});
 
-      expect(RegExp('Convention utilisée').allMatches(html).length, 1);
-      expect(html, contains('on obtiendrait Me = 1,5'));
+      expect(html, contains('moyenne de cette valeur et de la suivante'));
+      expect(html, contains('Me = (1 + 2) / 2'));
+      expect(html, contains('Me = 1,5'));
     });
 
-    test('shows the convention note in the quartiles section when the median is not selected', () {
-      // ΣNi = 3: no N+ (1, 2, 3) lands exactly on 0.3, 0.75, 2.25 or 2.7.
+    test('mentions Excel and calculators once, in the quartiles section', () {
       final noTie = computeDiscreteStats([1, 2, 3], [1, 1, 1]);
 
-      final html = buildDiscreteExplanationHtml(noTie, {StatOption.quartiles});
+      final html = buildDiscreteExplanationHtml(noTie, {StatOption.median, StatOption.quartiles});
 
-      expect(html, contains('Convention utilisée'));
-      expect(html, contains('D1 = '));
+      expect(RegExp('Excel').allMatches(html).length, 1);
       expect(html, contains('D9 = '));
-      expect(html, isNot(contains('on obtiendrait')));
+      expect(html, isNot(contains('moyenne de cette valeur')));
     });
   });
 }
