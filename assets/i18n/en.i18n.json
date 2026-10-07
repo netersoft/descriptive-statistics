@@ -1,7 +1,7 @@
 {
   "about": "About",
-  "appName": "Statistique Descriptive",
-  "appNameAlt": "Statistique Descriptive",
+  "appName": "Descriptive Statistics",
+  "appNameAlt": "Descriptive Statistics",
   "appDescription": "An app to compute and visualize descriptive statistics for your data sets: discrete, continuous, and qualitative variables.",
   "language": "Language",
   "settings": "Settings",
