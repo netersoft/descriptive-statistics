@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LocaleSettings', () {
-    test('default locale is fr', () {
-      expect(LocaleSettings.currentLocale, AppLocale.fr);
+    test('base locale is en, used for unsupported device languages', () {
+      expect(AppLocaleUtils.instance.baseLocale, AppLocale.en);
     });
 
     test('setLocaleRaw changes locale', () async {

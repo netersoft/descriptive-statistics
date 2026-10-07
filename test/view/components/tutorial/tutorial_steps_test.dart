@@ -14,9 +14,9 @@ void main() {
       }
     });
 
-    test('falls back to fr for an unsupported language code', () {
+    test('falls back to en for an unsupported language code', () {
       final steps = tutorialSteps('it');
-      expect(steps.first.imageAsset, 'assets/images/tutorial/fr/tuto_1.png');
+      expect(steps.first.imageAsset, 'assets/images/tutorial/en/tuto_1.png');
     });
 
     test('text resolves the right translation per locale', () async {
