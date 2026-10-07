@@ -39,7 +39,7 @@ coverage under 10%.
 - **Storage**: Hive CE for backups (`lib/core/data/backups/`), SharedPreferences for
   settings.
 - **Routing**: go_router. **DI**: GetIt + injectable for infrastructure singletons.
-- **i18n**: Slang. Sources are in `assets/i18n/*.i18n.json`, French is the base locale, and
+- **i18n**: Slang. Sources are in `assets/i18n/*.i18n.json`, English is the base locale (the fallback for unsupported device languages), and
   every key must exist in fr, en, de, es and pt. Use `context.t` in widgets.
 
 ## Statistics conventions
@@ -53,7 +53,7 @@ coverage under 10%.
 
 Unit and widget tests live under `test/`, mirroring `lib/`. Infrastructure singletons are
 mocked with `mocktail` through a GetIt test-locator override (`test/helpers/test_utils.dart`).
-Widget tests run in French, so finders use the French strings.
+Tests run in French (`test/flutter_test_config.dart`), so finders use the French strings.
 
 ```bash
 flutter test

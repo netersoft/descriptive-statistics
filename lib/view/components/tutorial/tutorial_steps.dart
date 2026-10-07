@@ -15,7 +15,7 @@ class TutorialStep {
 const _supportedTutorialLocales = ['fr', 'en', 'de', 'es', 'pt'];
 
 List<TutorialStep> tutorialSteps(String languageCode) {
-  final locale = _supportedTutorialLocales.contains(languageCode) ? languageCode : 'fr';
+  final locale = _supportedTutorialLocales.contains(languageCode) ? languageCode : 'en';
   return [
     TutorialStep(
       text: (t) => t.tutoStep1,
