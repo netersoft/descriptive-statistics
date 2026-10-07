@@ -1,11 +1,11 @@
-# Statistique Descriptive
+# Descriptive Statistics
 
 [![Flutter CI](https://github.com/netersoft/descriptive-statistics/actions/workflows/flutter.yml/badge.svg)](https://github.com/netersoft/descriptive-statistics/actions/workflows/flutter.yml)
 
 ## Description
 
 A descriptive statistics calculator for students, published on the Play Store as
-[Statistique Descriptive](https://play.google.com/store/apps/details?id=com.neteru.tixtat)
+[Descriptive Statistics](https://play.google.com/store/apps/details?id=com.neteru.tixtat)
 (`com.neteru.tixtat`). It is the Flutter rewrite of a legacy native Android app.
 
 - **Three calculators**: discrete variables (Xi, Ni), continuous variables (classes
@@ -132,11 +132,11 @@ iOS has no flavor schemes; build it without `--flavor`.
 
 ## License
 
-Statistique Descriptive is free software by Netersoft.
+Descriptive Statistics is free software by Netersoft.
 
 - **Code**: the source code (`lib/`, `test/`, `tool/` and the platform folders) is licensed under the [GNU General Public License v3.0](LICENSE).
 - **Content**: the texts, translations and pictures made by Netersoft for the app are licensed under [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 - **Third-party files** keep their own licenses: the Montserrat, Open Sans and Noto Sans Greek fonts (SIL Open Font License 1.1, `assets/fonts/*/OFL.txt`).
-- **Names and icons**: the Netersoft name, the Statistique Descriptive name, and the app icons and logos (`assets/images/launcher/`) are not covered by these licenses. A modified version must use another name and icon.
+- **Names and icons**: the Netersoft name, the Descriptive Statistics and Statistique Descriptive names, and the app icons and logos (`assets/images/launcher/`) are not covered by these licenses. A modified version must use another name and icon.
 
 Copyright © 2018-2026 Netersoft.
