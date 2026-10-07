@@ -373,6 +373,7 @@ void main() {
     testWidgets('saves the calculation with its kind, data and save time so the backup can be recomputed', (tester) async {
       final repository = _MockBackupsRepository();
       when(() => repository.add(any())).thenAnswer((_) async {});
+      when(() => repository.keys).thenReturn(const [0]);
       locator.registerSingleton<BackupsRepository>(repository);
       addTearDown(() => locator.unregister<BackupsRepository>());
 
