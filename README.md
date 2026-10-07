@@ -18,7 +18,7 @@ A descriptive statistics calculator for students, published on the Play Store as
 - **Charts**: bar, line and box plot (quantitative), bar and pie (qualitative), chosen
   in Settings.
 - **Backups**: save a result, reopen it in its calculator, share it as text.
-- **Languages**: French (base), English, German, Spanish, Portuguese.
+- **Languages**: French, English, German, Spanish, Portuguese. English is the fallback for other device languages.
 - **Privacy policy**: bundled with the app, in Settings.
 
 ## Tech stack
