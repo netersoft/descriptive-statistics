@@ -57,7 +57,10 @@ class ContinuousStatsResult {
   /// `ΣNi / n` -- despite the name, this is the mean of the *effectifs*, not
   /// of the class midpoints. Preserved as-is from the legacy app's
   /// "moyenne simple".
-  final double simpleMean;
+  /// Mean effectif per row, ΣNi / n. The legacy app labelled it "simple
+  /// arithmetic mean" with the mean's symbol X, but it is the mean of the
+  /// effectifs, not of the variable (that one is [weightedMean]).
+  final double meanEffectif;
 
   final double mode;
   final double median;
@@ -77,6 +80,12 @@ class ContinuousStatsResult {
   final double covariance;
   final double correlation;
   final double standardDeviation;
+
+  /// Sample standard deviation s = √(Σni(xi − x̄)² / (ΣNi − 1)), the estimate
+  /// the standard error is built on (NaN when ΣNi ≤ 1).
+  final double sampleStandardDeviation;
+
+  /// Standard error of the mean, s / √ΣNi (NaN when ΣNi ≤ 1).
   final double standardError;
   final double coefficientOfVariation;
   final double range;
@@ -101,6 +110,10 @@ class ContinuousStatsResult {
   /// Infinity or NaN).
   bool get isCoefficientOfVariationDefined => coefficientOfVariation.isFinite;
 
+  /// False when the total effectif is 1 or less: the sample standard
+  /// deviation divides by ΣNi − 1.
+  bool get isStandardErrorDefined => standardError.isFinite;
+
   bool get isHomogeneous => coefficientOfVariation <= 33;
 
   const ContinuousStatsResult({
@@ -120,7 +133,7 @@ class ContinuousStatsResult {
     required this.firstDecileClassIndex,
     required this.ninthDecileClassIndex,
     required this.weightedMean,
-    required this.simpleMean,
+    required this.meanEffectif,
     required this.mode,
     required this.median,
     required this.firstQuartile,
@@ -132,6 +145,7 @@ class ContinuousStatsResult {
     required this.covariance,
     required this.correlation,
     required this.standardDeviation,
+    required this.sampleStandardDeviation,
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
@@ -271,7 +285,7 @@ ContinuousStatsResult computeContinuousStats(
   double upBefore(int index) => index > 0 ? up[index - 1] : 0;
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
-  final simpleMean = arrondi(niSum / n, precision);
+  final meanEffectif = arrondi(niSum / n, precision);
 
   final maxNiIndex = modeIndices.first;
   final modeGapBefore = modeWeights[maxNiIndex] - weightAt(maxNiIndex - 1);
@@ -308,7 +322,12 @@ ContinuousStatsResult computeContinuousStats(
   final yDeviation = math.sqrt(ySquaresSum / (n - 1));
   final correlation = arrondi(covariance / (xDeviation * yDeviation), precision);
   final standardDeviation = arrondi(math.sqrt(variance), precision);
-  final standardError = arrondi(standardDeviation / math.sqrt(n), precision);
+  // The legacy app divided σ by √(number of rows), so the standard error
+  // ignored the effectifs: ten times more observations gave the same value.
+  // It is the standard error of the mean, s / √N with N = ΣNi and s the
+  // sample standard deviation (Bessel's N − 1), s = σ·√(N / (N − 1)).
+  final sampleStandardDeviation = niSum > 1 ? arrondi(standardDeviation * math.sqrt(niSum / (niSum - 1)), precision) : double.nan;
+  final standardError = niSum > 1 ? arrondi(sampleStandardDeviation / math.sqrt(niSum), precision) : double.nan;
   final coefficientOfVariation = arrondi((standardDeviation / weightedMean) * 100, precision);
   // Rounded to the configured precision like every other stat here --
   // deliberately not left as a raw double the way the legacy app displays
@@ -332,7 +351,7 @@ ContinuousStatsResult computeContinuousStats(
     firstDecileClassIndex: firstDecileIndex,
     ninthDecileClassIndex: ninthDecileIndex,
     weightedMean: weightedMean,
-    simpleMean: simpleMean,
+    meanEffectif: meanEffectif,
     mode: mode,
     median: median,
     firstQuartile: firstQuartile,
@@ -344,6 +363,7 @@ ContinuousStatsResult computeContinuousStats(
     covariance: covariance,
     correlation: correlation,
     standardDeviation: standardDeviation,
+    sampleStandardDeviation: sampleStandardDeviation,
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,

@@ -22,7 +22,10 @@ class DiscreteStatsResult {
 
   /// `ΣNi / n` -- despite the name, this is the mean of the *effectifs*, not
   /// of the xi values. Preserved as-is from the legacy app's "moyenne simple".
-  final double simpleMean;
+  /// Mean effectif per row, ΣNi / n. The legacy app labelled it "simple
+  /// arithmetic mean" with the mean's symbol X, but it is the mean of the
+  /// effectifs, not of the variable (that one is [weightedMean]).
+  final double meanEffectif;
 
   final double mode;
 
@@ -60,6 +63,12 @@ class DiscreteStatsResult {
   final double covariance;
   final double correlation;
   final double standardDeviation;
+
+  /// Sample standard deviation s = √(Σni(xi − x̄)² / (ΣNi − 1)), the estimate
+  /// the standard error is built on (NaN when ΣNi ≤ 1).
+  final double sampleStandardDeviation;
+
+  /// Standard error of the mean, s / √ΣNi (NaN when ΣNi ≤ 1).
   final double standardError;
   final double coefficientOfVariation;
   final double range;
@@ -83,6 +92,10 @@ class DiscreteStatsResult {
   /// Infinity or NaN).
   bool get isCoefficientOfVariationDefined => coefficientOfVariation.isFinite;
 
+  /// False when the total effectif is 1 or less: the sample standard
+  /// deviation divides by ΣNi − 1.
+  bool get isStandardErrorDefined => standardError.isFinite;
+
   bool get isHomogeneous => coefficientOfVariation <= 33;
 
   const DiscreteStatsResult({
@@ -93,7 +106,7 @@ class DiscreteStatsResult {
     required this.cumulativeAscending,
     required this.cumulativeDescending,
     required this.weightedMean,
-    required this.simpleMean,
+    required this.meanEffectif,
     required this.mode,
     required this.modes,
     required this.median,
@@ -106,6 +119,7 @@ class DiscreteStatsResult {
     required this.covariance,
     required this.correlation,
     required this.standardDeviation,
+    required this.sampleStandardDeviation,
     required this.standardError,
     required this.coefficientOfVariation,
     required this.range,
@@ -230,7 +244,7 @@ DiscreteStatsResult computeDiscreteStats(
   final ninthDecileIndex = _firstIndexPastThreshold(ninthDecileOperator);
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
-  final simpleMean = arrondi(niSum / n, precision);
+  final meanEffectif = arrondi(niSum / n, precision);
   final modes = [for (final i in modeIndices) arrondi(xiR[i], precision)];
   final mode = modes.first;
   final median = arrondi(xiR[medianIndex], precision);
@@ -255,7 +269,12 @@ DiscreteStatsResult computeDiscreteStats(
   final yDeviation = math.sqrt(ySquaresSum / (n - 1));
   final correlation = arrondi(covariance / (xDeviation * yDeviation), precision);
   final standardDeviation = arrondi(math.sqrt(variance), precision);
-  final standardError = arrondi(standardDeviation / math.sqrt(n), precision);
+  // The legacy app divided σ by √(number of rows), so the standard error
+  // ignored the effectifs: ten times more observations gave the same value.
+  // It is the standard error of the mean, s / √N with N = ΣNi and s the
+  // sample standard deviation (Bessel's N − 1), s = σ·√(N / (N − 1)).
+  final sampleStandardDeviation = niSum > 1 ? arrondi(standardDeviation * math.sqrt(niSum / (niSum - 1)), precision) : double.nan;
+  final standardError = niSum > 1 ? arrondi(sampleStandardDeviation / math.sqrt(niSum), precision) : double.nan;
   final coefficientOfVariation = arrondi((standardDeviation / weightedMean) * 100, precision);
   // Rounded to the configured precision like every other stat here --
   // deliberately not left as a raw double the way the legacy app displays
@@ -270,7 +289,7 @@ DiscreteStatsResult computeDiscreteStats(
     cumulativeAscending: up,
     cumulativeDescending: down,
     weightedMean: weightedMean,
-    simpleMean: simpleMean,
+    meanEffectif: meanEffectif,
     mode: mode,
     modes: modes,
     median: median,
@@ -283,6 +302,7 @@ DiscreteStatsResult computeDiscreteStats(
     covariance: covariance,
     correlation: correlation,
     standardDeviation: standardDeviation,
+    sampleStandardDeviation: sampleStandardDeviation,
     standardError: standardError,
     coefficientOfVariation: coefficientOfVariation,
     range: range,

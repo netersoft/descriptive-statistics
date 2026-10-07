@@ -112,13 +112,14 @@ void main() {
 
       expect(find.text('TABLEAU STATISTIQUE'), findsOneWidget);
       // xi=[1,2,3], ni=[2,4,6]: weighted mean = Σxini/Σni = 28/12 = 2.333,
-      // simple mean = Σni/n = 12/3 = 4. Asserting on the rendered HTML
+      // mean effectif = Σni/n = 12/3 = 4. Asserting on the rendered HTML
       // explanation (rather than reading provider state directly) exercises
       // the actual HtmlWidget rendering path.
       final explanation = explanationText(tester);
       // French (the default test locale) displays decimals with a comma.
       expect(explanation, contains('X = 2,333'));
-      expect(explanation, contains('X = 4'));
+      expect(explanation, contains('Effectif moyen'));
+      expect(explanation, contains('\u0304 = 4'));
       expect(explanation, contains('MOYENNES'));
       expect(explanation, contains('ETENDUE'));
       // Save and Share sit side by side once a result exists.
