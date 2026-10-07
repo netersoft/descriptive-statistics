@@ -52,7 +52,9 @@ void main() {
     test('computes variance, standard deviation, and standard error', () {
       expect(result.variance, closeTo(98.75, 1e-3));
       expect(result.standardDeviation, closeTo(9.9373, 1e-3));
-      expect(result.standardError, closeTo(4.9686, 1e-3));
+      // s = σ·√(20/19) = 10.1955, SE = s / √20.
+      expect(result.sampleStandardDeviation, closeTo(10.1955, 1e-3));
+      expect(result.standardError, closeTo(2.2798, 1e-3));
     });
 
     test('computes covariance and correlation', () {

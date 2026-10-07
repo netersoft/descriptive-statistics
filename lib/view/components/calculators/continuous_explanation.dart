@@ -182,9 +182,12 @@ r = ${fmt(r.covariance)} / ( ${fmt(arrondi(xDeviation, precision))} * ${fmt(arro
 &sigma; = &radic;(${fmt(r.variance)})<br>
 <font color='red'><b><u>&sigma; = ${fmt(r.standardDeviation)}</u></b></font><br><br>
 <b><font color='blue'><u>${t.standardErrorSectionTitle}</u></font></b><br><br>
-<b>SE = &sigma; / &radic;n</b><br>
-SE = ${fmt(r.standardDeviation)} / &radic;$n<br>
-<font color='red'><b><u>SE = ${fmt(r.standardError)}</u></b></font><br><br>
+<b>s = &sigma; &times; &radic;(&sum;Ni / (&sum;Ni - 1))</b><br>
+s = ${fmt(r.standardDeviation)} &times; &radic;(${fmt(niSum)} / (${fmt(niSum)} - 1))<br>
+s = ${r.isStandardErrorDefined ? fmt(r.sampleStandardDeviation) : t.undefinedValue}<br><br>
+<b>SE = s / &radic;&sum;Ni</b><br>
+SE = ${r.isStandardErrorDefined ? fmt(r.sampleStandardDeviation) : t.undefinedValue} / &radic;${fmt(niSum)}<br>
+<font color='red'><b><u>SE = ${r.isStandardErrorDefined ? fmt(r.standardError) : t.undefinedValue}</u></b></font><br><br>
 ''');
   }
 

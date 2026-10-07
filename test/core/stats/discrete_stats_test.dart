@@ -40,7 +40,24 @@ void main() {
     test('computes variance, standard deviation, and standard error', () {
       expect(result.variance, closeTo(4.0 / 3.0, 1e-4));
       expect(result.standardDeviation, closeTo(1.1547, 1e-3));
-      expect(result.standardError, closeTo(0.5164, 1e-3));
+      // s = σ·√(18/17) = 1.1882, SE = s / √18.
+      expect(result.sampleStandardDeviation, closeTo(1.1882, 1e-3));
+      expect(result.standardError, closeTo(0.2801, 1e-3));
+    });
+
+    test('divides the standard error by the total effectif, not the number of rows', () {
+      // Same distribution, ten times more observations: the mean is more
+      // precise, so the standard error shrinks by √10 (the legacy app kept it).
+      final base = computeDiscreteStats([2, 5, 8, 12], [25, 32, 17, 15]);
+      final tenTimes = computeDiscreteStats([2, 5, 8, 12], [250, 320, 170, 150]);
+      expect(tenTimes.standardDeviation, base.standardDeviation);
+      expect(base.standardError, closeTo(0.364, 1e-3));
+      expect(tenTimes.standardError, closeTo(base.standardError / 3.1623, 1e-3));
+    });
+
+    test('leaves the standard error undefined when the total effectif is 1', () {
+      final single = computeDiscreteStats([1, 2], [0.5, 0.5]);
+      expect(single.isStandardErrorDefined, isFalse);
     });
 
     test('computes the coefficient of variation and flags it heterogeneous', () {

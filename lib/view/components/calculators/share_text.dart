@@ -52,7 +52,7 @@ List<String> discreteResultLines(DiscreteStatsResult r, Set<StatOption> selected
   if (selected.contains(StatOption.standardDeviation)) {
     lines
       ..add('${t.standardDeviationSectionTitle}: ${_fmt(r.standardDeviation)}')
-      ..add('${t.standardErrorSectionTitle}: ${_fmt(r.standardError)}');
+      ..add('${t.standardErrorSectionTitle}: ${r.isStandardErrorDefined ? _fmt(r.standardError) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
     lines.add(
@@ -114,7 +114,7 @@ List<String> continuousResultLines(ContinuousStatsResult r, Set<StatOption> sele
   if (selected.contains(StatOption.standardDeviation)) {
     lines
       ..add('${t.standardDeviationSectionTitle}: ${_fmt(r.standardDeviation)}')
-      ..add('${t.standardErrorSectionTitle}: ${_fmt(r.standardError)}');
+      ..add('${t.standardErrorSectionTitle}: ${r.isStandardErrorDefined ? _fmt(r.standardError) : t.undefinedValue}');
   }
   if (selected.contains(StatOption.coefficientOfVariation)) {
     lines.add(
