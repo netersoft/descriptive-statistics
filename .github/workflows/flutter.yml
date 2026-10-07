@@ -143,10 +143,10 @@ jobs:
       - name: Create .env
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      # No code signing available for a shared starter template (that requires a
-      # real Apple Developer account/certificates), so this only proves the iOS
-      # side still compiles -- it does not produce an installable/distributable
-      # .ipa. Add signing (Fastlane match, App Store Connect API key, etc.) once
-      # a downstream project has its own Apple Developer credentials.
+      # No code signing yet (that requires an Apple Developer account and
+      # certificates), so this only proves the iOS side still compiles -- it
+      # does not produce an installable/distributable .ipa. Add signing
+      # (Fastlane match, App Store Connect API key, etc.) once the app ships
+      # on iOS.
       - name: Build iOS (no code signing)
         run: flutter build ios --release --no-codesign
