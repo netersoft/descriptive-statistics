@@ -5,7 +5,7 @@
 ## Description
 
 A descriptive statistics calculator for students, published on the Play Store as
-[Statistique Descriptive](https://play.google.com/store/apps/details?id=com.neteru.tixtat)
+[Descriptive Statistics](https://play.google.com/store/apps/details?id=com.neteru.tixtat)
 (`com.neteru.tixtat`). It is the Flutter rewrite of a legacy native Android app.
 
 - **Three calculators**: discrete variables (Xi, Ni), continuous variables (classes
