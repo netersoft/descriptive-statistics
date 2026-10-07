@@ -79,12 +79,12 @@ android {
         dev {
             dimension "env"
             applicationIdSuffix ".dev"
-            resValue "string", "app_name", "Statistique Descriptive (Dev)"
+            resValue "string", "app_name", "Descriptive Statistics (Dev)"
         }
         staging {
             dimension "env"
             applicationIdSuffix ".staging"
-            resValue "string", "app_name", "Statistique Descriptive (Staging)"
+            resValue "string", "app_name", "Descriptive Statistics (Staging)"
         }
         prod {
             dimension "env"
