@@ -134,6 +134,7 @@ Vx&sup2; = (${fmt(xi2niSum)} / ${fmt(niSum)}) - ${fmt(r.weightedMean)}&sup2;<br>
   if (selected.contains(StatOption.covariance)) {
     buffer.write('''
 <b><font color='blue'><u>${t.covarianceSectionTitle}</u></font></b><br><br>
+<i>${t.discreteCovarianceNote}</i><br><br>
 <b>Cov(X,Y) = &sum;(Xi - X)(Yi - Y) / (n - 1)</b><br>
 Cov(X,Y) = ${fmt(arrondi(covarianceSum, precision))} / ($n - 1)<br>
 <font color='red'><b><u>Cov(X,Y) = ${fmt(r.covariance)}</u></b></font><br><br>

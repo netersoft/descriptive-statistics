@@ -36,6 +36,11 @@ class ContinuousStatsResult {
   /// densities `Ni / k` (effectifs corrigés) instead.
   final bool usesDensities;
 
+  /// True when the classes were typed with a constant gap between them
+  /// (10-19, 20-29...) and were read as [10 ; 20[, [20 ; 30[... (see
+  /// [closeClassGaps]).
+  final bool classGapsClosed;
+
   /// The per-class values the mode was computed from: [ni] when classes
   /// share the same width, `Ni / k` densities otherwise (see
   /// [usesDensities]).
@@ -127,6 +132,7 @@ class ContinuousStatsResult {
     required this.modalClassIndices,
     required this.medianClassIndex,
     required this.usesDensities,
+    required this.classGapsClosed,
     required this.modeWeights,
     required this.firstQuartileClassIndex,
     required this.thirdQuartileClassIndex,
@@ -153,6 +159,32 @@ class ContinuousStatsResult {
     required this.maximum,
     required this.precision,
   });
+}
+
+/// Integer classes are often written with a gap between them (10-19, 20-29,
+/// 30-39): they stand for [10 ; 20[, [20 ; 30[, [30 ; 40[. When every
+/// consecutive pair of classes (sorted by [l1]) is separated by the same gap,
+/// and that gap is narrower than every class, returns the upper bounds moved
+/// onto the next class's start (the last one by the same gap), aligned with
+/// [l2]. Otherwise returns [l2] unchanged. Without this, the mode and the
+/// quantiles were interpolated over a width of 9 instead of 10 while the
+/// midpoints assumed 10, mixing two conventions.
+List<double> closeClassGaps(List<double> l1, List<double> l2) {
+  final n = l1.length;
+  if (n < 2 || l2.length != n) return l2;
+  final order = List<int>.generate(n, (i) => i)..sort((a, b) => l1[a].compareTo(l1[b]));
+  final gap = l1[order[1]] - l2[order[0]];
+  if (gap <= 0) return l2;
+  final tolerance = 1e-9 * gap.abs().clamp(1, double.infinity);
+  for (var j = 1; j < n; j++) {
+    if ((l1[order[j]] - l2[order[j - 1]] - gap).abs() > tolerance) return l2;
+  }
+  for (var i = 0; i < n; i++) {
+    if (l2[i] - l1[i] <= gap) return l2;
+  }
+  // Rounded to 12 significant digits so 19 + 1 stays 20 and 1.9 + 0.1 doesn't
+  // become 2.0000000000000004.
+  return [for (final upper in l2) double.parse((upper + gap).toStringAsPrecision(12))];
 }
 
 /// Computes descriptive statistics for a continuous (grouped/class-interval)
@@ -184,7 +216,9 @@ ContinuousStatsResult computeContinuousStats(
   // entry form requires the user to type rows in that order.
   final order = List<int>.generate(n, (i) => i)..sort((a, b) => l1[a].compareTo(l1[b]));
   final cl1 = [for (final i in order) l1[i]];
-  final cl2 = [for (final i in order) l2[i]];
+  final typedL2 = [for (final i in order) l2[i]];
+  final cl2 = closeClassGaps(cl1, typedL2);
+  final classGapsClosed = cl2.indexed.any((e) => e.$2 != typedL2[e.$1]);
   final cni = [for (final i in order) ni[i]];
 
   final k = List<double>.generate(n, (i) => cl2[i] - cl1[i]);
@@ -345,6 +379,7 @@ ContinuousStatsResult computeContinuousStats(
     modalClassIndices: modeIndices,
     medianClassIndex: medianIndex,
     usesDensities: usesDensities,
+    classGapsClosed: classGapsClosed,
     modeWeights: modeWeights,
     firstQuartileClassIndex: firstQuartIndex,
     thirdQuartileClassIndex: thirdQuartIndex,

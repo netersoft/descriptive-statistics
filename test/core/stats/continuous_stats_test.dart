@@ -251,4 +251,30 @@ void main() {
       expect(result.mode, closeTo(8.333, 1e-3));
     });
   });
+
+  group('closeClassGaps', () {
+    test('reads integer classes written with a gap as touching classes', () {
+      expect(closeClassGaps([10, 20, 30], [19, 29, 39]), [20, 30, 40]);
+      expect(closeClassGaps([30, 10, 20], [39, 19, 29]), [40, 20, 30]);
+      expect(closeClassGaps([1.5, 2.5], [2.4, 3.4]), [2.5, 3.5]);
+    });
+
+    test('leaves touching, irregular or wide gaps alone', () {
+      expect(closeClassGaps([10, 20, 30], [20, 30, 40]), [20, 30, 40]);
+      expect(closeClassGaps([10, 20, 32], [19, 29, 39]), [19, 29, 39]);
+      // A gap as wide as a class is more likely a missing class.
+      expect(closeClassGaps([0, 20], [10, 30]), [10, 30]);
+    });
+
+    test('gives the same results as the classes written [10 ; 20[', () {
+      final gaps = computeContinuousStats([10, 20, 30], [19, 29, 39], [5, 8, 7]);
+      final touching = computeContinuousStats([10, 20, 30], [20, 30, 40], [5, 8, 7]);
+      expect(gaps.classGapsClosed, isTrue);
+      expect(touching.classGapsClosed, isFalse);
+      expect(gaps.median, touching.median);
+      expect(gaps.mode, touching.mode);
+      expect(gaps.weightedMean, touching.weightedMean);
+      expect(gaps.range, 30);
+    });
+  });
 }
