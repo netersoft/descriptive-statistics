@@ -23,7 +23,7 @@ BASE_URL = f'https://netersoft.github.io/{SLUG}/privacy/'
 LOCALES = {
     # locale: (output dir relative to <slug>/privacy, app name, page title, switch label)
     'fr': ('', 'Statistique Descriptive', 'Politique de confidentialité – Statistique Descriptive', 'English'),
-    'en': ('en/', 'Statistique Descriptive', 'Privacy policy – Statistique Descriptive', 'Français'),
+    'en': ('en/', 'Descriptive Statistics', 'Privacy policy – Descriptive Statistics', 'Français'),
 }
 
 TEMPLATE = """<!doctype html>
