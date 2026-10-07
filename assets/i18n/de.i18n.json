@@ -128,7 +128,7 @@
   "backupsImportInvalidFormat": "Ungültige Datei: diese Daten konnten nicht importiert werden.",
   "meanSectionTitle": "MITTELWERTE",
   "weightedMeanLabel": "- Gewichtetes arithmetisches Mittel",
-  "simpleMeanLabel": "- Einfaches arithmetisches Mittel",
+  "meanEffectifLabel": "- Durchschnittliche Frequenz",
   "modeSectionTitle": "MODUS",
   "multipleModesNote": "Diese Reihe hat keinen eindeutigen Modus: mehrere Werte sind bei der höchsten Häufigkeit gleichauf.",
   "quantileConventionNote": "Verwendete Konvention: Es wird der erste Wert genommen, dessen kumulierte Häufigkeit die Schwelle strikt überschreitet. In manchen Kursen wird stattdessen, wenn die kumulierte Häufigkeit die Schwelle genau erreicht, der Mittelwert dieses Wertes und des nächsten genommen.",

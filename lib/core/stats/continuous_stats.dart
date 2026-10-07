@@ -57,7 +57,10 @@ class ContinuousStatsResult {
   /// `ΣNi / n` -- despite the name, this is the mean of the *effectifs*, not
   /// of the class midpoints. Preserved as-is from the legacy app's
   /// "moyenne simple".
-  final double simpleMean;
+  /// Mean effectif per row, ΣNi / n. The legacy app labelled it "simple
+  /// arithmetic mean" with the mean's symbol X, but it is the mean of the
+  /// effectifs, not of the variable (that one is [weightedMean]).
+  final double meanEffectif;
 
   final double mode;
   final double median;
@@ -130,7 +133,7 @@ class ContinuousStatsResult {
     required this.firstDecileClassIndex,
     required this.ninthDecileClassIndex,
     required this.weightedMean,
-    required this.simpleMean,
+    required this.meanEffectif,
     required this.mode,
     required this.median,
     required this.firstQuartile,
@@ -282,7 +285,7 @@ ContinuousStatsResult computeContinuousStats(
   double upBefore(int index) => index > 0 ? up[index - 1] : 0;
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
-  final simpleMean = arrondi(niSum / n, precision);
+  final meanEffectif = arrondi(niSum / n, precision);
 
   final maxNiIndex = modeIndices.first;
   final modeGapBefore = modeWeights[maxNiIndex] - weightAt(maxNiIndex - 1);
@@ -348,7 +351,7 @@ ContinuousStatsResult computeContinuousStats(
     firstDecileClassIndex: firstDecileIndex,
     ninthDecileClassIndex: ninthDecileIndex,
     weightedMean: weightedMean,
-    simpleMean: simpleMean,
+    meanEffectif: meanEffectif,
     mode: mode,
     median: median,
     firstQuartile: firstQuartile,

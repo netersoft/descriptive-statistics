@@ -128,7 +128,7 @@
   "backupsImportInvalidFormat": "Fichier invalide : impossible d'importer ces sauvegardes.",
   "meanSectionTitle": "MOYENNES",
   "weightedMeanLabel": "- Moyenne arithmétique pondérée",
-  "simpleMeanLabel": "- Moyenne arithmétique simple",
+  "meanEffectifLabel": "- Effectif moyen",
   "modeSectionTitle": "MODE",
   "multipleModesNote": "Cette série est plurimodale : plusieurs valeurs sont à égalité pour l'effectif le plus élevé.",
   "quantileConventionNote": "Convention utilisée : on retient la première valeur dont l'effectif cumulé croissant dépasse strictement le seuil. Dans d'autres cours, lorsque l'effectif cumulé atteint exactement le seuil, on prend plutôt la moyenne de cette valeur et de la suivante.",

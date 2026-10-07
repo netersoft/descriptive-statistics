@@ -128,7 +128,7 @@
   "backupsImportInvalidFormat": "Arquivo inválido: não foi possível importar esses dados.",
   "meanSectionTitle": "MÉDIAS",
   "weightedMeanLabel": "- Média aritmética ponderada",
-  "simpleMeanLabel": "- Média aritmética simples",
+  "meanEffectifLabel": "- Frequência média",
   "modeSectionTitle": "MODO",
   "multipleModesNote": "Esta série não tem uma moda única: vários valores estão empatados com a maior frequência.",
   "quantileConventionNote": "Convenção utilizada: considera-se o primeiro valor cuja frequência acumulada ultrapassa estritamente o limiar. Em alguns cursos, quando a frequência acumulada atinge exatamente o limiar, toma-se antes a média desse valor e do seguinte.",

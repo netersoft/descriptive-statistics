@@ -20,9 +20,9 @@ void main() {
       expect(result.cumulativeDescending, [20, 15, 7, 3]);
     });
 
-    test('computes the weighted and simple means', () {
+    test('computes the weighted mean and the mean effectif', () {
       expect(result.weightedMean, closeTo(17.5, 1e-9));
-      expect(result.simpleMean, closeTo(5.0, 1e-9));
+      expect(result.meanEffectif, closeTo(5.0, 1e-9));
     });
 
     test('finds the modal and median classes and interpolates within them', () {

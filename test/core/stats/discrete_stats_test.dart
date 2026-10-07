@@ -22,9 +22,9 @@ void main() {
       expect(result.cumulativeDescending, [18, 16, 12, 6, 2]);
     });
 
-    test('computes the weighted and simple means', () {
+    test('computes the weighted mean and the mean effectif', () {
       expect(result.weightedMean, closeTo(3.0, 1e-9));
-      expect(result.simpleMean, closeTo(3.6, 1e-9));
+      expect(result.meanEffectif, closeTo(3.6, 1e-9));
     });
 
     test('computes mode, median, quartiles, and deciles', () {

@@ -39,10 +39,11 @@ String buildQualitativeExplanationHtml(QualitativeStatsResult r, Set<Qualitative
 
   if (selected.contains(QualitativeStatOption.mean)) {
     buffer.write('''
-<b><font color='blue'><u>${t.meanSectionTitle}</u></font></b><br><br>
-<b>X = &sum;Ni / n</b><br>
-X = ${fmt(r.total)} / ${r.modalities.length}<br>
-<font color='red'><b><u>X = ${fmt(r.mean)}</u></b></font><br><br>
+<b><font color='blue'><u>${t.meanSectionTitle}</u></font></b><br>
+<font color='magenta'>${t.meanEffectifLabel}</font><br>
+<b>N&#772; = &sum;Ni / n</b><br>
+N&#772; = ${fmt(r.total)} / ${r.modalities.length}<br>
+<font color='red'><b><u>N&#772; = ${fmt(r.mean)}</u></b></font><br><br>
 ''');
   }
 

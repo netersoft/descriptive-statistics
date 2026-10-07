@@ -92,10 +92,10 @@ ${t.medianClassLabel}${fmt(l1[r.medianClassIndex])} - ${fmt(l2[r.medianClassInde
 <b>X = &sum;XiNi / &sum;Ni</b><br>
 X = ${fmt(xiniSum)} / ${fmt(niSum)}<br>
 <font color='red'><b><u>X = ${fmt(r.weightedMean)}</u></b></font><br><br>
-<font color='magenta'>${t.simpleMeanLabel}</font><br>
-<b>X = &sum;Ni / n</b><br>
-X = ${fmt(niSum)} / $n<br>
-<font color='red'><b><u>X = ${fmt(r.simpleMean)}</u></b></font><br><br>
+<font color='magenta'>${t.meanEffectifLabel}</font><br>
+<b>N&#772; = &sum;Ni / n</b><br>
+N&#772; = ${fmt(niSum)} / $n<br>
+<font color='red'><b><u>N&#772; = ${fmt(r.meanEffectif)}</u></b></font><br><br>
 ''');
   }
 
@@ -166,7 +166,7 @@ Vx&sup2; = (${fmt(xi2niSum)} / ${fmt(niSum)}) - ${fmt(r.weightedMean)}&sup2;<br>
     buffer.write('''
 <b><font color='blue'><u>${t.covarianceSectionTitle}</u></font></b><br><br>
 <b>Cov(X,Y) = &sum;(Xi - X)(Yi - Y) / (n - 1)</b><br>
-Cov(X,Y) = ${fmt(arrondi(covarianceSum, precision))} / $n - 1<br>
+Cov(X,Y) = ${fmt(arrondi(covarianceSum, precision))} / ($n - 1)<br>
 <font color='red'><b><u>Cov(X,Y) = ${fmt(r.covariance)}</u></b></font><br><br>
 <b><font color='blue'><u>${t.correlationSectionTitle}</u></font></b><br><br>
 <b>r = Cov(X, Y) / &sigma;(x)&sigma;(y)</b><br>

@@ -22,7 +22,10 @@ class DiscreteStatsResult {
 
   /// `ΣNi / n` -- despite the name, this is the mean of the *effectifs*, not
   /// of the xi values. Preserved as-is from the legacy app's "moyenne simple".
-  final double simpleMean;
+  /// Mean effectif per row, ΣNi / n. The legacy app labelled it "simple
+  /// arithmetic mean" with the mean's symbol X, but it is the mean of the
+  /// effectifs, not of the variable (that one is [weightedMean]).
+  final double meanEffectif;
 
   final double mode;
 
@@ -103,7 +106,7 @@ class DiscreteStatsResult {
     required this.cumulativeAscending,
     required this.cumulativeDescending,
     required this.weightedMean,
-    required this.simpleMean,
+    required this.meanEffectif,
     required this.mode,
     required this.modes,
     required this.median,
@@ -241,7 +244,7 @@ DiscreteStatsResult computeDiscreteStats(
   final ninthDecileIndex = _firstIndexPastThreshold(ninthDecileOperator);
 
   final weightedMean = arrondi(xiniSum / niSum, precision);
-  final simpleMean = arrondi(niSum / n, precision);
+  final meanEffectif = arrondi(niSum / n, precision);
   final modes = [for (final i in modeIndices) arrondi(xiR[i], precision)];
   final mode = modes.first;
   final median = arrondi(xiR[medianIndex], precision);
@@ -286,7 +289,7 @@ DiscreteStatsResult computeDiscreteStats(
     cumulativeAscending: up,
     cumulativeDescending: down,
     weightedMean: weightedMean,
-    simpleMean: simpleMean,
+    meanEffectif: meanEffectif,
     mode: mode,
     modes: modes,
     median: median,
