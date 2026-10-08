@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -32,6 +34,8 @@ Future<void> bootstrapApp({
 
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
+  registerThirdPartyLicenses();
+
   await dotenv.load(fileName: config.envFileName);
 
   await Hive.initFlutter();
@@ -50,4 +54,14 @@ Future<void> applySavedOrDeviceLocale(SharedPreferencesService prefs) async {
   } else {
     await LocaleSettings.useDeviceLocale();
   }
+}
+
+/// Licenses that Flutter doesn't collect on its own: it only bundles each
+/// package's top-level LICENSE, and flutter_math_fork (Apache 2.0) ships the
+/// KaTeX fonts it renders the course formulas with under their own MIT
+/// license, in `lib/katex_fonts/LICENSE`.
+void registerThirdPartyLicenses() {
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(['KaTeX fonts (flutter_math_fork)'], await rootBundle.loadString('assets/licenses/katex_fonts.txt'));
+  });
 }

@@ -185,5 +185,10 @@
   "tableCFrequencies": "Cumulative Proportions",
   "effectifTotal": "TOTAL FREQUENCY",
   "qltMode": "The mode is the modality with the largest number of frequency",
-  "licenseNotice": "Free software under the GNU GPL v3 (code) and CC BY-SA 4.0 (content). © 2018-2026 Netersoft"
+  "licenseNotice": "Free software under the GNU GPL v3 (code) and CC BY-SA 4.0 (content). © 2018-2026 Netersoft",
+  "courseSearchHint": "Search for a notion",
+  "courseNoResult": "No notion matches “$query”",
+  "courseOpenDiscrete": "Calculate a discrete series",
+  "courseOpenContinuous": "Calculate a continuous series",
+  "courseOpenQualitative": "Calculate a qualitative series"
 }

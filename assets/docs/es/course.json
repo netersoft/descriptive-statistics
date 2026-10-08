@@ -1,0 +1,425 @@
+{
+  "sections": [
+    {
+      "id": "vocabulary",
+      "title": "Vocabulario",
+      "topics": [
+        {
+          "id": "descriptive-statistics",
+          "title": "La estadística descriptiva",
+          "blocks": [
+            { "type": "text", "text": "La **estadística descriptiva** es la rama de la estadística que desarrolla métodos de recogida, tratamiento y análisis cuantitativo y cualitativo de los datos." },
+            { "type": "text", "text": "Su objetivo es describir los datos disponibles, es decir, resumirlos o representarlos mediante estadísticas cuando son numerosos." }
+          ]
+        },
+        {
+          "id": "population",
+          "title": "Población y unidad estadística",
+          "blocks": [
+            { "type": "text", "text": "La **población estadística** es el conjunto de hechos, individuos, objetos o fenómenos sobre los que trata el estudio estadístico." },
+            { "type": "text", "text": "Una **unidad estadística** es un elemento de la población estadística." }
+          ]
+        },
+        {
+          "id": "character",
+          "title": "Carácter y modalidades",
+          "blocks": [
+            { "type": "text", "text": "Un **carácter estadístico** es una propiedad de la unidad estadística que se estudia, por ejemplo la edad, el sexo o la religión. Un carácter es cuantitativo cuando se puede medir y cualitativo cuando no." },
+            { "type": "text", "text": "Las **modalidades** son todos los valores o situaciones posibles de un carácter estadístico, por ejemplo masculino y femenino para el sexo." }
+          ]
+        },
+        {
+          "id": "variables",
+          "title": "Las variables estadísticas",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "Una **variable estadística** es una característica observable o medible que puede tomar varios valores en los individuos de una población. Reconocer el tipo de una variable es el primer paso de un análisis de datos, porque de él dependen las herramientas estadísticas que se deben usar." },
+            {
+              "type": "tree",
+              "root": {
+                "label": "Variable estadística",
+                "children": [
+                  {
+                    "label": "Cuantitativa",
+                    "children": [
+                      { "label": "Discreta", "example": "Número de hijos" },
+                      { "label": "Continua", "example": "Estatura, peso" }
+                    ]
+                  },
+                  {
+                    "label": "Cualitativa",
+                    "children": [
+                      { "label": "Nominal", "example": "Color del pelo" },
+                      { "label": "Ordinal", "example": "Nivel de estudios" }
+                    ]
+                  }
+                ]
+              }
+            },
+            { "type": "text", "text": "Una **variable cuantitativa** toma como valores números que se pueden ordenar y sumar. Es **continua** cuando sus valores forman un intervalo, normalmente resultado de una medición, y **discreta** cuando solo puede tomar un número finito de valores aislados, a menudo enteros." },
+            { "type": "text", "text": "Una **variable cualitativa** toma como valores cualidades llamadas modalidades (situación laboral: activo, estudiante, jubilado…), expresadas con palabras o con números. Es **nominal** cuando sus modalidades no se pueden ordenar, como el color del pelo, y **ordinal** cuando sí se pueden, como el nivel de estudios (primaria, secundaria, superior)." }
+          ]
+        },
+        {
+          "id": "survey",
+          "title": "Encuesta y recuento",
+          "blocks": [
+            { "type": "text", "text": "Una **encuesta estadística** es una operación de recogida de datos. Se habla de **censo** cuando abarca todas las unidades de la población, y de **muestreo** cuando solo abarca una parte." },
+            { "type": "text", "text": "El **recuento** consiste en contar los datos recogidos al final de una encuesta estadística." }
+          ]
+        },
+        {
+          "id": "statistical-table",
+          "title": "La tabla estadística",
+          "calculators": ["discrete"],
+          "blocks": [
+            { "type": "text", "text": "Una **tabla estadística**, o distribución estadística, presenta los datos recogidos en una encuesta. La tabla simple describe la población según un solo carácter; la tabla de doble entrada la describe según dos caracteres a la vez." },
+            {
+              "type": "table",
+              "caption": "Empleados de una empresa según su número de hijos, en 2025",
+              "headers": ["Número de hijos (Xi)", "Frecuencia (Ni)", "Frecuencia relativa (%)"],
+              "rows": [
+                ["0", "8", "20"],
+                ["1", "12", "30"],
+                ["2", "11", "27,5"],
+                ["3", "6", "15"],
+                ["4", "3", "7,5"],
+                ["Total", "40", "100"]
+              ]
+            },
+            { "type": "text", "text": "Para ser útil, una tabla necesita un título sencillo, claro y preciso, que describa un fenómeno concreto en un lugar y una fecha determinados." }
+          ]
+        },
+        {
+          "id": "graphical-representation",
+          "title": "La representación gráfica",
+          "blocks": [
+            { "type": "text", "text": "La **representación gráfica** ofrece una visión de conjunto de los datos mediante figuras geométricas. Se distinguen los gráficos de ilustración y las curvas acumulativas." },
+            {
+              "type": "bullets",
+              "items": [
+                "Para un carácter **cualitativo**: diagrama circular (de sectores), diagrama de tubos de órgano, diagrama de barras.",
+                "Para un carácter **cuantitativo**: diagrama de bastones, diagrama de caja, histograma."
+              ]
+            },
+            { "type": "text", "text": "La aplicación dibuja estos gráficos con los resultados de cada cálculo; el tipo de gráfico se elige en los ajustes." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frequencies",
+      "title": "Frecuencias",
+      "topics": [
+        {
+          "id": "effectif",
+          "title": "La frecuencia",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "La **frecuencia** de un valor es el número de unidades estadísticas que presentan ese valor. Se escribe Ni y también se llama frecuencia absoluta." },
+            {
+              "type": "formula",
+              "label": "Frecuencia total",
+              "tex": "T = \\sum N_i",
+              "legend": [{ "tex": "N_i", "text": "Frecuencia de cada valor" }]
+            },
+            {
+              "type": "formula",
+              "label": "Frecuencia media",
+              "tex": "\\bar{N} = \\frac{\\sum N_i}{n}",
+              "legend": [
+                { "tex": "N_i", "text": "Frecuencia de cada valor" },
+                { "tex": "n", "text": "Número de valores (o de clases)" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frequency",
+          "title": "La frecuencia relativa",
+          "calculators": ["qualitative"],
+          "blocks": [
+            { "type": "text", "text": "La **frecuencia relativa**, o proporción, de un valor es el cociente entre su frecuencia y la frecuencia total. Suele expresarse en porcentaje." },
+            {
+              "type": "formula",
+              "tex": "F_i = \\frac{N_i}{\\sum N_i} \\times 100",
+              "legend": [
+                { "tex": "N_i", "text": "Frecuencia del valor" },
+                { "tex": "\\sum N_i", "text": "Frecuencia total" }
+              ]
+            },
+            { "type": "text", "text": "La **proporción acumulada** de un valor suma su frecuencia relativa a las de los valores anteriores; la del último valor es del 100 %." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "position",
+      "title": "Medidas de posición",
+      "topics": [
+        {
+          "id": "descriptive-parameters",
+          "title": "Los parámetros descriptivos",
+          "blocks": [
+            { "type": "text", "text": "Los **parámetros descriptivos** resumen en pocas cifras la distribución de una variable. Para una variable cualitativa se calculan frecuencias y proporciones; para una variable cuantitativa hay dos grupos de parámetros." },
+            {
+              "type": "bullets",
+              "items": [
+                "Las **medidas de posición** (media, mediana, moda, cuartiles…) son valores centrales alrededor de los cuales se reparten las observaciones.",
+                "Las **medidas de dispersión** (rango, varianza, desviación estándar…) miden cómo se reparten las observaciones alrededor de esos valores centrales."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mean",
+          "title": "La media",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **media** es la suma de los valores de la serie dividida entre el número de valores. Cuando cada valor tiene una frecuencia, se calcula la media ponderada." },
+            {
+              "type": "formula",
+              "tex": "X = \\frac{\\sum X_i N_i}{\\sum N_i}",
+              "legend": [
+                { "tex": "X_i", "text": "Valor (para una variable continua, la marca de clase)" },
+                { "tex": "N_i", "text": "Frecuencia del valor" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "median",
+          "title": "La mediana",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **mediana** divide la serie ordenada en dos partes de igual frecuencia: la mitad de las observaciones están por debajo y la otra mitad por encima." },
+            {
+              "type": "formula",
+              "label": "Variable discreta",
+              "text": "El menor valor cuya frecuencia acumulada alcanza o supera la mitad de la frecuencia total. Si la alcanza exactamente, la mediana es la media de ese valor y del siguiente.",
+              "tex": "\\tfrac{1}{2} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Variable continua",
+              "tex": "\\mathrm{Me} = L_1 + k \\, \\frac{\\frac{1}{2} \\sum N_i - N_1}{N_e}",
+              "legend": [
+                { "tex": "L_1", "text": "Límite inferior de la clase mediana" },
+                { "tex": "k", "text": "Amplitud de la clase mediana" },
+                { "tex": "N_1", "text": "Frecuencia acumulada de la clase anterior" },
+                { "tex": "N_e", "text": "Frecuencia de la clase mediana" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mode",
+          "title": "La moda",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **moda** es el valor más frecuente de la serie. No es necesariamente única: una serie puede tener varias modas." },
+            {
+              "type": "formula",
+              "label": "Variable discreta",
+              "text": "El valor con la frecuencia más alta."
+            },
+            {
+              "type": "formula",
+              "label": "Variable continua",
+              "tex": "\\mathrm{Mo} = L_1 + k \\, \\frac{N_0 - N_1}{(N_0 - N_1) + (N_0 - N_2)}",
+              "legend": [
+                { "tex": "L_1", "text": "Límite inferior de la clase modal" },
+                { "tex": "k", "text": "Amplitud de la clase modal" },
+                { "tex": "N_0", "text": "Frecuencia de la clase modal" },
+                { "tex": "N_1", "text": "Frecuencia de la clase anterior" },
+                { "tex": "N_2", "text": "Frecuencia de la clase siguiente" }
+              ]
+            },
+            { "type": "text", "text": "Si las clases no tienen todas la misma amplitud, las frecuencias se sustituyen por las densidades di = Ni / k." }
+          ]
+        },
+        {
+          "id": "quantiles",
+          "title": "Cuartiles, deciles y percentiles",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Los **cuartiles** son los tres valores que dividen la serie ordenada en cuatro grupos de igual frecuencia. El primer cuartil Q1 deja por debajo el 25 % de las observaciones, el segundo es la mediana y el tercer cuartil Q3 deja por debajo el 75 %." },
+            { "type": "text", "text": "Del mismo modo, los **deciles** dividen la serie en diez grupos (D1 deja por debajo el 10 % de las observaciones, D9 el 90 %) y los **percentiles** en cien." },
+            {
+              "type": "formula",
+              "label": "Variable discreta",
+              "text": "Q1 es el menor valor cuya frecuencia acumulada alcanza o supera la cuarta parte de la frecuencia total.",
+              "tex": "\\tfrac{1}{4} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Variable continua",
+              "tex": "Q_1 = L_1 + k \\, \\frac{\\frac{1}{4} \\sum N_i - N_1}{N_i}",
+              "legend": [
+                { "tex": "L_1", "text": "Límite inferior de la clase en la que la frecuencia acumulada supera ¼ ∑Ni" },
+                { "tex": "k", "text": "Amplitud de esa clase" },
+                { "tex": "N_1", "text": "Frecuencia acumulada de la clase anterior" },
+                { "tex": "N_i", "text": "Frecuencia de esa clase" }
+              ]
+            },
+            { "type": "text", "text": "Para Q3, D1 y D9, se sustituye ¼ por ¾, 1/10 y 9/10." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dispersion",
+      "title": "Medidas de dispersión",
+      "topics": [
+        {
+          "id": "range",
+          "title": "El rango",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "El **rango** es la diferencia entre el valor más alto y el más bajo de la serie." },
+            { "type": "formula", "tex": "E = X_{max} - X_{min}" }
+          ]
+        },
+        {
+          "id": "variance",
+          "title": "La varianza",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **varianza** mide la dispersión de las observaciones alrededor de la media: es la media de los cuadrados de las desviaciones respecto a la media." },
+            {
+              "type": "formula",
+              "tex": "Vx^2 = \\frac{\\sum X_i^2 N_i}{\\sum N_i} - X^2",
+              "legend": [
+                { "tex": "X_i", "text": "Valor (o marca de clase)" },
+                { "tex": "N_i", "text": "Frecuencia del valor" },
+                { "tex": "X", "text": "Media" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-deviation",
+          "title": "La desviación estándar",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **desviación estándar** mide la dispersión de una serie en la misma unidad que las observaciones. Es la raíz cuadrada de la varianza." },
+            {
+              "type": "formula",
+              "tex": "\\sigma = \\sqrt{Vx^2}",
+              "legend": [{ "tex": "Vx^2", "text": "Varianza" }]
+            }
+          ]
+        },
+        {
+          "id": "interquartile-range",
+          "title": "El intervalo intercuartil",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "El **intervalo intercuartil** es la diferencia entre el tercer y el primer cuartil. Contiene la mitad central de las observaciones (el 25 % a cada lado de la mediana)." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{IIQ} = Q_3 - Q_1",
+              "legend": [
+                { "tex": "Q_1", "text": "Primer cuartil" },
+                { "tex": "Q_3", "text": "Tercer cuartil" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-error",
+          "title": "El error estándar",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "El **error estándar** mide la precisión de la media: indica cuánto varía la media de una muestra a otra. Disminuye cuando aumenta la frecuencia total." },
+            {
+              "type": "formula",
+              "label": "Desviación estándar de la muestra",
+              "tex": "s = \\sigma \\times \\sqrt{\\frac{\\sum N_i}{\\sum N_i - 1}}"
+            },
+            {
+              "type": "formula",
+              "label": "Error estándar",
+              "tex": "\\mathrm{SE} = \\frac{s}{\\sqrt{\\sum N_i}}",
+              "legend": [
+                { "tex": "\\sigma", "text": "Desviación estándar" },
+                { "tex": "\\sum N_i", "text": "Frecuencia total" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "coefficient-of-variation",
+          "title": "El coeficiente de variación",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "El **coeficiente de variación** mide la homogeneidad de una distribución: relaciona la desviación estándar con la media." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{CV} = \\frac{\\sigma}{X} \\times 100",
+              "legend": [
+                { "tex": "\\sigma", "text": "Desviación estándar" },
+                { "tex": "X", "text": "Media" }
+              ]
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "CV ≤ 33 %: la distribución es **homogénea**.",
+                "CV > 33 %: la distribución es **heterogénea**."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "title": "Otras nociones",
+      "topics": [
+        {
+          "id": "covariance",
+          "title": "Covarianza y correlación",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **covarianza** indica si dos series varían en el mismo sentido (covarianza positiva) o en sentido contrario (covarianza negativa). El **coeficiente de correlación** la lleva a un valor entre -1 y 1: cuanto más cerca está de -1 o de 1, más fuerte es la relación." },
+            {
+              "type": "formula",
+              "label": "Covarianza",
+              "tex": "\\operatorname{Cov}(X, Y) = \\frac{\\sum (X_i - X)(Y_i - Y)}{n - 1}"
+            },
+            {
+              "type": "formula",
+              "label": "Coeficiente de correlación",
+              "tex": "r = \\frac{\\operatorname{Cov}(X, Y)}{\\sigma(x) \\, \\sigma(y)}",
+              "legend": [
+                { "tex": "X_i, Y_i", "text": "Valores de las dos series" },
+                { "tex": "X, Y", "text": "Medias de las dos series" },
+                { "tex": "n", "text": "Número de valores" },
+                { "tex": "\\sigma(x), \\sigma(y)", "text": "Desviaciones estándar de las dos series" }
+              ]
+            },
+            { "type": "text", "text": "En la aplicación, X designa los valores Xi (o las marcas de clase) e Y sus frecuencias Ni: allí la covarianza y la correlación indican si los valores más altos son más o menos frecuentes." }
+          ]
+        },
+        {
+          "id": "class-width",
+          "title": "La amplitud de las clases",
+          "calculators": ["continuous"],
+          "blocks": [
+            { "type": "text", "text": "Una variable continua se agrupa en **clases** [L1 ; L2[. La **amplitud** de una clase es la diferencia k = L2 - L1. Para dividir una serie en clases de igual amplitud, se divide el rango entre el número de clases." },
+            {
+              "type": "formula",
+              "label": "Amplitud común",
+              "tex": "A = \\frac{E}{N}",
+              "legend": [
+                { "tex": "E", "text": "Rango" },
+                { "tex": "N", "text": "Número de clases" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

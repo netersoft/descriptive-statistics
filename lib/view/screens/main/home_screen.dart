@@ -6,7 +6,7 @@ import '../backups/backups_screen.dart';
 import '../calculators/continuous_screen.dart';
 import '../calculators/discrete_screen.dart';
 import '../calculators/qualitative_screen.dart';
-import '../documentation/documentation_screen.dart';
+import '../course/course_screen.dart';
 import '../tutorial/tutorial_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         child: TabBarView(
           controller: tabController,
           children: const [
-            DocumentationScreen(),
+            CourseScreen(),
             DiscreteScreen(),
             ContinuousScreen(),
             QualitativeScreen(),
