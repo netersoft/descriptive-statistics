@@ -121,7 +121,7 @@ void main() {
       expect(explanation, contains('Effectif moyen'));
       expect(explanation, contains('\u0304 = 4'));
       expect(explanation, contains('MOYENNES'));
-      expect(explanation, contains('ETENDUE'));
+      expect(explanation, contains('ÉTENDUE'));
       // Save and Share sit side by side once a result exists.
       expect(find.text('Enregistrer'), findsOneWidget);
       expect(find.text('Partager'), findsOneWidget);

@@ -82,9 +82,9 @@ void main() {
       expect(explanation, contains('Mo = 14,2857'));
       expect(explanation, contains('Me = 16,25'));
       expect(explanation, contains('Classe Modale'));
-      expect(explanation, contains('Classe Mediante'));
+      expect(explanation, contains('Classe Médiane'));
       expect(explanation, contains('MOYENNES'));
-      expect(explanation, contains('ETENDUE'));
+      expect(explanation, contains('ÉTENDUE'));
     });
 
     testWidgets('shows the correct modal/median class bounds when classes are entered out of order', (tester) async {
