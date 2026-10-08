@@ -185,5 +185,10 @@
   "tableCFrequencies": "Proporções acumuladas",
   "effectifTotal": "FREQUÊNCIA TOTAL",
   "qltMode": "A moda é a modalidade com a maior frequência",
-  "licenseNotice": "Software livre sob a GNU GPL v3 (código) e CC BY-SA 4.0 (conteúdos). © 2018-2026 Netersoft"
+  "licenseNotice": "Software livre sob a GNU GPL v3 (código) e CC BY-SA 4.0 (conteúdos). © 2018-2026 Netersoft",
+  "courseSearchHint": "Pesquisar um conceito",
+  "courseNoResult": "Nenhum conceito corresponde a «$query»",
+  "courseOpenDiscrete": "Calcular uma série discreta",
+  "courseOpenContinuous": "Calcular uma série contínua",
+  "courseOpenQualitative": "Calcular uma série qualitativa"
 }

@@ -32,7 +32,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         // Start on the Discrete tab: the Course tab (the default) shows a
-        // spinner while its HTML loads, which pumpAndSettle can't wait out.
+        // spinner while its course loads, which pumpAndSettle can't wait out.
         overrides: [homeProvider.overrideWith(_StartOnDiscreteTab.new)],
         child: TranslationProvider(child: MaterialApp.router(routerConfig: router)),
       ),

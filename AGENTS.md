@@ -41,6 +41,10 @@ coverage under 10%.
 - **Routing**: go_router. **DI**: GetIt + injectable for infrastructure singletons.
 - **i18n**: Slang. Sources are in `assets/i18n/*.i18n.json`, English is the base locale (the fallback for unsupported device languages), and
   every key must exist in fr, en, de, es and pt. Use `context.t` in widgets.
+- **Course**: `assets/docs/<locale>/course.json`, one topic per notion (text, LaTeX
+  formulas with their symbols, tables), rendered natively with `flutter_math_fork`. Every
+  locale has the same sections, topics and formulas in the same order; only the text is
+  translated (checked by `test/assets/course_test.dart`).
 
 ## Statistics conventions
 

@@ -1,0 +1,425 @@
+{
+  "sections": [
+    {
+      "id": "vocabulary",
+      "title": "Vocabulaire",
+      "topics": [
+        {
+          "id": "descriptive-statistics",
+          "title": "La statistique descriptive",
+          "blocks": [
+            { "type": "text", "text": "La **statistique descriptive** est la branche des statistiques qui élabore des méthodes de collecte, de traitement et d'analyse quantitative et qualitative des données." },
+            { "type": "text", "text": "Son objectif est de décrire, c'est-à-dire de résumer ou de représenter par des statistiques, les données disponibles quand elles sont nombreuses." }
+          ]
+        },
+        {
+          "id": "population",
+          "title": "Population et unité statistique",
+          "blocks": [
+            { "type": "text", "text": "La **population statistique** est l'ensemble des faits, individus, objets ou phénomènes sur lesquels porte l'étude statistique." },
+            { "type": "text", "text": "Une **unité statistique** est un élément de la population statistique." }
+          ]
+        },
+        {
+          "id": "character",
+          "title": "Caractère et modalités",
+          "blocks": [
+            { "type": "text", "text": "Un **caractère statistique** est une propriété de l'unité statistique à laquelle on s'intéresse, par exemple l'âge, le sexe ou la religion. Un caractère est dit quantitatif lorsqu'il est mesurable et qualitatif lorsqu'il ne l'est pas." },
+            { "type": "text", "text": "Les **modalités** sont l'ensemble des valeurs ou situations possibles d'un caractère statistique, par exemple masculin et féminin pour le sexe." }
+          ]
+        },
+        {
+          "id": "variables",
+          "title": "Les variables statistiques",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "Une **variable statistique** est une caractéristique observable ou mesurable qui peut prendre plusieurs valeurs chez les individus d'une population. Reconnaître le type d'une variable est la première étape d'une analyse de données, car le choix des outils statistiques en dépend." },
+            {
+              "type": "tree",
+              "root": {
+                "label": "Variable statistique",
+                "children": [
+                  {
+                    "label": "Quantitative",
+                    "children": [
+                      { "label": "Discrète", "example": "Nombre d'enfants" },
+                      { "label": "Continue", "example": "Taille, poids" }
+                    ]
+                  },
+                  {
+                    "label": "Qualitative",
+                    "children": [
+                      { "label": "Nominale", "example": "Couleur des cheveux" },
+                      { "label": "Ordinale", "example": "Niveau d'études" }
+                    ]
+                  }
+                ]
+              }
+            },
+            { "type": "text", "text": "Une **variable quantitative** a pour valeurs des nombres qui peuvent être ordonnés et additionnés. Elle est **continue** quand ses valeurs forment un intervalle, typiquement issu d'une mesure, et **discrète** quand elle ne peut prendre qu'un nombre fini de valeurs isolées, souvent entières." },
+            { "type": "text", "text": "Une **variable qualitative** a pour valeurs des qualités appelées modalités (situation professionnelle : actif, étudiant, retraité…), exprimées en lettres ou en chiffres. Elle est **nominale** quand ses modalités ne peuvent pas être ordonnées, comme la couleur des cheveux, et **ordinale** quand elles le peuvent, comme le niveau d'études (primaire, secondaire, supérieur)." }
+          ]
+        },
+        {
+          "id": "survey",
+          "title": "Enquête et dépouillement",
+          "blocks": [
+            { "type": "text", "text": "Une **enquête statistique** est une opération de collecte de données. On parle de **recensement** quand elle porte sur toutes les unités de la population, et de **sondage** quand elle n'en porte que sur une partie." },
+            { "type": "text", "text": "Le **dépouillement** consiste à dénombrer les données recueillies à l'issue d'une enquête statistique." }
+          ]
+        },
+        {
+          "id": "statistical-table",
+          "title": "Le tableau statistique",
+          "calculators": ["discrete"],
+          "blocks": [
+            { "type": "text", "text": "Un **tableau statistique**, ou distribution statistique, présente les données recueillies à l'issue d'une enquête. Le tableau simple décrit la population selon un seul caractère ; le tableau à double entrée la décrit selon deux caractères à la fois." },
+            {
+              "type": "table",
+              "caption": "Salariés d'une entreprise selon leur nombre d'enfants, en 2025",
+              "headers": ["Nombre d'enfants (Xi)", "Effectif (Ni)", "Fréquence (%)"],
+              "rows": [
+                ["0", "8", "20"],
+                ["1", "12", "30"],
+                ["2", "11", "27,5"],
+                ["3", "6", "15"],
+                ["4", "3", "7,5"],
+                ["Total", "40", "100"]
+              ]
+            },
+            { "type": "text", "text": "Pour être utile, un tableau a besoin d'un titre simple, clair et précis, qui décrit un phénomène concret, en un lieu et à une date déterminés." }
+          ]
+        },
+        {
+          "id": "graphical-representation",
+          "title": "La représentation graphique",
+          "blocks": [
+            { "type": "text", "text": "La **représentation graphique** donne une vue d'ensemble des données à l'aide de figures géométriques. On distingue les graphiques d'illustration et les courbes cumulatives." },
+            {
+              "type": "bullets",
+              "items": [
+                "Pour un caractère **qualitatif** : diagramme circulaire (à secteurs), diagramme en tuyaux d'orgue, diagramme en barres.",
+                "Pour un caractère **quantitatif** : diagramme en bâtons, boîte à moustaches, histogramme."
+              ]
+            },
+            { "type": "text", "text": "L'application trace ces graphiques avec les résultats de chaque calcul ; le type de graphique se choisit dans les paramètres." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frequencies",
+      "title": "Effectifs et fréquences",
+      "topics": [
+        {
+          "id": "effectif",
+          "title": "L'effectif",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "L'**effectif** d'une valeur est le nombre d'unités statistiques qui présentent cette valeur. Il est noté Ni et appelé aussi fréquence absolue." },
+            {
+              "type": "formula",
+              "label": "Effectif total",
+              "tex": "T = \\sum N_i",
+              "legend": [{ "tex": "N_i", "text": "Effectif de chaque valeur" }]
+            },
+            {
+              "type": "formula",
+              "label": "Effectif moyen",
+              "tex": "\\bar{N} = \\frac{\\sum N_i}{n}",
+              "legend": [
+                { "tex": "N_i", "text": "Effectif de chaque valeur" },
+                { "tex": "n", "text": "Nombre de valeurs (ou de classes)" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frequency",
+          "title": "La fréquence",
+          "calculators": ["qualitative"],
+          "blocks": [
+            { "type": "text", "text": "La **fréquence** d'une valeur est le rapport entre son effectif et l'effectif total. Elle s'exprime souvent en pourcentage." },
+            {
+              "type": "formula",
+              "tex": "F_i = \\frac{N_i}{\\sum N_i} \\times 100",
+              "legend": [
+                { "tex": "N_i", "text": "Effectif de la valeur" },
+                { "tex": "\\sum N_i", "text": "Effectif total" }
+              ]
+            },
+            { "type": "text", "text": "La **fréquence cumulée** d'une valeur ajoute sa fréquence à celles des valeurs qui la précèdent ; celle de la dernière valeur vaut 100 %." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "position",
+      "title": "Paramètres de position",
+      "topics": [
+        {
+          "id": "descriptive-parameters",
+          "title": "Les paramètres descriptifs",
+          "blocks": [
+            { "type": "text", "text": "Les **paramètres descriptifs** résument en quelques chiffres la distribution d'une variable. Pour une variable qualitative, on calcule des effectifs et des fréquences ; pour une variable quantitative, on dispose de deux groupes de paramètres." },
+            {
+              "type": "bullets",
+              "items": [
+                "Les **paramètres de position** (moyenne, médiane, mode, quartiles…) sont des valeurs centrales autour desquelles se répartissent les observations.",
+                "Les **paramètres de dispersion** (étendue, variance, écart type…) mesurent comment les observations se répartissent autour de ces valeurs centrales."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mean",
+          "title": "La moyenne",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **moyenne** est le rapport entre la somme des valeurs de la série et le nombre de valeurs. Quand chaque valeur a un effectif, on calcule la moyenne pondérée." },
+            {
+              "type": "formula",
+              "tex": "X = \\frac{\\sum X_i N_i}{\\sum N_i}",
+              "legend": [
+                { "tex": "X_i", "text": "Valeur (pour une variable continue, centre de la classe)" },
+                { "tex": "N_i", "text": "Effectif de la valeur" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "median",
+          "title": "La médiane",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **médiane** partage la série ordonnée en deux parties de même effectif : la moitié des observations lui sont inférieures, l'autre moitié supérieures." },
+            {
+              "type": "formula",
+              "label": "Variable discrète",
+              "text": "La plus petite valeur dont l'effectif cumulé croissant atteint ou dépasse la moitié de l'effectif total. S'il l'atteint exactement, la médiane est la moyenne de cette valeur et de la suivante.",
+              "tex": "\\tfrac{1}{2} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Variable continue",
+              "tex": "\\mathrm{Me} = L_1 + k \\, \\frac{\\frac{1}{2} \\sum N_i - N_1}{N_e}",
+              "legend": [
+                { "tex": "L_1", "text": "Borne inférieure de la classe médiane" },
+                { "tex": "k", "text": "Amplitude de la classe médiane" },
+                { "tex": "N_1", "text": "Effectif cumulé croissant de la classe précédente" },
+                { "tex": "N_e", "text": "Effectif de la classe médiane" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mode",
+          "title": "Le mode",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Le **mode** est la valeur la plus fréquente de la série. Il n'est pas forcément unique : une série peut avoir plusieurs modes." },
+            {
+              "type": "formula",
+              "label": "Variable discrète",
+              "text": "La valeur qui a l'effectif le plus élevé."
+            },
+            {
+              "type": "formula",
+              "label": "Variable continue",
+              "tex": "\\mathrm{Mo} = L_1 + k \\, \\frac{N_0 - N_1}{(N_0 - N_1) + (N_0 - N_2)}",
+              "legend": [
+                { "tex": "L_1", "text": "Borne inférieure de la classe modale" },
+                { "tex": "k", "text": "Amplitude de la classe modale" },
+                { "tex": "N_0", "text": "Effectif de la classe modale" },
+                { "tex": "N_1", "text": "Effectif de la classe précédente" },
+                { "tex": "N_2", "text": "Effectif de la classe suivante" }
+              ]
+            },
+            { "type": "text", "text": "Si les classes n'ont pas toutes la même amplitude, on remplace les effectifs par les densités di = Ni / k." }
+          ]
+        },
+        {
+          "id": "quantiles",
+          "title": "Quartiles, déciles et percentiles",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Les **quartiles** sont les trois valeurs qui partagent la série ordonnée en quatre groupes de même effectif. Le premier quartile Q1 laisse 25 % des observations en dessous de lui, le deuxième est la médiane, et le troisième Q3 laisse 75 % des observations en dessous de lui." },
+            { "type": "text", "text": "De même, les **déciles** partagent la série en dix groupes (D1 laisse 10 % des observations en dessous de lui, D9 90 %), et les **percentiles** en cent." },
+            {
+              "type": "formula",
+              "label": "Variable discrète",
+              "text": "Q1 est la plus petite valeur dont l'effectif cumulé croissant atteint ou dépasse le quart de l'effectif total.",
+              "tex": "\\tfrac{1}{4} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Variable continue",
+              "tex": "Q_1 = L_1 + k \\, \\frac{\\frac{1}{4} \\sum N_i - N_1}{N_i}",
+              "legend": [
+                { "tex": "L_1", "text": "Borne inférieure de la classe où l'effectif cumulé croissant dépasse ¼ ∑Ni" },
+                { "tex": "k", "text": "Amplitude de cette classe" },
+                { "tex": "N_1", "text": "Effectif cumulé croissant de la classe précédente" },
+                { "tex": "N_i", "text": "Effectif de cette classe" }
+              ]
+            },
+            { "type": "text", "text": "Pour Q3, D1 et D9, on remplace ¼ par ¾, 1/10 et 9/10." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dispersion",
+      "title": "Paramètres de dispersion",
+      "topics": [
+        {
+          "id": "range",
+          "title": "L'étendue",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "L'**étendue** est la différence entre la plus grande et la plus petite valeur de la série." },
+            { "type": "formula", "tex": "E = X_{max} - X_{min}" }
+          ]
+        },
+        {
+          "id": "variance",
+          "title": "La variance",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **variance** mesure la dispersion des observations autour de la moyenne : c'est la moyenne des carrés des écarts à la moyenne." },
+            {
+              "type": "formula",
+              "tex": "Vx^2 = \\frac{\\sum X_i^2 N_i}{\\sum N_i} - X^2",
+              "legend": [
+                { "tex": "X_i", "text": "Valeur (ou centre de la classe)" },
+                { "tex": "N_i", "text": "Effectif de la valeur" },
+                { "tex": "X", "text": "Moyenne" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-deviation",
+          "title": "L'écart type",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "L'**écart type** mesure la dispersion d'une série dans la même unité que les observations. C'est la racine carrée de la variance." },
+            {
+              "type": "formula",
+              "tex": "\\sigma = \\sqrt{Vx^2}",
+              "legend": [{ "tex": "Vx^2", "text": "Variance" }]
+            }
+          ]
+        },
+        {
+          "id": "interquartile-range",
+          "title": "L'intervalle interquartile",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "L'**intervalle interquartile** est l'écart entre le troisième et le premier quartile. Il contient la moitié centrale des observations (25 % de part et d'autre de la médiane)." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{IIQ} = Q_3 - Q_1",
+              "legend": [
+                { "tex": "Q_1", "text": "Premier quartile" },
+                { "tex": "Q_3", "text": "Troisième quartile" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-error",
+          "title": "L'erreur type",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "L'**erreur type** mesure la précision de la moyenne : elle indique de combien la moyenne varie d'un échantillon à l'autre. Elle diminue quand l'effectif total augmente." },
+            {
+              "type": "formula",
+              "label": "Écart type de l'échantillon",
+              "tex": "s = \\sigma \\times \\sqrt{\\frac{\\sum N_i}{\\sum N_i - 1}}"
+            },
+            {
+              "type": "formula",
+              "label": "Erreur type",
+              "tex": "\\mathrm{SE} = \\frac{s}{\\sqrt{\\sum N_i}}",
+              "legend": [
+                { "tex": "\\sigma", "text": "Écart type" },
+                { "tex": "\\sum N_i", "text": "Effectif total" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "coefficient-of-variation",
+          "title": "Le coefficient de variation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Le **coefficient de variation** mesure l'homogénéité d'une distribution : il rapporte l'écart type à la moyenne." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{CV} = \\frac{\\sigma}{X} \\times 100",
+              "legend": [
+                { "tex": "\\sigma", "text": "Écart type" },
+                { "tex": "X", "text": "Moyenne" }
+              ]
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "CV ≤ 33 % : la distribution est **homogène**.",
+                "CV > 33 % : la distribution est **hétérogène**."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "title": "Autres notions",
+      "topics": [
+        {
+          "id": "covariance",
+          "title": "Covariance et corrélation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "La **covariance** indique si deux séries varient dans le même sens (covariance positive) ou en sens contraire (covariance négative). Le **coefficient de corrélation** la ramène entre -1 et 1 : plus il est proche de -1 ou de 1, plus la relation est forte." },
+            {
+              "type": "formula",
+              "label": "Covariance",
+              "tex": "\\operatorname{Cov}(X, Y) = \\frac{\\sum (X_i - X)(Y_i - Y)}{n - 1}"
+            },
+            {
+              "type": "formula",
+              "label": "Coefficient de corrélation",
+              "tex": "r = \\frac{\\operatorname{Cov}(X, Y)}{\\sigma(x) \\, \\sigma(y)}",
+              "legend": [
+                { "tex": "X_i, Y_i", "text": "Valeurs des deux séries" },
+                { "tex": "X, Y", "text": "Moyennes des deux séries" },
+                { "tex": "n", "text": "Nombre de valeurs" },
+                { "tex": "\\sigma(x), \\sigma(y)", "text": "Écarts types des deux séries" }
+              ]
+            },
+            { "type": "text", "text": "Dans l'application, X désigne les valeurs Xi (ou les centres de classe) et Y leurs effectifs Ni : la covariance et la corrélation y mesurent si les valeurs les plus grandes sont plus ou moins fréquentes." }
+          ]
+        },
+        {
+          "id": "class-width",
+          "title": "L'amplitude des classes",
+          "calculators": ["continuous"],
+          "blocks": [
+            { "type": "text", "text": "Une variable continue est regroupée en **classes** [L1 ; L2[. L'**amplitude** d'une classe est la différence k = L2 - L1. Pour découper une série en classes de même amplitude, on divise l'étendue par le nombre de classes." },
+            {
+              "type": "formula",
+              "label": "Amplitude commune",
+              "tex": "A = \\frac{E}{N}",
+              "legend": [
+                { "tex": "E", "text": "Étendue" },
+                { "tex": "N", "text": "Nombre de classes" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
