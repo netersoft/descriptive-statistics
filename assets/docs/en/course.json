@@ -1,0 +1,425 @@
+{
+  "sections": [
+    {
+      "id": "vocabulary",
+      "title": "Vocabulary",
+      "topics": [
+        {
+          "id": "descriptive-statistics",
+          "title": "Descriptive statistics",
+          "blocks": [
+            { "type": "text", "text": "**Descriptive statistics** is the branch of statistics that develops methods for collecting, processing and analysing data, both quantitatively and qualitatively." },
+            { "type": "text", "text": "Its aim is to describe the available data, that is, to summarise or represent them with statistics when there are many of them." }
+          ]
+        },
+        {
+          "id": "population",
+          "title": "Population and statistical unit",
+          "blocks": [
+            { "type": "text", "text": "The **statistical population** is the set of facts, individuals, objects or phenomena that a statistical study is about." },
+            { "type": "text", "text": "A **statistical unit** is one element of the statistical population." }
+          ]
+        },
+        {
+          "id": "character",
+          "title": "Characteristic and modalities",
+          "blocks": [
+            { "type": "text", "text": "A **statistical characteristic** is a property of the statistical unit that the study looks at, such as age, sex or religion. A characteristic is quantitative when it can be measured and qualitative when it cannot." },
+            { "type": "text", "text": "The **modalities** are all the possible values or situations of a statistical characteristic, for example male and female for sex." }
+          ]
+        },
+        {
+          "id": "variables",
+          "title": "Statistical variables",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "A **statistical variable** is an observable or measurable characteristic that can take several values across the individuals of a population. Recognising the type of a variable is the first step of a data analysis, since the statistical tools to use depend on it." },
+            {
+              "type": "tree",
+              "root": {
+                "label": "Statistical variable",
+                "children": [
+                  {
+                    "label": "Quantitative",
+                    "children": [
+                      { "label": "Discrete", "example": "Number of children" },
+                      { "label": "Continuous", "example": "Height, weight" }
+                    ]
+                  },
+                  {
+                    "label": "Qualitative",
+                    "children": [
+                      { "label": "Nominal", "example": "Hair colour" },
+                      { "label": "Ordinal", "example": "Level of education" }
+                    ]
+                  }
+                ]
+              }
+            },
+            { "type": "text", "text": "A **quantitative variable** takes numbers as values, which can be ordered and added up. It is **continuous** when its values form an interval, typically the result of a measurement, and **discrete** when it can only take a finite number of separate values, often whole numbers." },
+            { "type": "text", "text": "A **qualitative variable** takes qualities called modalities as values (employment status: employed, student, retired…), written as words or numbers. It is **nominal** when its modalities cannot be ordered, like hair colour, and **ordinal** when they can, like the level of education (primary, secondary, higher)." }
+          ]
+        },
+        {
+          "id": "survey",
+          "title": "Survey and tallying",
+          "blocks": [
+            { "type": "text", "text": "A **statistical survey** is an operation that collects data. It is a **census** when it covers every unit of the population, and a **sample survey** when it only covers part of it." },
+            { "type": "text", "text": "**Tallying** means counting the data collected at the end of a statistical survey." }
+          ]
+        },
+        {
+          "id": "statistical-table",
+          "title": "The statistical table",
+          "calculators": ["discrete"],
+          "blocks": [
+            { "type": "text", "text": "A **statistical table**, or statistical distribution, presents the data collected by a survey. A one-way table describes the population by a single characteristic; a two-way table describes it by two characteristics at once." },
+            {
+              "type": "table",
+              "caption": "Employees of a company by number of children, in 2025",
+              "headers": ["Number of children (Xi)", "Frequency (Ni)", "Relative frequency (%)"],
+              "rows": [
+                ["0", "8", "20"],
+                ["1", "12", "30"],
+                ["2", "11", "27.5"],
+                ["3", "6", "15"],
+                ["4", "3", "7.5"],
+                ["Total", "40", "100"]
+              ]
+            },
+            { "type": "text", "text": "To be useful, a table needs a simple, clear and precise title that describes a concrete phenomenon, in a given place and at a given date." }
+          ]
+        },
+        {
+          "id": "graphical-representation",
+          "title": "Graphical representation",
+          "blocks": [
+            { "type": "text", "text": "A **graphical representation** gives an overall view of the data through geometric figures. There are illustrative charts and cumulative curves." },
+            {
+              "type": "bullets",
+              "items": [
+                "For a **qualitative** characteristic: pie chart, organ-pipe chart, bar chart.",
+                "For a **quantitative** characteristic: stick chart, box plot, histogram."
+              ]
+            },
+            { "type": "text", "text": "The app draws these charts with the results of each calculation; the type of chart is chosen in the settings." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frequencies",
+      "title": "Frequencies",
+      "topics": [
+        {
+          "id": "effectif",
+          "title": "Frequency",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "The **frequency** of a value is the number of statistical units that have this value. It is written Ni and also called absolute frequency." },
+            {
+              "type": "formula",
+              "label": "Total frequency",
+              "tex": "T = \\sum N_i",
+              "legend": [{ "tex": "N_i", "text": "Frequency of each value" }]
+            },
+            {
+              "type": "formula",
+              "label": "Mean frequency",
+              "tex": "\\bar{N} = \\frac{\\sum N_i}{n}",
+              "legend": [
+                { "tex": "N_i", "text": "Frequency of each value" },
+                { "tex": "n", "text": "Number of values (or classes)" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frequency",
+          "title": "Relative frequency",
+          "calculators": ["qualitative"],
+          "blocks": [
+            { "type": "text", "text": "The **relative frequency**, or proportion, of a value is the ratio of its frequency to the total frequency. It is often given as a percentage." },
+            {
+              "type": "formula",
+              "tex": "F_i = \\frac{N_i}{\\sum N_i} \\times 100",
+              "legend": [
+                { "tex": "N_i", "text": "Frequency of the value" },
+                { "tex": "\\sum N_i", "text": "Total frequency" }
+              ]
+            },
+            { "type": "text", "text": "The **cumulative proportion** of a value adds its relative frequency to those of the values before it; for the last value it is 100%." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "position",
+      "title": "Measures of position",
+      "topics": [
+        {
+          "id": "descriptive-parameters",
+          "title": "Descriptive parameters",
+          "blocks": [
+            { "type": "text", "text": "**Descriptive parameters** summarise the distribution of a variable in a few figures. For a qualitative variable, frequencies and proportions are calculated; for a quantitative variable, there are two groups of parameters." },
+            {
+              "type": "bullets",
+              "items": [
+                "**Measures of position** (mean, median, mode, quartiles…) are central values around which the observations are spread.",
+                "**Measures of dispersion** (range, variance, standard deviation…) measure how the observations are spread around these central values."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mean",
+          "title": "The mean",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **mean** is the sum of the values of the series divided by the number of values. When each value has a frequency, the weighted mean is used." },
+            {
+              "type": "formula",
+              "tex": "X = \\frac{\\sum X_i N_i}{\\sum N_i}",
+              "legend": [
+                { "tex": "X_i", "text": "Value (for a continuous variable, the class midpoint)" },
+                { "tex": "N_i", "text": "Frequency of the value" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "median",
+          "title": "The median",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **median** splits the ordered series into two parts of equal frequency: half of the observations are below it, the other half above." },
+            {
+              "type": "formula",
+              "label": "Discrete variable",
+              "text": "The smallest value whose cumulative frequency reaches or exceeds half of the total frequency. If it reaches it exactly, the median is the mean of this value and the next one.",
+              "tex": "\\tfrac{1}{2} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Continuous variable",
+              "tex": "\\mathrm{Me} = L_1 + k \\, \\frac{\\frac{1}{2} \\sum N_i - N_1}{N_e}",
+              "legend": [
+                { "tex": "L_1", "text": "Lower bound of the median class" },
+                { "tex": "k", "text": "Width of the median class" },
+                { "tex": "N_1", "text": "Cumulative frequency of the previous class" },
+                { "tex": "N_e", "text": "Frequency of the median class" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mode",
+          "title": "The mode",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **mode** is the most frequent value of the series. It is not necessarily unique: a series can have several modes." },
+            {
+              "type": "formula",
+              "label": "Discrete variable",
+              "text": "The value with the highest frequency."
+            },
+            {
+              "type": "formula",
+              "label": "Continuous variable",
+              "tex": "\\mathrm{Mo} = L_1 + k \\, \\frac{N_0 - N_1}{(N_0 - N_1) + (N_0 - N_2)}",
+              "legend": [
+                { "tex": "L_1", "text": "Lower bound of the modal class" },
+                { "tex": "k", "text": "Width of the modal class" },
+                { "tex": "N_0", "text": "Frequency of the modal class" },
+                { "tex": "N_1", "text": "Frequency of the previous class" },
+                { "tex": "N_2", "text": "Frequency of the next class" }
+              ]
+            },
+            { "type": "text", "text": "If the classes don't all have the same width, the frequencies are replaced by the densities di = Ni / k." }
+          ]
+        },
+        {
+          "id": "quantiles",
+          "title": "Quartiles, deciles and percentiles",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **quartiles** are the three values that split the ordered series into four groups of equal frequency. The first quartile Q1 has 25% of the observations below it, the second is the median, and the third quartile Q3 has 75% of the observations below it." },
+            { "type": "text", "text": "In the same way, the **deciles** split the series into ten groups (D1 has 10% of the observations below it, D9 90%), and the **percentiles** into a hundred." },
+            {
+              "type": "formula",
+              "label": "Discrete variable",
+              "text": "Q1 is the smallest value whose cumulative frequency reaches or exceeds a quarter of the total frequency.",
+              "tex": "\\tfrac{1}{4} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Continuous variable",
+              "tex": "Q_1 = L_1 + k \\, \\frac{\\frac{1}{4} \\sum N_i - N_1}{N_i}",
+              "legend": [
+                { "tex": "L_1", "text": "Lower bound of the class where the cumulative frequency passes ¼ ∑Ni" },
+                { "tex": "k", "text": "Width of this class" },
+                { "tex": "N_1", "text": "Cumulative frequency of the previous class" },
+                { "tex": "N_i", "text": "Frequency of this class" }
+              ]
+            },
+            { "type": "text", "text": "For Q3, D1 and D9, replace ¼ with ¾, 1/10 and 9/10." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dispersion",
+      "title": "Measures of dispersion",
+      "topics": [
+        {
+          "id": "range",
+          "title": "The range",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **range** is the difference between the largest and the smallest value of the series." },
+            { "type": "formula", "tex": "E = X_{max} - X_{min}" }
+          ]
+        },
+        {
+          "id": "variance",
+          "title": "The variance",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **variance** measures how the observations are spread around the mean: it is the mean of the squared deviations from the mean." },
+            {
+              "type": "formula",
+              "tex": "Vx^2 = \\frac{\\sum X_i^2 N_i}{\\sum N_i} - X^2",
+              "legend": [
+                { "tex": "X_i", "text": "Value (or class midpoint)" },
+                { "tex": "N_i", "text": "Frequency of the value" },
+                { "tex": "X", "text": "Mean" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-deviation",
+          "title": "The standard deviation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **standard deviation** measures the dispersion of a series in the same unit as the observations. It is the square root of the variance." },
+            {
+              "type": "formula",
+              "tex": "\\sigma = \\sqrt{Vx^2}",
+              "legend": [{ "tex": "Vx^2", "text": "Variance" }]
+            }
+          ]
+        },
+        {
+          "id": "interquartile-range",
+          "title": "The interquartile interval",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **interquartile interval** is the gap between the third and the first quartile. It holds the middle half of the observations (25% on each side of the median)." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{IIQ} = Q_3 - Q_1",
+              "legend": [
+                { "tex": "Q_1", "text": "First quartile" },
+                { "tex": "Q_3", "text": "Third quartile" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-error",
+          "title": "The standard error",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **standard error** measures how precise the mean is: it shows how much the mean varies from one sample to another. It decreases as the total frequency grows." },
+            {
+              "type": "formula",
+              "label": "Sample standard deviation",
+              "tex": "s = \\sigma \\times \\sqrt{\\frac{\\sum N_i}{\\sum N_i - 1}}"
+            },
+            {
+              "type": "formula",
+              "label": "Standard error",
+              "tex": "\\mathrm{SE} = \\frac{s}{\\sqrt{\\sum N_i}}",
+              "legend": [
+                { "tex": "\\sigma", "text": "Standard deviation" },
+                { "tex": "\\sum N_i", "text": "Total frequency" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "coefficient-of-variation",
+          "title": "The coefficient of variation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **coefficient of variation** measures how homogeneous a distribution is: it relates the standard deviation to the mean." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{CV} = \\frac{\\sigma}{X} \\times 100",
+              "legend": [
+                { "tex": "\\sigma", "text": "Standard deviation" },
+                { "tex": "X", "text": "Mean" }
+              ]
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "CV ≤ 33%: the distribution is **homogeneous**.",
+                "CV > 33%: the distribution is **heterogeneous**."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "title": "Other notions",
+      "topics": [
+        {
+          "id": "covariance",
+          "title": "Covariance and correlation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "The **covariance** shows whether two series vary in the same direction (positive covariance) or in opposite directions (negative covariance). The **correlation coefficient** brings it between -1 and 1: the closer it is to -1 or 1, the stronger the relationship." },
+            {
+              "type": "formula",
+              "label": "Covariance",
+              "tex": "\\operatorname{Cov}(X, Y) = \\frac{\\sum (X_i - X)(Y_i - Y)}{n - 1}"
+            },
+            {
+              "type": "formula",
+              "label": "Correlation coefficient",
+              "tex": "r = \\frac{\\operatorname{Cov}(X, Y)}{\\sigma(x) \\, \\sigma(y)}",
+              "legend": [
+                { "tex": "X_i, Y_i", "text": "Values of the two series" },
+                { "tex": "X, Y", "text": "Means of the two series" },
+                { "tex": "n", "text": "Number of values" },
+                { "tex": "\\sigma(x), \\sigma(y)", "text": "Standard deviations of the two series" }
+              ]
+            },
+            { "type": "text", "text": "In the app, X stands for the values Xi (or the class midpoints) and Y for their frequencies Ni: there, the covariance and the correlation tell whether larger values are more or less frequent." }
+          ]
+        },
+        {
+          "id": "class-width",
+          "title": "Class width",
+          "calculators": ["continuous"],
+          "blocks": [
+            { "type": "text", "text": "A continuous variable is grouped into **classes** [L1 ; L2[. The **width** of a class is the difference k = L2 - L1. To split a series into classes of equal width, divide the range by the number of classes." },
+            {
+              "type": "formula",
+              "label": "Common width",
+              "tex": "A = \\frac{E}{N}",
+              "legend": [
+                { "tex": "E", "text": "Range" },
+                { "tex": "N", "text": "Number of classes" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

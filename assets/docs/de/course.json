@@ -1,0 +1,425 @@
+{
+  "sections": [
+    {
+      "id": "vocabulary",
+      "title": "Grundbegriffe",
+      "topics": [
+        {
+          "id": "descriptive-statistics",
+          "title": "Die beschreibende Statistik",
+          "blocks": [
+            { "type": "text", "text": "Die **beschreibende Statistik** (deskriptive Statistik) ist der Teil der Statistik, der Methoden zur Erhebung, Aufbereitung und quantitativen wie qualitativen Auswertung von Daten entwickelt." },
+            { "type": "text", "text": "Ihr Ziel ist es, die vorhandenen Daten zu beschreiben, also sie mit Kennzahlen zusammenzufassen oder darzustellen, wenn es viele sind." }
+          ]
+        },
+        {
+          "id": "population",
+          "title": "Grundgesamtheit und statistische Einheit",
+          "blocks": [
+            { "type": "text", "text": "Die **Grundgesamtheit** ist die Menge der Tatsachen, Personen, Gegenstände oder Phänomene, auf die sich eine statistische Untersuchung bezieht." },
+            { "type": "text", "text": "Eine **statistische Einheit** ist ein Element der Grundgesamtheit." }
+          ]
+        },
+        {
+          "id": "character",
+          "title": "Merkmal und Ausprägungen",
+          "blocks": [
+            { "type": "text", "text": "Ein **Merkmal** ist eine Eigenschaft der statistischen Einheit, die untersucht wird, zum Beispiel Alter, Geschlecht oder Religion. Ein Merkmal ist quantitativ, wenn es messbar ist, und qualitativ, wenn nicht." },
+            { "type": "text", "text": "Die **Ausprägungen** sind alle möglichen Werte oder Zustände eines Merkmals, zum Beispiel männlich und weiblich für das Geschlecht." }
+          ]
+        },
+        {
+          "id": "variables",
+          "title": "Statistische Variablen",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "Eine **statistische Variable** ist eine beobachtbare oder messbare Eigenschaft, die bei den Personen einer Grundgesamtheit mehrere Werte annehmen kann. Den Typ einer Variablen zu erkennen ist der erste Schritt jeder Datenanalyse, denn davon hängen die zu verwendenden statistischen Werkzeuge ab." },
+            {
+              "type": "tree",
+              "root": {
+                "label": "Statistische Variable",
+                "children": [
+                  {
+                    "label": "Quantitativ",
+                    "children": [
+                      { "label": "Diskret", "example": "Anzahl der Kinder" },
+                      { "label": "Stetig", "example": "Größe, Gewicht" }
+                    ]
+                  },
+                  {
+                    "label": "Qualitativ",
+                    "children": [
+                      { "label": "Nominal", "example": "Haarfarbe" },
+                      { "label": "Ordinal", "example": "Bildungsabschluss" }
+                    ]
+                  }
+                ]
+              }
+            },
+            { "type": "text", "text": "Eine **quantitative Variable** hat Zahlen als Werte, die sich ordnen und addieren lassen. Sie ist **stetig**, wenn ihre Werte ein Intervall bilden, typischerweise das Ergebnis einer Messung, und **diskret**, wenn sie nur endlich viele, voneinander getrennte Werte annehmen kann, oft ganze Zahlen." },
+            { "type": "text", "text": "Eine **qualitative Variable** hat Eigenschaften als Werte, die Ausprägungen heißen (Erwerbsstatus: erwerbstätig, Student, Rentner…), als Wörter oder Zahlen angegeben. Sie ist **nominal**, wenn sich ihre Ausprägungen nicht ordnen lassen, wie die Haarfarbe, und **ordinal**, wenn sie sich ordnen lassen, wie der Bildungsabschluss (Grundschule, Sekundarstufe, Hochschule)." }
+          ]
+        },
+        {
+          "id": "survey",
+          "title": "Erhebung und Auszählung",
+          "blocks": [
+            { "type": "text", "text": "Eine **statistische Erhebung** ist ein Vorgang zur Sammlung von Daten. Man spricht von einer **Vollerhebung**, wenn sie alle Einheiten der Grundgesamtheit umfasst, und von einer **Stichprobenerhebung**, wenn sie nur einen Teil davon umfasst." },
+            { "type": "text", "text": "Die **Auszählung** besteht darin, die am Ende einer Erhebung gesammelten Daten zu zählen." }
+          ]
+        },
+        {
+          "id": "statistical-table",
+          "title": "Die statistische Tabelle",
+          "calculators": ["discrete"],
+          "blocks": [
+            { "type": "text", "text": "Eine **statistische Tabelle**, oder Häufigkeitsverteilung, stellt die bei einer Erhebung gesammelten Daten dar. Eine einfache Tabelle beschreibt die Grundgesamtheit nach einem einzigen Merkmal, eine Kreuztabelle nach zwei Merkmalen gleichzeitig." },
+            {
+              "type": "table",
+              "caption": "Beschäftigte eines Unternehmens nach Anzahl der Kinder, 2025",
+              "headers": ["Anzahl der Kinder (Xi)", "Häufigkeit (Ni)", "Relative Häufigkeit (%)"],
+              "rows": [
+                ["0", "8", "20"],
+                ["1", "12", "30"],
+                ["2", "11", "27,5"],
+                ["3", "6", "15"],
+                ["4", "3", "7,5"],
+                ["Summe", "40", "100"]
+              ]
+            },
+            { "type": "text", "text": "Damit eine Tabelle aussagekräftig ist, braucht sie einen einfachen, klaren und genauen Titel, der ein konkretes Phänomen an einem bestimmten Ort und zu einem bestimmten Zeitpunkt beschreibt." }
+          ]
+        },
+        {
+          "id": "graphical-representation",
+          "title": "Die grafische Darstellung",
+          "blocks": [
+            { "type": "text", "text": "Eine **grafische Darstellung** gibt mit geometrischen Figuren einen Überblick über die Daten. Man unterscheidet veranschaulichende Diagramme und Summenkurven." },
+            {
+              "type": "bullets",
+              "items": [
+                "Für ein **qualitatives** Merkmal: Kreisdiagramm, Säulendiagramm, Balkendiagramm.",
+                "Für ein **quantitatives** Merkmal: Stabdiagramm, Boxplot, Histogramm."
+              ]
+            },
+            { "type": "text", "text": "Die App zeichnet diese Diagramme zu den Ergebnissen jeder Berechnung; die Art des Diagramms wird in den Einstellungen gewählt." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frequencies",
+      "title": "Häufigkeiten",
+      "topics": [
+        {
+          "id": "effectif",
+          "title": "Die Häufigkeit",
+          "calculators": ["discrete", "continuous", "qualitative"],
+          "blocks": [
+            { "type": "text", "text": "Die **Häufigkeit** eines Wertes ist die Anzahl der statistischen Einheiten, die diesen Wert aufweisen. Sie wird Ni geschrieben und auch absolute Häufigkeit genannt." },
+            {
+              "type": "formula",
+              "label": "Gesamthäufigkeit",
+              "tex": "T = \\sum N_i",
+              "legend": [{ "tex": "N_i", "text": "Häufigkeit jedes Wertes" }]
+            },
+            {
+              "type": "formula",
+              "label": "Durchschnittliche Häufigkeit",
+              "tex": "\\bar{N} = \\frac{\\sum N_i}{n}",
+              "legend": [
+                { "tex": "N_i", "text": "Häufigkeit jedes Wertes" },
+                { "tex": "n", "text": "Anzahl der Werte (oder Klassen)" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frequency",
+          "title": "Die relative Häufigkeit",
+          "calculators": ["qualitative"],
+          "blocks": [
+            { "type": "text", "text": "Die **relative Häufigkeit**, oder der Anteil, eines Wertes ist das Verhältnis seiner Häufigkeit zur Gesamthäufigkeit. Sie wird oft in Prozent angegeben." },
+            {
+              "type": "formula",
+              "tex": "F_i = \\frac{N_i}{\\sum N_i} \\times 100",
+              "legend": [
+                { "tex": "N_i", "text": "Häufigkeit des Wertes" },
+                { "tex": "\\sum N_i", "text": "Gesamthäufigkeit" }
+              ]
+            },
+            { "type": "text", "text": "Der **kumulierte Anteil** eines Wertes addiert seine relative Häufigkeit zu denen der vorhergehenden Werte; beim letzten Wert beträgt er 100 %." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "position",
+      "title": "Lagemaße",
+      "topics": [
+        {
+          "id": "descriptive-parameters",
+          "title": "Die statistischen Kennzahlen",
+          "blocks": [
+            { "type": "text", "text": "**Statistische Kennzahlen** fassen die Verteilung einer Variablen in wenigen Zahlen zusammen. Für eine qualitative Variable berechnet man Häufigkeiten und Anteile; für eine quantitative Variable gibt es zwei Gruppen von Kennzahlen." },
+            {
+              "type": "bullets",
+              "items": [
+                "**Lagemaße** (Mittelwert, Median, Modus, Quartile…) sind zentrale Werte, um die sich die Beobachtungen verteilen.",
+                "**Streuungsmaße** (Spannweite, Varianz, Standardabweichung…) messen, wie sich die Beobachtungen um diese zentralen Werte verteilen."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mean",
+          "title": "Der Mittelwert",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Mittelwert** ist die Summe der Werte der Reihe geteilt durch die Anzahl der Werte. Hat jeder Wert eine Häufigkeit, verwendet man das gewichtete Mittel." },
+            {
+              "type": "formula",
+              "tex": "X = \\frac{\\sum X_i N_i}{\\sum N_i}",
+              "legend": [
+                { "tex": "X_i", "text": "Wert (bei einer stetigen Variablen die Klassenmitte)" },
+                { "tex": "N_i", "text": "Häufigkeit des Wertes" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "median",
+          "title": "Der Median",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Median** teilt die geordnete Reihe in zwei gleich große Teile: Die Hälfte der Beobachtungen liegt darunter, die andere Hälfte darüber." },
+            {
+              "type": "formula",
+              "label": "Diskrete Variable",
+              "text": "Der kleinste Wert, dessen kumulierte Häufigkeit die Hälfte der Gesamthäufigkeit erreicht oder übersteigt. Erreicht sie sie genau, ist der Median der Mittelwert aus diesem und dem nächsten Wert.",
+              "tex": "\\tfrac{1}{2} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Stetige Variable",
+              "tex": "\\mathrm{Me} = L_1 + k \\, \\frac{\\frac{1}{2} \\sum N_i - N_1}{N_e}",
+              "legend": [
+                { "tex": "L_1", "text": "Untere Grenze der Medianklasse" },
+                { "tex": "k", "text": "Breite der Medianklasse" },
+                { "tex": "N_1", "text": "Kumulierte Häufigkeit der vorhergehenden Klasse" },
+                { "tex": "N_e", "text": "Häufigkeit der Medianklasse" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mode",
+          "title": "Der Modus",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Modus** ist der häufigste Wert der Reihe. Er ist nicht unbedingt eindeutig: Eine Reihe kann mehrere Modi haben." },
+            {
+              "type": "formula",
+              "label": "Diskrete Variable",
+              "text": "Der Wert mit der größten Häufigkeit."
+            },
+            {
+              "type": "formula",
+              "label": "Stetige Variable",
+              "tex": "\\mathrm{Mo} = L_1 + k \\, \\frac{N_0 - N_1}{(N_0 - N_1) + (N_0 - N_2)}",
+              "legend": [
+                { "tex": "L_1", "text": "Untere Grenze der Modalklasse" },
+                { "tex": "k", "text": "Breite der Modalklasse" },
+                { "tex": "N_0", "text": "Häufigkeit der Modalklasse" },
+                { "tex": "N_1", "text": "Häufigkeit der vorhergehenden Klasse" },
+                { "tex": "N_2", "text": "Häufigkeit der nachfolgenden Klasse" }
+              ]
+            },
+            { "type": "text", "text": "Haben die Klassen nicht alle dieselbe Breite, ersetzt man die Häufigkeiten durch die Dichten di = Ni / k." }
+          ]
+        },
+        {
+          "id": "quantiles",
+          "title": "Quartile, Dezile und Perzentile",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Die **Quartile** sind die drei Werte, die die geordnete Reihe in vier gleich große Gruppen teilen. Unter dem ersten Quartil Q1 liegen 25 % der Beobachtungen, das zweite ist der Median, und unter dem dritten Quartil Q3 liegen 75 % der Beobachtungen." },
+            { "type": "text", "text": "Ebenso teilen die **Dezile** die Reihe in zehn Gruppen (unter D1 liegen 10 % der Beobachtungen, unter D9 90 %) und die **Perzentile** in hundert." },
+            {
+              "type": "formula",
+              "label": "Diskrete Variable",
+              "text": "Q1 ist der kleinste Wert, dessen kumulierte Häufigkeit ein Viertel der Gesamthäufigkeit erreicht oder übersteigt.",
+              "tex": "\\tfrac{1}{4} \\sum N_i"
+            },
+            {
+              "type": "formula",
+              "label": "Stetige Variable",
+              "tex": "Q_1 = L_1 + k \\, \\frac{\\frac{1}{4} \\sum N_i - N_1}{N_i}",
+              "legend": [
+                { "tex": "L_1", "text": "Untere Grenze der Klasse, in der die kumulierte Häufigkeit ¼ ∑Ni überschreitet" },
+                { "tex": "k", "text": "Breite dieser Klasse" },
+                { "tex": "N_1", "text": "Kumulierte Häufigkeit der vorhergehenden Klasse" },
+                { "tex": "N_i", "text": "Häufigkeit dieser Klasse" }
+              ]
+            },
+            { "type": "text", "text": "Für Q3, D1 und D9 ersetzt man ¼ durch ¾, 1/10 und 9/10." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dispersion",
+      "title": "Streuungsmaße",
+      "topics": [
+        {
+          "id": "range",
+          "title": "Die Spannweite",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Die **Spannweite** ist die Differenz zwischen dem größten und dem kleinsten Wert der Reihe." },
+            { "type": "formula", "tex": "E = X_{max} - X_{min}" }
+          ]
+        },
+        {
+          "id": "variance",
+          "title": "Die Varianz",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Die **Varianz** misst die Streuung der Beobachtungen um den Mittelwert: Sie ist der Mittelwert der quadrierten Abweichungen vom Mittelwert." },
+            {
+              "type": "formula",
+              "tex": "Vx^2 = \\frac{\\sum X_i^2 N_i}{\\sum N_i} - X^2",
+              "legend": [
+                { "tex": "X_i", "text": "Wert (oder Klassenmitte)" },
+                { "tex": "N_i", "text": "Häufigkeit des Wertes" },
+                { "tex": "X", "text": "Mittelwert" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-deviation",
+          "title": "Die Standardabweichung",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Die **Standardabweichung** misst die Streuung einer Reihe in derselben Einheit wie die Beobachtungen. Sie ist die Quadratwurzel der Varianz." },
+            {
+              "type": "formula",
+              "tex": "\\sigma = \\sqrt{Vx^2}",
+              "legend": [{ "tex": "Vx^2", "text": "Varianz" }]
+            }
+          ]
+        },
+        {
+          "id": "interquartile-range",
+          "title": "Der Interquartilsabstand",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Interquartilsabstand** ist die Differenz zwischen dem dritten und dem ersten Quartil. Er umfasst die mittlere Hälfte der Beobachtungen (25 % auf jeder Seite des Medians)." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{IIQ} = Q_3 - Q_1",
+              "legend": [
+                { "tex": "Q_1", "text": "Erstes Quartil" },
+                { "tex": "Q_3", "text": "Drittes Quartil" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard-error",
+          "title": "Der Standardfehler",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Standardfehler** misst die Genauigkeit des Mittelwerts: Er gibt an, wie stark der Mittelwert von einer Stichprobe zur anderen schwankt. Er wird kleiner, wenn die Gesamthäufigkeit wächst." },
+            {
+              "type": "formula",
+              "label": "Standardabweichung der Stichprobe",
+              "tex": "s = \\sigma \\times \\sqrt{\\frac{\\sum N_i}{\\sum N_i - 1}}"
+            },
+            {
+              "type": "formula",
+              "label": "Standardfehler",
+              "tex": "\\mathrm{SE} = \\frac{s}{\\sqrt{\\sum N_i}}",
+              "legend": [
+                { "tex": "\\sigma", "text": "Standardabweichung" },
+                { "tex": "\\sum N_i", "text": "Gesamthäufigkeit" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "coefficient-of-variation",
+          "title": "Der Variationskoeffizient",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Der **Variationskoeffizient** misst, wie homogen eine Verteilung ist: Er setzt die Standardabweichung ins Verhältnis zum Mittelwert." },
+            {
+              "type": "formula",
+              "tex": "\\mathrm{CV} = \\frac{\\sigma}{X} \\times 100",
+              "legend": [
+                { "tex": "\\sigma", "text": "Standardabweichung" },
+                { "tex": "X", "text": "Mittelwert" }
+              ]
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "CV ≤ 33 %: Die Verteilung ist **homogen**.",
+                "CV > 33 %: Die Verteilung ist **heterogen**."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "title": "Weitere Begriffe",
+      "topics": [
+        {
+          "id": "covariance",
+          "title": "Kovarianz und Korrelation",
+          "calculators": ["discrete", "continuous"],
+          "blocks": [
+            { "type": "text", "text": "Die **Kovarianz** zeigt, ob sich zwei Reihen in dieselbe Richtung (positive Kovarianz) oder in entgegengesetzte Richtungen (negative Kovarianz) verändern. Der **Korrelationskoeffizient** bringt sie auf einen Wert zwischen -1 und 1: Je näher er an -1 oder 1 liegt, desto stärker ist der Zusammenhang." },
+            {
+              "type": "formula",
+              "label": "Kovarianz",
+              "tex": "\\operatorname{Cov}(X, Y) = \\frac{\\sum (X_i - X)(Y_i - Y)}{n - 1}"
+            },
+            {
+              "type": "formula",
+              "label": "Korrelationskoeffizient",
+              "tex": "r = \\frac{\\operatorname{Cov}(X, Y)}{\\sigma(x) \\, \\sigma(y)}",
+              "legend": [
+                { "tex": "X_i, Y_i", "text": "Werte der beiden Reihen" },
+                { "tex": "X, Y", "text": "Mittelwerte der beiden Reihen" },
+                { "tex": "n", "text": "Anzahl der Werte" },
+                { "tex": "\\sigma(x), \\sigma(y)", "text": "Standardabweichungen der beiden Reihen" }
+              ]
+            },
+            { "type": "text", "text": "In der App steht X für die Werte Xi (oder die Klassenmitten) und Y für ihre Häufigkeiten Ni: Kovarianz und Korrelation zeigen dort, ob größere Werte häufiger oder seltener sind." }
+          ]
+        },
+        {
+          "id": "class-width",
+          "title": "Die Klassenbreite",
+          "calculators": ["continuous"],
+          "blocks": [
+            { "type": "text", "text": "Eine stetige Variable wird in **Klassen** [L1 ; L2[ eingeteilt. Die **Breite** einer Klasse ist die Differenz k = L2 - L1. Um eine Reihe in gleich breite Klassen einzuteilen, teilt man die Spannweite durch die Anzahl der Klassen." },
+            {
+              "type": "formula",
+              "label": "Gemeinsame Klassenbreite",
+              "tex": "A = \\frac{E}{N}",
+              "legend": [
+                { "tex": "E", "text": "Spannweite" },
+                { "tex": "N", "text": "Anzahl der Klassen" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../view/redirection.dart';
+import '../../view/screens/course/course_topic_screen.dart';
 import '../../view/screens/main_screen.dart';
 import '../../view/screens/onboarding/intro_screen.dart';
 import '../../view/screens/settings/privacy_policy_screen.dart';
@@ -39,6 +40,7 @@ class IntroRoute extends GoRouteData with $IntroRoute {
   routes: [
     TypedGoRoute<SettingsRoute>(path: 'other/settings'),
     TypedGoRoute<PrivacyPolicyRoute>(path: 'other/privacy'),
+    TypedGoRoute<CourseTopicRoute>(path: 'course/:topicId'),
   ],
 )
 class MainRoute extends GoRouteData with $MainRoute {
@@ -60,4 +62,13 @@ class PrivacyPolicyRoute extends GoRouteData with $PrivacyPolicyRoute {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) => SwipeablePage<void>(builder: (context) => const PrivacyPolicyScreen());
+}
+
+class CourseTopicRoute extends GoRouteData with $CourseTopicRoute {
+  const CourseTopicRoute({required this.topicId});
+
+  final String topicId;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) => SwipeablePage<void>(builder: (context) => CourseTopicScreen(topicId: topicId));
 }
