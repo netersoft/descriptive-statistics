@@ -198,7 +198,7 @@ SE = ${r.isStandardErrorDefined ? fmt(r.sampleStandardDeviation) : t.undefinedVa
   if (selected.contains(StatOption.coefficientOfVariation)) {
     buffer.write('''
 <b><font color='blue'><u>${t.coefficientOfVariationSectionTitle}</u></font></b><br><br>
-<b>CV = (Vx / X) * 100</b><br>
+<b>CV = (&sigma; / X) * 100</b><br>
 CV = (${fmt(r.standardDeviation)} / ${fmt(r.weightedMean)}) * 100<br>
 <font color='red'><b><u>CV = ${r.isCoefficientOfVariationDefined ? fmt(r.coefficientOfVariation) : t.undefinedValue}</u></b></font><br><br>
 ${r.isCoefficientOfVariationDefined ? '<b>${r.isHomogeneous ? t.distribHomo : t.distribHetero}</b><br><br>' : ''}''');
