@@ -1,0 +1,50 @@
+{
+  "font": "assets/fonts/montserrat/montserrat_bold.ttf",
+  "title_color": "#ffffff",
+  "background_top": "#009ee3",
+  "background_bottom": "#0071bc",
+  "bezel_color": "#1f2021",
+  "screens": ["table", "explain", "pie", "course", "cont_input", "backups"],
+  "titles": {
+    "fr": [
+      "Tableaux et graphiques en un instant",
+      "Chaque calcul expliqué pas à pas",
+      "Variables discrètes, continues et qualitatives",
+      "Un cours complet, formules à l'appui",
+      "Saisissez vos classes ou collez une série brute",
+      "Enregistrez vos études et exportez-les en PDF"
+    ],
+    "en": [
+      "Tables and charts in an instant",
+      "Every calculation explained step by step",
+      "Discrete, continuous and qualitative variables",
+      "A complete course, with the formulas",
+      "Enter your classes or paste a raw series",
+      "Save your studies and export them as PDF"
+    ],
+    "de": [
+      "Tabellen und Diagramme im Handumdrehen",
+      "Jede Berechnung Schritt für Schritt erklärt",
+      "Diskrete, stetige und qualitative Variablen",
+      "Ein vollständiger Kurs mit allen Formeln",
+      "Klassen eingeben oder eine Urliste einfügen",
+      "Studien speichern und als PDF exportieren"
+    ],
+    "es": [
+      "Tablas y gráficos al instante",
+      "Cada cálculo explicado paso a paso",
+      "Variables discretas, continuas y cualitativas",
+      "Un curso completo, con las fórmulas",
+      "Introduce tus clases o pega una serie bruta",
+      "Guarda tus estudios y expórtalos en PDF"
+    ],
+    "pt": [
+      "Tabelas e gráficos num instante",
+      "Cada cálculo explicado passo a passo",
+      "Variáveis discretas, contínuas e qualitativas",
+      "Um curso completo, com as fórmulas",
+      "Introduza as suas classes ou cole uma série bruta",
+      "Guarde os seus estudos e exporte-os em PDF"
+    ]
+  }
+}
