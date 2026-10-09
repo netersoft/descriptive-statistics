@@ -46,5 +46,23 @@
       "Introduza as suas classes ou cole uma série bruta",
       "Guarde os seus estudos e exporte-os em PDF"
     ]
+  },
+  "feature": {
+    "icon": "assets/images/launcher/icon.png",
+    "screens": ["table", "pie"],
+    "name": {
+      "fr": "Statistique Descriptive",
+      "en": "Descriptive Statistics",
+      "de": "Deskriptive Statistik",
+      "es": "Estadística Descriptiva",
+      "pt": "Estatística Descritiva"
+    },
+    "tagline": {
+      "fr": "Chaque calcul statistique, expliqué pas à pas",
+      "en": "Every statistics calculation, explained step by step",
+      "de": "Jede Statistikrechnung, Schritt für Schritt erklärt",
+      "es": "Cada cálculo estadístico, explicado paso a paso",
+      "pt": "Cada cálculo estatístico, explicado passo a passo"
+    }
   }
 }
