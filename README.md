@@ -21,6 +21,23 @@ A descriptive statistics calculator for students, published on the Play Store as
 - **Languages**: French, English, German, Spanish, Portuguese. English is the fallback for other device languages.
 - **Privacy policy**: bundled with the app, in Settings.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="store/screenshots/en/1_table.png" width="260" alt="Tables and charts in an instant"></td>
+    <td><img src="store/screenshots/en/2_explain.png" width="260" alt="Every calculation explained step by step"></td>
+    <td><img src="store/screenshots/en/3_pie.png" width="260" alt="Discrete, continuous and qualitative variables"></td>
+  </tr>
+  <tr>
+    <td><img src="store/screenshots/en/4_course.png" width="260" alt="A complete course, with the formulas"></td>
+    <td><img src="store/screenshots/en/5_cont_input.png" width="260" alt="Enter your classes or paste a raw series"></td>
+    <td><img src="store/screenshots/en/6_backups.png" width="260" alt="Save your studies and export them as PDF"></td>
+  </tr>
+</table>
+
+The Play Store images, in English; other languages are in `store/screenshots/<lang>/`.
+
 ## Tech stack
 
 - Flutter (stable channel), Dart SDK `>=3.8.0 <4.0.0`
