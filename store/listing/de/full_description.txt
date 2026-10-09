@@ -1,0 +1,43 @@
+Deskriptive Statistik erstellt in wenigen Sekunden die vollständige statistische Auswertung einer Reihe und erklärt jede Rechnung Schritt für Schritt, wie ein Lehrer an deiner Seite. Für Schüler, Studierende, Lehrkräfte und alle, die mit Daten arbeiten. Die App funktioniert offline, ohne Werbung und ohne Konto.
+
+★ DREI ARTEN VON MERKMALEN
+• Diskrete quantitative Merkmale: Werte (Xi) und Häufigkeiten (Ni)
+• Stetige quantitative Merkmale: Klassen [L1 ; L2[ und Häufigkeiten
+• Qualitative Merkmale: Ausprägungen und Häufigkeiten
+
+★ SCHNELLE EINGABE
+• Gib deine Zeilen einzeln ein oder importiere mehrere auf einmal
+• Füge eine Urliste ein („3 5 5 7 3…“): Die App zählt die Häufigkeiten für dich
+• Stetige Merkmale: Die App teilt die Werte in gleich breite Klassen ein, automatisch nach der Sturges-Regel
+
+★ ALLE ERGEBNISSE
+• Häufigkeitstabelle: absolute und relative Häufigkeiten, kumuliert
+• Mittelwert, Modus und Modalklasse, Median und Medianklasse
+• Quartile, Dezile und Interquartilsabstand
+• Spannweite, Varianz, Standardabweichung, Standardfehler und Variationskoeffizient
+• Kovarianz und Korrelationskoeffizient
+• Ungleich breite Klassen: Die Diagramme zeigen die Dichten
+
+★ JEDE RECHNUNG ERKLÄRT
+Zu jedem Ergebnis gibt es die Erklärung Schritt für Schritt: die Formel, die eingesetzten Werte und das Ergebnis. Ideal, um Hausaufgaben zu überprüfen, für eine Prüfung zu lernen oder eine Methode zu verstehen.
+
+★ DIAGRAMME
+Balken, Linien und Boxplot für quantitative Merkmale; Balken- und Kreisdiagramm für qualitative Merkmale. Wähle in den Einstellungen die gewünschten aus.
+
+★ EIN VOLLSTÄNDIGER KURS
+Ein Kurs in deskriptiver Statistik mit allen Formeln, eine Seite pro Begriff: Grundbegriffe (Grundgesamtheit, Merkmal, Häufigkeitstabelle), Häufigkeiten, Lagemaße (Mittelwert, Median, Modus, Quartile, Dezile, Perzentile), Streuungsmaße (Spannweite, Varianz, Standardabweichung, Variationskoeffizient), Kovarianz und Korrelation.
+
+★ SPEICHERN, EXPORTIEREN, TEILEN
+• Speichere deine Auswertungen und öffne sie wieder in ihrem Rechner
+• Exportiere eine Auswertung als PDF, mit Ergebnissen, Diagrammen und Erklärungen
+• Teile deine Ergebnisse als Text
+• Exportiere und importiere deine Sicherungen als Datei, um sie auf ein anderes Handy zu übertragen
+
+★ KOSTENLOS UND DATENSCHUTZFREUNDLICH
+• Keine Werbung, kein Konto, keine Datenerfassung
+• Funktioniert ohne Internetverbindung
+• Auf Deutsch, Englisch, Französisch, Spanisch und Portugiesisch
+• Helles und dunkles Design, einstellbare Anzahl der Nachkommastellen
+• Freie Software (GNU GPL v3)
+
+Statistik-Hausaufgaben, eine Abschlussarbeit, eine Umfrage oder ein Bericht: Erhalte deine Ergebnisse in Sekunden und verstehe sie.

@@ -1,0 +1,1 @@
+Moyenne, médiane, variance, graphiques : chaque calcul statistique expliqué.

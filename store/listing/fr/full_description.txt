@@ -1,0 +1,43 @@
+Statistique Descriptive réalise en quelques secondes l’étude statistique complète d’une série, et explique chaque calcul pas à pas, comme un professeur à vos côtés. Pour les lycéens, les étudiants, les enseignants et tous ceux qui travaillent avec des données. L’app fonctionne hors ligne, sans publicité et sans compte.
+
+★ TROIS TYPES DE VARIABLES
+• Variables quantitatives discrètes : valeurs (Xi) et effectifs (Ni)
+• Variables quantitatives continues : classes [L1 ; L2[ et effectifs
+• Variables qualitatives : modalités et effectifs
+
+★ UNE SAISIE RAPIDE
+• Saisissez vos lignes une à une, ou importez-en plusieurs d’un coup
+• Collez une série brute (« 3 5 5 7 3… ») : l’app compte les effectifs pour vous
+• Variables continues : l’app regroupe les valeurs en classes de même amplitude, choisies automatiquement avec la règle de Sturges
+
+★ TOUS LES RÉSULTATS
+• Tableau statistique : effectifs, fréquences, effectifs et fréquences cumulés
+• Moyenne, mode et classe modale, médiane et classe médiane
+• Quartiles, déciles et intervalle interquartile
+• Étendue, variance, écart type, erreur type et coefficient de variation
+• Covariance et coefficient de corrélation
+• Classes d’amplitudes inégales : les graphiques représentent les densités
+
+★ CHAQUE CALCUL EXPLIQUÉ
+Chaque résultat est accompagné de son explication pas à pas : la formule, les valeurs remplacées et le résultat. Idéal pour vérifier vos exercices, réviser un examen ou comprendre une méthode.
+
+★ LES GRAPHIQUES
+Diagramme en barres, en lignes et boîte à moustaches pour les variables quantitatives ; diagramme en barres et diagramme circulaire pour les variables qualitatives. Choisissez ceux que vous voulez dans les paramètres.
+
+★ UN COURS COMPLET
+Un cours de statistique descriptive avec toutes ses formules, une page par notion : vocabulaire (population, caractère, tableau statistique), effectifs et fréquences, paramètres de position (moyenne, médiane, mode, quartiles, déciles, centiles), paramètres de dispersion (étendue, variance, écart type, coefficient de variation), covariance et corrélation.
+
+★ SAUVEGARDER, EXPORTER, PARTAGER
+• Sauvegardez vos études et rouvrez-les dans leur calculateur
+• Exportez une étude en PDF, avec les résultats, les graphiques et les explications
+• Partagez vos résultats en texte
+• Exportez et importez vos sauvegardes dans un fichier, pour les transférer sur un autre téléphone
+
+★ GRATUIT ET RESPECTUEUX DE VOTRE VIE PRIVÉE
+• Sans publicité, sans compte, aucune donnée collectée
+• Fonctionne sans connexion internet
+• En français, anglais, allemand, espagnol et portugais
+• Thème clair et sombre, nombre de décimales réglable
+• Logiciel libre (GNU GPL v3)
+
+Un devoir de statistique, un mémoire, une enquête à dépouiller ou un rapport à préparer : obtenez vos résultats en quelques secondes, et comprenez-les.

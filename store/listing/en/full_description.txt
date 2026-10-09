@@ -1,0 +1,43 @@
+Descriptive Statistics works out the complete statistical study of a series in seconds, and explains every calculation step by step, like a teacher at your side. Made for high school and university students, teachers and anyone who works with data. It works offline, with no ads and no account.
+
+★ THREE KINDS OF VARIABLES
+• Discrete quantitative variables: values (Xi) and frequencies (Ni)
+• Continuous quantitative variables: classes [L1 ; L2[ and frequencies
+• Qualitative variables: modalities and frequencies
+
+★ QUICK DATA ENTRY
+• Enter your rows one by one, or import several rows at once
+• Paste a raw series ("3 5 5 7 3…"): the app counts the frequencies for you
+• Continuous variables: the app groups the values into classes of equal width, chosen automatically with Sturges' rule
+
+★ ALL THE RESULTS
+• Frequency table: frequencies, proportions, cumulative frequencies and proportions
+• Mean, mode and modal class, median and median class
+• Quartiles, deciles and interquartile interval
+• Range, variance, standard deviation, standard error and coefficient of variation
+• Covariance and correlation coefficient
+• Classes of unequal width: the charts show densities
+
+★ EVERY CALCULATION EXPLAINED
+Each result comes with its step-by-step explanation: the formula, the values put into it and the result. Ideal to check your homework, revise for an exam or understand a method.
+
+★ CHARTS
+Bars, lines and box plot for quantitative variables; bars and pie chart for qualitative variables. Choose the ones you want in the settings.
+
+★ A COMPLETE COURSE
+A descriptive statistics course with all its formulas, one page per notion: vocabulary (population, variable, statistical table), frequencies, measures of position (mean, median, mode, quartiles, deciles, percentiles), measures of dispersion (range, variance, standard deviation, coefficient of variation), covariance and correlation.
+
+★ SAVE, EXPORT, SHARE
+• Save your studies and reopen them in their calculator
+• Export a study as a PDF, with the results, the charts and the explanations
+• Share your results as text
+• Export and import your backups as a file, to move them to another phone
+
+★ FREE AND RESPECTFUL OF YOUR PRIVACY
+• No ads, no account, no data collected
+• Works without an internet connection
+• In English, French, German, Spanish and Portuguese
+• Light and dark theme, adjustable number of decimals
+• Free software (GNU GPL v3)
+
+Statistics homework, a dissertation, a survey to analyse or a business report: get your results in seconds, and understand them.
