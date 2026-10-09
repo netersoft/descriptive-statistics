@@ -1,0 +1,1 @@
+Média, mediana, variância, gráficos: cada cálculo estatístico explicado.

@@ -1,0 +1,43 @@
+Estatística Descritiva faz em segundos o estudo estatístico completo de uma série e explica cada cálculo passo a passo, como um professor ao seu lado. Para alunos do secundário e da universidade, professores e todos os que trabalham com dados. Funciona offline, sem anúncios e sem conta.
+
+★ TRÊS TIPOS DE VARIÁVEIS
+• Variáveis quantitativas discretas: valores (Xi) e frequências (Ni)
+• Variáveis quantitativas contínuas: classes [L1 ; L2[ e frequências
+• Variáveis qualitativas: modalidades e frequências
+
+★ INTRODUÇÃO RÁPIDA DOS DADOS
+• Introduza as suas linhas uma a uma, ou importe várias de uma vez
+• Cole uma série bruta («3 5 5 7 3…»): a app conta as frequências por si
+• Variáveis contínuas: a app agrupa os valores em classes de igual amplitude, escolhidas automaticamente com a regra de Sturges
+
+★ TODOS OS RESULTADOS
+• Tabela de frequências: frequências absolutas, relativas e acumuladas
+• Média, moda e classe modal, mediana e classe mediana
+• Quartis, decis e intervalo interquartil
+• Amplitude, variância, desvio padrão, erro padrão e coeficiente de variação
+• Covariância e coeficiente de correlação
+• Classes de amplitude desigual: os gráficos mostram as densidades
+
+★ CADA CÁLCULO EXPLICADO
+Cada resultado vem com a sua explicação passo a passo: a fórmula, os valores substituídos e o resultado. Ideal para verificar os seus exercícios, estudar para um exame ou compreender um método.
+
+★ GRÁFICOS
+Barras, linhas e diagrama de caixa para as variáveis quantitativas; barras e gráfico circular para as qualitativas. Escolha os que quiser nas definições.
+
+★ UM CURSO COMPLETO
+Um curso de estatística descritiva com todas as fórmulas, uma página por noção: vocabulário (população, variável, tabela estatística), frequências, medidas de localização (média, mediana, moda, quartis, decis, percentis), medidas de dispersão (amplitude, variância, desvio padrão, coeficiente de variação), covariância e correlação.
+
+★ GUARDAR, EXPORTAR, PARTILHAR
+• Guarde os seus estudos e volte a abri-los na respetiva calculadora
+• Exporte um estudo em PDF, com os resultados, os gráficos e as explicações
+• Partilhe os seus resultados em texto
+• Exporte e importe as suas cópias de segurança num ficheiro, para as passar para outro telemóvel
+
+★ GRATUITO E RESPEITADOR DA SUA PRIVACIDADE
+• Sem anúncios, sem conta, nenhum dado recolhido
+• Funciona sem ligação à internet
+• Em português, inglês, francês, alemão e espanhol
+• Tema claro e escuro, número de casas decimais ajustável
+• Software livre (GNU GPL v3)
+
+Um trabalho de estatística, uma tese, um inquérito para analisar ou um relatório para preparar: obtenha os seus resultados em segundos, e compreenda-os.
