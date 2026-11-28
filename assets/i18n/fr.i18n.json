@@ -190,5 +190,10 @@
   "courseNoResult": "Aucune notion ne correspond à « $query »",
   "courseOpenDiscrete": "Calculer une série discrète",
   "courseOpenContinuous": "Calculer une série continue",
-  "courseOpenQualitative": "Calculer une série qualitative"
+  "courseOpenQualitative": "Calculer une série qualitative",
+  "rateTitle": "Noter Statistique Descriptive",
+  "rateMessage": "Une note ou un commentaire sur Google Play aide d'autres personnes à trouver l'application. Cela prend une minute.",
+  "rateAction": "Noter",
+  "rateLater": "Plus tard",
+  "rateNever": "Ne plus demander"
 }

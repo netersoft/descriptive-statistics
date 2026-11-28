@@ -190,5 +190,10 @@
   "courseNoResult": "Kein Begriff passt zu „$query“",
   "courseOpenDiscrete": "Diskrete Reihe berechnen",
   "courseOpenContinuous": "Stetige Reihe berechnen",
-  "courseOpenQualitative": "Qualitative Reihe berechnen"
+  "courseOpenQualitative": "Qualitative Reihe berechnen",
+  "rateTitle": "Deskriptive Statistik bewerten",
+  "rateMessage": "Eine Bewertung oder ein Kommentar auf Google Play hilft anderen, die App zu finden. Es dauert nur eine Minute.",
+  "rateAction": "Bewerten",
+  "rateLater": "Später",
+  "rateNever": "Nicht mehr fragen"
 }

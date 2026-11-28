@@ -190,5 +190,10 @@
   "courseNoResult": "Nenhum conceito corresponde a «$query»",
   "courseOpenDiscrete": "Calcular uma série discreta",
   "courseOpenContinuous": "Calcular uma série contínua",
-  "courseOpenQualitative": "Calcular uma série qualitativa"
+  "courseOpenQualitative": "Calcular uma série qualitativa",
+  "rateTitle": "Avalie Estatística Descritiva",
+  "rateMessage": "Uma avaliação ou um comentário no Google Play ajuda outras pessoas a encontrar o app. Leva apenas um minuto.",
+  "rateAction": "Avaliar",
+  "rateLater": "Mais tarde",
+  "rateNever": "Não perguntar novamente"
 }
