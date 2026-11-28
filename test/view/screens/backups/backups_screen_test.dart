@@ -8,10 +8,10 @@ import 'package:descriptive_statistics/core/services/hive/service.dart';
 import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:descriptive_statistics/view/screens/backups/backups_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Deliberately a single testWidgets covering only the read path (empty
 // state -> list -> expand), with delete/repository CRUD covered instead by
@@ -38,9 +38,8 @@ void main() {
   });
 
   tearDownAll(() async {
-    locator
-      ..unregister<BackupsRepository>()
-      ..unregister<HiveService>();
+    await locator.unregister<BackupsRepository>();
+    await locator.unregister<HiveService>();
     await Hive.close();
     // Not awaited: deleting the temp dir is real (non-fake-clock) file I/O,
     // which can hang flutter_test's zone when run from tearDownAll (no

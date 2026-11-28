@@ -3,8 +3,8 @@ import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:descriptive_statistics/core/stats/stats_exceptions.dart';
 import 'package:descriptive_statistics/view/components/calculators/calculator_actions.dart';
 import 'package:descriptive_statistics/view/components/calculators/calculator_form.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   // EntryRows disposes removed rows' controllers after the next frame.
