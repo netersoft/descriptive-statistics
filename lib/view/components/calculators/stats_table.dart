@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A bordered table of [headers] and [rows], matching the legacy stats
 /// table's shape (Xi/Ni/XiNi/Xi²Ni/Ni+/Ni- for discrete/continuous,

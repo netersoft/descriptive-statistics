@@ -1,6 +1,6 @@
 import 'package:descriptive_statistics/view/components/misc/themed_html.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   group('adaptHtmlColorsForDarkTheme', () {

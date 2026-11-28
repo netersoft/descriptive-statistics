@@ -8,9 +8,9 @@ import 'package:descriptive_statistics/core/tools/constants/chart_options.dart';
 import 'package:descriptive_statistics/view/components/calculators/chart_carousel.dart';
 import 'package:descriptive_statistics/view/screens/calculators/discrete_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/test_utils.dart';

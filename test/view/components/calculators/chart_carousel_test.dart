@@ -1,8 +1,8 @@
 import 'package:descriptive_statistics/core/services/i18n/translations.g.dart';
 import 'package:descriptive_statistics/view/components/calculators/chart_carousel.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   setUpAll(() async {

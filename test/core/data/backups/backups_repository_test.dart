@@ -33,7 +33,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    locator.unregister<HiveService>();
+    await locator.unregister<HiveService>();
     await Hive.close();
     await tempDir.delete(recursive: true);
   });
