@@ -190,5 +190,10 @@
   "courseNoResult": "No notion matches “$query”",
   "courseOpenDiscrete": "Calculate a discrete series",
   "courseOpenContinuous": "Calculate a continuous series",
-  "courseOpenQualitative": "Calculate a qualitative series"
+  "courseOpenQualitative": "Calculate a qualitative series",
+  "rateTitle": "Rate Descriptive Statistics",
+  "rateMessage": "A rating or a comment on Google Play helps other people find the app. It takes a minute.",
+  "rateAction": "Rate",
+  "rateLater": "Later",
+  "rateNever": "Don't ask again"
 }
